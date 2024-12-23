@@ -1,7 +1,3 @@
-/**
- * The core server that runs on a Cloudflare worker.
- */
-
 import { AutoRouter } from 'itty-router';
 import {
     InteractionResponseType,
@@ -25,20 +21,12 @@ class JsonResponse extends Response {
 
 const router = AutoRouter();
 
-/**
- * A simple :wave: hello page to verify the worker is working.
- */
 router.get('/', (request, env) => {
-    return new Response(`👋 ${env.DISCORD_APPLICATION_ID}`);
+    return new Response(`Bot is running on user ID ${env.DISCORD_APPLICATION_ID}`);
 });
 
-/**
- * Main route for all requests sent from Discord.  All incoming messages will
- * include a JSON payload described here:
- * https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object
- */
 router.post('/', async (request, env) => {
-    const { isValid, interaction } = await server.verifyDiscordRequest(
+    const { isValid, interaction } = await index.verifyDiscordRequest(
         request,
         env,
     );
@@ -52,9 +40,7 @@ router.post('/', async (request, env) => {
         return new JsonResponse({
             type: InteractionResponseType.PONG,
         });
-    }
-
-    if (interaction.type === InteractionType.APPLICATION_COMMAND) {
+    } else if (interaction.type === InteractionType.APPLICATION_COMMAND) {
         // Most user commands will come as `APPLICATION_COMMAND`.
         switch (interaction.data.name.toLowerCase()) {
             case 'ping': {
@@ -98,9 +84,8 @@ async function verifyDiscordRequest(request, env) {
     return { interaction: JSON.parse(body), isValid: true };
 }
 
-const server = {
+const index = {
     verifyDiscordRequest,
     fetch: router.fetch,
 };
 
-export default server;
