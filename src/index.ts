@@ -73,4 +73,3 @@ const index = {
     verifyDiscordRequest,
     fetch: router.fetch,
 };
-
