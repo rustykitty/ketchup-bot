@@ -2,6 +2,7 @@ import {AutoRouter} from 'itty-router';
 // import commands from './commandData.js';
 import {InteractionResponseFlags, InteractionResponseType, InteractionType, verifyKey,} from 'discord-interactions';
 import {JsonResponse} from "./response";
+import commands from "./commands/commandList";
 
 const router = AutoRouter();
 
@@ -26,25 +27,16 @@ router.post('/', async (request: Request, env): Promise<JsonResponse> => {
         });
     } else if (interaction.type === InteractionType.APPLICATION_COMMAND) {
         // Most user commands will come as `APPLICATION_COMMAND`.
-        switch (interaction.data.name.toLowerCase()) {
-            case 'ping': {
-                return new JsonResponse({
-                    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-                    data: {
-                        content: 'Pong!',
-                    },
-                });
-            }
-            case 'ping-ephemeral':
-                return new JsonResponse({
-                    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-                    data: {
-                        content: 'Pong!',
-                        flags: InteractionResponseFlags.EPHEMERAL
-                    }
-                });
-            default:
-                return new JsonResponse({ error: 'Unknown Type' }, { status: 400 });
+        const command = interaction.data.name.toLowerCase();
+        if (commands[command]) {
+            return commands[command].execute(interaction);
+        } else {
+            return new JsonResponse({
+                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                data: {
+                    content: `Unknown command ${interaction.data.name.toLowerCase()}.`,
+                },
+            });
         }
     }
 
@@ -54,7 +46,7 @@ router.post('/', async (request: Request, env): Promise<JsonResponse> => {
 
 router.all('*', () => new Response('Not Found.', { status: 404 }));
 
-async function verifyDiscordRequest(request: Request, env) : Promise<{ interaction?: any, isValid: boolean }> {
+async function verifyDiscordRequest(request: Request, env: { DISCORD_PUBLIC_KEY: string; }) : Promise<{ interaction?: any, isValid: boolean }> {
     const signature = request.headers.get('x-signature-ed25519');
     const timestamp = request.headers.get('x-signature-timestamp');
     const body: string = await request.text();
@@ -73,3 +65,5 @@ const index = {
     verifyDiscordRequest,
     fetch: router.fetch,
 };
+
+export default index;
