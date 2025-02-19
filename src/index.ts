@@ -1,31 +1,15 @@
-import { AutoRouter } from 'itty-router';
-import {
-    InteractionResponseType,
-    InteractionType,
-    verifyKey,
-} from 'discord-interactions';
-import commands from './commandData.js';
-import { InteractionResponseFlags } from 'discord-interactions';
-
-class JsonResponse extends Response {
-    constructor(body, init) {
-        const jsonBody = JSON.stringify(body);
-        init = init || {
-            headers: {
-                'content-type': 'application/json;charset=UTF-8',
-            },
-        };
-        super(jsonBody, init);
-    }
-}
+import {AutoRouter} from 'itty-router';
+// import commands from './commandData.js';
+import {InteractionResponseFlags, InteractionResponseType, InteractionType, verifyKey,} from 'discord-interactions';
+import {JsonResponse} from "./response";
 
 const router = AutoRouter();
 
-router.get('/', (request, env) => {
+router.get('/', (request: Request, env) => {
     return new Response(`Bot is running on user ID ${env.DISCORD_APPLICATION_ID}`);
 });
 
-router.post('/', async (request, env) => {
+router.post('/', async (request: Request, env): Promise<JsonResponse> => {
     const { isValid, interaction } = await index.verifyDiscordRequest(
         request,
         env,
@@ -67,12 +51,13 @@ router.post('/', async (request, env) => {
     console.error('Unknown Type');
     return new JsonResponse({ error: 'Unknown Type' }, { status: 400 });
 });
+
 router.all('*', () => new Response('Not Found.', { status: 404 }));
 
-async function verifyDiscordRequest(request, env) {
+async function verifyDiscordRequest(request: Request, env) : Promise<{ interaction?: any, isValid: boolean }> {
     const signature = request.headers.get('x-signature-ed25519');
     const timestamp = request.headers.get('x-signature-timestamp');
-    const body = await request.text();
+    const body: string = await request.text();
     const isValidRequest =
         signature &&
         timestamp &&

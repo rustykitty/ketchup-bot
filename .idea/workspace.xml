@@ -4,18 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="83de18be-ae24-488c-a989-18a0feac140e" name="Changes" comment="Initial commit&#10;&#10;Code is based on https://github.com/discord/cloudflare-sample-app commit f7e98bc">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.github/workflows/ci.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci.yaml" afterDir="false" />
+    <list default="true" id="83de18be-ae24-488c-a989-18a0feac140e" name="Changes" comment="change some things">
+      <change afterPath="$PROJECT_DIR$/src/commands/command.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/commands/commandList.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/commands/ping.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/response.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/commandData.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/commandData.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wrangler.toml" beforeDir="false" afterPath="$PROJECT_DIR$/wrangler.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -28,7 +39,7 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/discord/cloudflare-sample-app&quot;,
+    &quot;url&quot;: &quot;https://github.com/rustykitty/ketchup-bot.git&quot;,
     &quot;accountId&quot;: &quot;d85b03cc-53da-4515-b4e5-4a1be9e9295b&quot;
   }
 }</component>
@@ -44,35 +55,45 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Node.js.register.js.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;20.16.0&quot;,
-    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;20.16.15&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/rusty/coding/ketchup-bot&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Node.js.register.js.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "javascript.nodejs.core.library.configured.version": "22.12.0",
+    "javascript.nodejs.core.library.typings.version": "22.12.0",
+    "last_opened_file_path": "/Users/rusty/coding/ketchup-bot",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_interpreter_path": "node",
+    "nodejs_package_manager_path": "yarn",
+    "settings.editor.selected.configurable": "preferences.sourceCode",
+    "ts.external.directory.path": "/Users/rusty/coding/ketchup-bot/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
+    <key name="es6.move.members.recent.items">
+      <recent name="$PROJECT_DIR$/src/response.ts" />
+    </key>
   </component>
-  <component name="RunManager">
-    <configuration name="register.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/src/register.js" working-dir="$PROJECT_DIR$/src">
+  <component name="RunManager" selected="Node.js.index.ts">
+    <configuration name="index.ts" type="NodeJSConfigurationType" path-to-js-file="src/index.ts" working-dir="$PROJECT_DIR$">
       <method v="2" />
     </configuration>
+    <configuration name="register.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="register.js" working-dir="$PROJECT_DIR$/src">
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Node.js.index.ts" />
+      <item itemvalue="Node.js.register.js" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Node.js.register.js" />
@@ -82,7 +103,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.112" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-WS-243.23654.157" />
       </set>
     </attachedChunks>
   </component>
@@ -100,7 +121,8 @@
       <workItem from="1734881117899" duration="253000" />
       <workItem from="1734882392949" duration="1000" />
       <workItem from="1734885343948" duration="2820000" />
-      <workItem from="1734918407873" duration="645000" />
+      <workItem from="1734918407873" duration="3472000" />
+      <workItem from="1739932740653" duration="855000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit&#10;&#10;Code is based on https://github.com/discord/cloudflare-sample-app commit f7e98bc">
       <option name="closed" value="true" />
@@ -110,7 +132,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734912501948</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="change some things">
+      <option name="closed" value="true" />
+      <created>1734920308631</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1734920308631</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -118,6 +148,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit&#10;&#10;Code is based on https://github.com/discord/cloudflare-sample-app commit f7e98bc" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial commit&#10;&#10;Code is based on https://github.com/discord/cloudflare-sample-app commit f7e98bc" />
+    <MESSAGE value="change some things" />
+    <option name="LAST_COMMIT_MESSAGE" value="change some things" />
   </component>
 </project>
