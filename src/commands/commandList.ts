@@ -1,13 +1,13 @@
-import { Command } from './command';
+import { Command } from './command.ts';
 
 import {
     ping,
     pingEphemeral
-} from './ping';
+} from './ping.ts';
+import { evalCommand } from './bot_admin_commands.ts';
 
 const commands: Record<string, Command> = {
-    ping: ping,
-    'ping-ephemeral': pingEphemeral
+    ping: ping
 };
 
 export default commands;

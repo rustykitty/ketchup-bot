@@ -8,7 +8,8 @@ import { APIApplicationCommandInteraction } from "discord-api-types/v10";
 interface Command {
     name: string;
     description: string;
-    execute: (interaction: APIApplicationCommandInteraction) => Response;
+    options?: any[];
+    execute: (interaction: APIApplicationCommandInteraction, env: any) => Response;
 }
 
 export { Command };

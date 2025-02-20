@@ -1,10 +1,10 @@
-import { Command } from './command';
+import { Command } from './command.ts';
 import {
     InteractionResponseType,
     InteractionType,
     InteractionResponseFlags,
 } from 'discord-interactions';
-import { JsonResponse } from "../response";
+import { JsonResponse } from "../response.ts";
 
 export const ping: Command = {
     name: 'ping',

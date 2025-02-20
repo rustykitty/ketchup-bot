@@ -1,8 +1,7 @@
 import {AutoRouter} from 'itty-router';
-// import commands from './commandData.js';
 import {InteractionResponseFlags, InteractionResponseType, InteractionType, verifyKey,} from 'discord-interactions';
-import {JsonResponse} from "./response";
-import commands from "./commands/commandList";
+import {JsonResponse} from "./response.js";
+import commands from "./commands/commandList.js";
 
 const router = AutoRouter();
 
@@ -29,7 +28,7 @@ router.post('/', async (request: Request, env): Promise<JsonResponse> => {
         // Most user commands will come as `APPLICATION_COMMAND`.
         const command = interaction.data.name.toLowerCase();
         if (commands[command]) {
-            return commands[command].execute(interaction);
+            return commands[command].execute(interaction, env);
         } else {
             return new JsonResponse({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,

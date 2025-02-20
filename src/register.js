@@ -1,4 +1,4 @@
-import commands from './commandData.js'
+import commands from './commands/commandList.js'
 import dotenv from 'dotenv';
 import process from 'node:process';
 
@@ -8,7 +8,7 @@ import process from 'node:process';
  * to be run once.
  */
 
-dotenv.config({ path: '.dev.vars' });
+dotenv.config({ path: '../.dev.vars' });
 
 const token = process.env.DISCORD_TOKEN;
 const applicationId = process.env.DISCORD_APPLICATION_ID;
@@ -20,6 +20,13 @@ if (!applicationId) {
     throw new Error(
         'The DISCORD_APPLICATION_ID environment variable is required.',
     );
+}
+
+let commandsList = [];
+for (const command in commands) {
+    if (commands.hasOwnProperty(command)) {
+        commandsList.push(commands[command]);
+    }
 }
 
 /**
@@ -34,7 +41,7 @@ const response = await fetch(url, {
         Authorization: `Bot ${token}`,
     },
     method: 'PUT',
-    body: JSON.stringify(commands),
+    body: JSON.stringify(commandsList),
 });
 
 if (response.ok) {
