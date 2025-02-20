@@ -1,10 +1,10 @@
-import { Command } from './command.ts';
+import { Command } from './command.js';
 import {
     InteractionResponseType,
     InteractionType,
     InteractionResponseFlags,
 } from 'discord-interactions';
-import { JsonResponse } from "../response.ts";
+import { JsonResponse } from "../response.js";
 
 export const ping: Command = {
     name: 'ping',
@@ -15,20 +15,6 @@ export const ping: Command = {
             data: {
                 content: 'Pong!'
             }
-        });
-    }
-}
-
-export const pingEphemeral: Command = {
-    name: 'ping-ephemeral',
-    description: 'Replies with pong, but only you can see it!',
-    execute: interaction => {
-        return new JsonResponse({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-                content: 'Pong!',
-                flags: InteractionResponseFlags.EPHEMERAL
-            },
         });
     }
 }

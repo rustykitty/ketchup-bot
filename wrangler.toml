@@ -1,5 +1,5 @@
 name = "ketchup-bot"
-main = "./src/index.ts"
+main = "./dist/index.js"
 compatibility_date="2023-05-18"
 
 # [secrets]
