@@ -9,11 +9,11 @@ import * as DAPI from "discord-api-types/v10";
 
 export const echo: Command = {
     name: 'echo',
-    description: 'Replies with the same message!',
+    description: 'Replies with the same text!',
     options: [
         {
-            name: 'message',
-            description: 'The message to echo.',
+            name: 'text',
+            description: 'The text to echo.',
             type: DAPI.ApplicationCommandOptionType.String,
             required: true,
         },
@@ -21,11 +21,11 @@ export const echo: Command = {
     execute: (interaction, env) => {
         if ('options' in interaction.data && interaction.data.options) {
             const opt = interaction.data.options[0] as DAPI.APIApplicationCommandInteractionDataStringOption;
-            const message = opt.value;
+            const text = opt.value;
             return new JsonResponse({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {
-                    content: message,
+                    content: text,
                 },
             });
         } else {

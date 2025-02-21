@@ -1,4 +1,4 @@
-import commands from './commands/commandList.js'
+import commands from './commands/commandList.js';
 import dotenv from 'dotenv';
 import process from 'node:process';
 
