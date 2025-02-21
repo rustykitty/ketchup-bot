@@ -17,6 +17,7 @@
   "author": "Rusty Cat",
   "license": "MIT",
   "dependencies": {
+    "@cloudflare/workers-types": "cloudflare/workers-types",
     "discord-interactions": "^4.1.1",
     "import-single-ts": "^1.2.1",
     "itty-router": "^5.0.9",

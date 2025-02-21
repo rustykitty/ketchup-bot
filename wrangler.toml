@@ -6,3 +6,8 @@ compatibility_date="2023-05-18"
 # DISCORD_TOKEN
 # DISCORD_PUBLIC_KEY
 # DISCORD_APPLICATION_ID
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ketchup-bot"
+database_id = "bdc65bc6-2d8e-43a2-88c6-4b0ee8642506"

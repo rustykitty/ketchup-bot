@@ -25,6 +25,15 @@ router.post('/', async (request: Request, env): Promise<JsonResponse> => {
             type: InteractionResponseType.PONG,
         });
     } else if (interaction.type === InteractionType.APPLICATION_COMMAND) {
+        if (!interaction.guild) {
+            return new JsonResponse({
+                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                data: {
+                    content: 'For now, Ketchup Bot only works in servers! Sorry!'
+                },
+            });
+        }
+
         // Most user commands will come as `APPLICATION_COMMAND`.
         const command = interaction.data.name.toLowerCase();
         if (commands[command]) {

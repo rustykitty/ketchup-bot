@@ -1,3 +1,5 @@
+// credit to Bristlefrost1/puddleshine
+
 /**
  * env.d.ts
  *
@@ -21,11 +23,11 @@ interface Env {
     // MY_QUEUE: Queue;
 
     DB: D1Database;
-    PRISMA: import('@prisma/client').PrismaClient<
-        { adapter: import('@prisma/adapter-d1').PrismaD1 },
-        never,
-        DefaultArgs
-    >;
+    // PRISMA: import('@prisma/client').PrismaClient<
+    //     { adapter: import('@prisma/adapter-d1').PrismaD1 },
+    //     never,
+    //     DefaultArgs
+    // >;
 
     KV: KVNamespace;
 
