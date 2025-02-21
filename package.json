@@ -10,7 +10,7 @@
     "ngrok": "ngrok http 8787",
     "fix": "eslint --fix '**/*.js'",
     "lint": "eslint '**/*.js'",
-    "register": "node src/register.js",
+    "register": "node dist/register.js",
     "publish": "wrangler deploy"
   },
   "keywords": [],
