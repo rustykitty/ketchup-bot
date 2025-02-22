@@ -11,7 +11,8 @@
     "fix": "eslint --fix '**/*.js'",
     "lint": "eslint '**/*.js'",
     "register": "node dist/register.js",
-    "publish": "wrangler deploy"
+    "publish": "wrangler deploy",
+    "build": "rm -rf dist && tsc"
   },
   "keywords": [],
   "author": "Rusty Cat",

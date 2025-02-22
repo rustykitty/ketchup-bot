@@ -9,7 +9,7 @@ interface Command {
     name: string;
     description: string;
     options?: any[];
-    execute: (interaction: DAPI.APIApplicationCommandGuildInteraction, env: any) => Response;
+    execute: (interaction: DAPI.APIApplicationCommandGuildInteraction, env: Env) => Promise<Response>;
 }
 
 export { Command };

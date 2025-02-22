@@ -37,7 +37,17 @@ router.post('/', async (request: Request, env): Promise<JsonResponse> => {
         // Most user commands will come as `APPLICATION_COMMAND`.
         const command = interaction.data.name.toLowerCase();
         if (commands[command]) {
-            return commands[command].execute(interaction, env);
+            try {
+                return await commands[command].execute(interaction, env);
+            } catch (e: any) {
+                console.error(e);
+                return new JsonResponse({
+                    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                    data: {
+                        content: 'An error occurred: \n' + ('stack' in e ? e.stack : e),
+                    },
+                });
+            }
         } else {
             return new JsonResponse({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,

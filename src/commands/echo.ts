@@ -18,7 +18,7 @@ export const echo: Command = {
             required: true,
         },
     ],
-    execute: (interaction, env) => {
+    execute: async (interaction, env) => {
         if ('options' in interaction.data && interaction.data.options) {
             const opt = interaction.data.options[0] as DAPI.APIApplicationCommandInteractionDataStringOption;
             const text = opt.value;

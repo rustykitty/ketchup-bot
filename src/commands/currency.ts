@@ -13,20 +13,19 @@ let query = `SELECT ketchup FROM user_data WHERE id = ?`;
 export const balance: Command = {
     name: 'balance',
     description: 'Check your balance!',
-    execute: (interaction, env) => {
+    execute: async (interaction, env) => {
         let db: D1Database = env.DB;
         let user_id = interaction.member.user.id;
-        if (!db.prepare(`SELECT 1 FROM user_data WHERE id = ?`).bind(user_id).run()) {
-            db.prepare(`INSERT INTO user_data (id, ketchup) VALUES (?, 0)`).bind(user_id).run();
-        }
-        let result = db.prepare(query).bind(user_id).run();
-        let user_bal = result;
+        await db.prepare(`INSERT OR IGNORE INTO user_data (id, ketchup) VALUES (?, 0)`).bind(user_id).run();
+        let result: D1Result<{ketchup: number}> = await db.prepare(query).bind(user_id).run();
+        // @ts-ignore
+        let user_bal = result.results[0];
         console.log(user_bal);
         return new JsonResponse({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: `You have ${user_bal} ketchup packets!`,
+                content: `You have ${user_bal.ketchup} ketchup packets!`,
             },
         });
     }
-}
+};
