@@ -11,7 +11,7 @@
     "fix": "eslint --fix '**/*.js'",
     "lint": "eslint '**/*.js'",
     "register": "node dist/register.js",
-    "publish": "wrangler deploy",
+    "deploy": "wrangler deploy",
     "build": "rm -rf dist && tsc"
   },
   "keywords": [],
@@ -20,7 +20,6 @@
   "dependencies": {
     "@cloudflare/workers-types": "cloudflare/workers-types",
     "discord-interactions": "^4.1.1",
-    "import-single-ts": "^1.2.1",
     "itty-router": "^5.0.9",
     "typescript": "^5.7.3"
   },
@@ -30,7 +29,6 @@
     "dotenv": "^16.0.3",
     "eslint": "^9.1.0",
     "ngrok": "^5.0.0-beta.2",
-    "tsx": "^4.19.3",
     "wrangler": "^3.0.1"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
