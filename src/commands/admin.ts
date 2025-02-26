@@ -6,6 +6,7 @@ import * as DAPI from "discord-api-types/v10";
 export const exec_sql: Command = {
     name: 'exec-sql',
     description: 'Execute a SQL query. Only available to the bot owner.',
+    onlyGuilds: ['1055606556386922526'],
     // @ts-ignore
     options: [
         {

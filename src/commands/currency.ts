@@ -20,7 +20,6 @@ export const balance: Command = {
         let result: D1Result<{ketchup: number}> = await db.prepare(query).bind(user_id).run();
         // @ts-ignore
         let user_bal = result.results[0];
-        console.log(user_bal);
         return new JsonResponse({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
