@@ -11,8 +11,10 @@ import * as DAPI from "discord-api-types/v10";
 let query = `SELECT ketchup FROM user_data WHERE id = ?`;
 
 export const balance: Command = {
-    name: 'balance',
-    description: 'Check your balance!',
+    data: {
+        name: 'balance',
+        description: 'Check your balance!'
+    },
     execute: async (interaction, env) => {
         let db: D1Database = env.DB;
         let user_id = interaction.member.user.id;

@@ -4,20 +4,20 @@ import {JsonResponse} from "../response.js";
 import * as DAPI from "discord-api-types/v10";
 
 export const exec_sql: Command = {
-    name: 'exec-sql',
-    description: 'Execute a SQL query. Only available to the bot owner.',
+    data: {
+        name: 'exec-sql',
+        description: 'Execute a SQL query. Only available to the bot owner.',
+        options: [
+            {
+                name: 'query',
+                description: 'The query to execute.',
+                type: DAPI.ApplicationCommandOptionType.String,
+                required: true,
+            },
+        ],
+    },
     onlyGuilds: ['1055606556386922526'],
-    // @ts-ignore
-    options: [
-        {
-            name: 'query',
-            description: 'The query to execute.',
-            type: DAPI.ApplicationCommandOptionType.String,
-            required: true,
-        },
-    ],
-    // @ts-ignore
-    execute: async (interaction: DAPI.APIChatInputApplicationCommandGuildInteraction, env) => {
+    execute: async (interaction: DAPI.APIApplicationCommandGuildInteraction, env) => {
         if (interaction.member.user.id !== '971226149659246632') {
             return new JsonResponse({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,

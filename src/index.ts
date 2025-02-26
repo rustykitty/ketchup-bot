@@ -1,7 +1,7 @@
 import {AutoRouter} from 'itty-router';
 import {InteractionResponseFlags, InteractionResponseType, InteractionType, verifyKey,} from 'discord-interactions';
 import {JsonResponse} from "./response.js";
-import commands from "./commands/commandList.js";
+import commands from "./commands/commands.js";
 
 const router = AutoRouter();
 

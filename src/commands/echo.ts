@@ -8,16 +8,18 @@ import { JsonResponse } from "../response.js";
 import * as DAPI from "discord-api-types/v10";
 
 export const echo: Command = {
-    name: 'echo',
-    description: 'Replies with the same text!',
-    options: [
-        {
-            name: 'text',
-            description: 'The text to echo.',
-            type: DAPI.ApplicationCommandOptionType.String,
-            required: true,
-        },
-    ],
+    data: {
+        name: 'echo',
+        description: 'Replies with the same text!',
+        options: [
+            {
+                name: 'text',
+                description: 'The text to echo.',
+                type: DAPI.ApplicationCommandOptionType.String,
+                required: true,
+            },
+        ]
+    },
     execute: async (interaction, env) => {
         if ('options' in interaction.data && interaction.data.options) {
             const opt = interaction.data.options[0] as DAPI.APIApplicationCommandInteractionDataStringOption;

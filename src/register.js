@@ -1,4 +1,4 @@
-import commands from './commands/commandList.js';
+import commands from './commands/commands.js';
 import dotenv from 'dotenv';
 import process from 'node:process';
 /**
@@ -27,11 +27,11 @@ commandList.forEach((command) => {
             if (!guildCommands[guild]) {
                 guildCommands[guild] = [];
             }
-            guildCommands[guild].push(command);
+            guildCommands[guild].push(command.data);
         });
     }
     else {
-        globalCommands.push(command);
+        globalCommands.push(command.data);
     }
 });
 /**
@@ -70,6 +70,7 @@ else {
 if (guildCommands.size === 0) {
     console.log('No guild commands to register.');
 }
+
 for (const guildId in guildCommands) {
     const commandsToRegister = guildCommands[guildId];
     const apiEndpoint = `https://discord.com/api/v10/applications/${applicationId}/guilds/${guildId}/commands`;
