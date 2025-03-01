@@ -5,15 +5,17 @@ import commands from "./commands/commands.js";
 
 const router = AutoRouter();
 
-router.get('/', (request: Request, env) => {
+router.get('/', (request: Request, env: Env) => {
     return new Response(`Bot is running on user ID ${env.DISCORD_APPLICATION_ID}`);
 });
 
-router.post('/', async (request: Request, env): Promise<JsonResponse> => {
+router.post('/', async (request: Request, env: Env): Promise<JsonResponse> => {
+
     const { isValid, interaction } = await index.verifyDiscordRequest(
         request,
-        env,
+        env
     );
+
     if (!isValid || !interaction) {
         return new Response('Bad request signature.', { status: 401 });
     }

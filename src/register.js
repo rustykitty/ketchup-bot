@@ -6,15 +6,26 @@ import process from 'node:process';
  * application server.  It's allowed to use node.js primitives, and only needs
  * to be run once.
  */
-dotenv.config({ path: './.dev.vars' });
-const token = process.env.DISCORD_TOKEN;
-const applicationId = process.env.DISCORD_APPLICATION_ID;
+dotenv.config();
+
+const env = process.env.ENV;
+
+const token = env === 'prod' ? process.env.PROD_DISCORD_TOKEN : process.env.DEV_DISCORD_TOKEN;
+const applicationId = env === 'prod' ? process.env.PROD_DISCORD_APPLICATION_ID : process.env.DEV_DISCORD_APPLICATION_ID;
+
 if (!token) {
     throw new Error('The DISCORD_TOKEN environment variable is required.');
 }
 if (!applicationId) {
     throw new Error('The DISCORD_APPLICATION_ID environment variable is required.');
 }
+
+if (env === 'prod') {
+    console.log('registering prod commands');
+} else {
+    console.log('registering dev commands');
+}
+
 let commandList = Object.values(commands);
 let globalCommands = [];
 /**
