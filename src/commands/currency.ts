@@ -64,7 +64,7 @@ export const get_ketchup: Command = {
 
         let { amount } = getOptions(interaction);
 
-        let amt = (amount as unknown as DAPI.APIApplicationCommandInteractionDataNumberOption).value;
+        let amt = (amount as unknown as DAPI.APIApplicationCommandInteractionDataIntegerOption).value;
 
         await db.prepare(`INSERT INTO user_data (id, ketchup) VALUES (?, 0)
             ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?`).bind(user_id, amt).run();
