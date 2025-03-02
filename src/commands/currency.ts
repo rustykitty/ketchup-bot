@@ -64,12 +64,14 @@ export const get_ketchup: Command = {
 
         let { amount } = getOptions(interaction);
 
+        let amt = (amount as unknown as DAPI.APIApplicationCommandInteractionDataNumberOption).value;
+
         await db.prepare(`INSERT INTO user_data (id, ketchup) VALUES (?, 0)
-            ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?`).bind(user_id, amount).run();
+            ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?`).bind(user_id, amt).run();
         return new JsonResponse({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: `Added ${amount} ketchup packets to self, for a total of ${await get_balance(db, user_id)} packets!`,
+                content: `Added ${amt} ketchup packets to self, for a total of ${await get_balance(db, user_id)} packets!`,
             },
         });
     }
