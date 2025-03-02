@@ -7,6 +7,7 @@ import {
 import { JsonResponse } from "../response.js";
 import * as DAPI from "discord-api-types/v10";
 // import * as workers_types from "@cloudflare/workers-types";
+import { getOptions } from './options.js';
 
 let query = `SELECT ketchup FROM user_data WHERE id = ?`;
 
@@ -61,18 +62,14 @@ export const get_ketchup: Command = {
         let db: D1Database = env.DB;
         let user_id: string = interaction.member.user.id;
 
-        let amt: number = ( // @ts-expect-error
-            (interaction as DAPI.APIChatInputApplicationCommandGuildInteraction).data.options[0] as 
-            DAPI.APIApplicationCommandInteractionDataIntegerOption)
-            .value;
-
+        let { amount } = getOptions(interaction);
 
         await db.prepare(`INSERT INTO user_data (id, ketchup) VALUES (?, 0)
-            ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?`).bind(user_id, amt).run();
+            ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?`).bind(user_id, amount).run();
         return new JsonResponse({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: `Added ${amt} ketchup packets to self, for a total of ${await get_balance(db, user_id)} packets!`,
+                content: `Added ${amount} ketchup packets to self, for a total of ${await get_balance(db, user_id)} packets!`,
             },
         });
     }

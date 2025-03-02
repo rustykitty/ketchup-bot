@@ -2,6 +2,7 @@ import {Command} from './command.js';
 import {InteractionResponseType,} from 'discord-interactions';
 import {JsonResponse} from "../response.js";
 import * as DAPI from "discord-api-types/v10";
+import { getOptions } from './options.js';
 
 export const exec_sql: Command = {
     data: {
@@ -27,13 +28,8 @@ export const exec_sql: Command = {
             })
         }
         let db: D1Database = env.DB;
-        if (interaction.data === undefined) {
-            // @ts-ignore
-            interaction.data.options[0]; // intentionally throw an error which will be caught
-        }
-        // @ts-expect-error : see above
-        const opt = (interaction.data.options[0] as DAPI.APIApplicationCommandInteractionDataStringOption).value;
-        const result = await db.prepare(opt).run();
+        const { query } = getOptions(interaction);
+        const result = await db.prepare((query as unknown as DAPI.APIApplicationCommandInteractionDataStringOption).value).run();
 
         return new JsonResponse({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
