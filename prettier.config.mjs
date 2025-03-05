@@ -1,3 +1,8 @@
 import bristlefrostPrettierConfig from '@bristlefrost/prettier-config';
 
-export default bristlefrostPrettierConfig;
+const config = {
+    ...bristlefrostPrettierConfig,
+    useTabs: false
+}
+
+export default config;
