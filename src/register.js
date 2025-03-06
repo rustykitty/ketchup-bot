@@ -26,12 +26,12 @@ if (env === 'prod') {
     console.log('registering dev commands');
 }
 
-let commandList = Object.values(commands);
-let globalCommands = [];
+const commandList = Object.values(commands);
+const globalCommands = [];
 /**
  * @type {Object.<string, Array<import('./commands/command.js').Command>>}
  */
-let guildCommands = {};
+const guildCommands = {};
 commandList.forEach((command) => {
     if (command.onlyGuilds !== undefined && command.onlyGuilds.length > 0) {
         command.onlyGuilds.forEach((guild) => {
@@ -40,8 +40,7 @@ commandList.forEach((command) => {
             }
             guildCommands[guild].push(command.data);
         });
-    }
-    else {
+    } else {
         globalCommands.push(command.data);
     }
 });
@@ -60,8 +59,7 @@ const response = await fetch(url, {
 });
 if (response.ok) {
     console.log('Registered all commands');
-}
-else {
+} else {
     console.error('Error registering commands');
     let errorText = `Error registering commands \n ${response.url}: ${response.status} ${response.statusText}`;
     try {
@@ -69,8 +67,7 @@ else {
         if (error) {
             errorText = `${errorText} \n\n ${error}`;
         }
-    }
-    catch (err) {
+    } catch (err) {
         console.error('Error reading body from request:', err);
     }
     console.error(errorText);
@@ -95,8 +92,7 @@ for (const guildId in guildCommands) {
     });
     if (response.ok) {
         console.log(`Successfully registered guild commands for guild ID ${guildId}.`);
-    }
-    else {
+    } else {
         console.error(`Error registering guild commands for guild ID ${guildId}: HTTP ${response.status}`);
     }
 }

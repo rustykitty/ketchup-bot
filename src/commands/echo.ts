@@ -1,14 +1,10 @@
 import { Command } from './command.js';
-import {
-    InteractionResponseType,
-    InteractionType,
-    InteractionResponseFlags,
-} from 'discord-interactions';
-import { JsonResponse } from "../response.js";
-import * as DAPI from "discord-api-types/v10";
+import { InteractionResponseType, InteractionType, InteractionResponseFlags } from 'discord-interactions';
+import { JsonResponse } from '../response.js';
+import * as DAPI from 'discord-api-types/v10';
 import { getOptions } from './options.js';
 
-let test: DAPI.APIApplicationCommandInteractionDataOption
+let test: DAPI.APIApplicationCommandInteractionDataOption;
 
 export const echo: Command = {
     data: {
@@ -21,11 +17,14 @@ export const echo: Command = {
                 type: DAPI.ApplicationCommandOptionType.String,
                 required: true,
             },
-        ]
+        ],
     },
     execute: async (interaction, env) => {
         if ('options' in interaction.data && interaction.data.options) {
-            const { text } = getOptions(interaction) as Record<string, DAPI.APIApplicationCommandInteractionDataStringOption>;
+            const { text } = getOptions(interaction) as Record<
+                string,
+                DAPI.APIApplicationCommandInteractionDataStringOption
+            >;
             const data = text.value;
             return new JsonResponse({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -41,5 +40,5 @@ export const echo: Command = {
                 },
             });
         }
-    }
-}
+    },
+};

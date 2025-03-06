@@ -1,7 +1,7 @@
-import {Command} from './command.js';
-import {InteractionResponseType,} from 'discord-interactions';
-import {JsonResponse} from "../response.js";
-import * as DAPI from "discord-api-types/v10";
+import { Command } from './command.js';
+import { InteractionResponseType } from 'discord-interactions';
+import { JsonResponse } from '../response.js';
+import * as DAPI from 'discord-api-types/v10';
 import { getOptions } from './options.js';
 
 export const exec_sql: Command = {
@@ -24,12 +24,14 @@ export const exec_sql: Command = {
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {
                     content: 'You are not the bot owner!',
-                }
-            })
+                },
+            });
         }
-        let db: D1Database = env.DB;
+        const db: D1Database = env.DB;
         const { query } = getOptions(interaction);
-        const result = await db.prepare((query as unknown as DAPI.APIApplicationCommandInteractionDataStringOption).value).run();
+        const result = await db
+            .prepare((query as unknown as DAPI.APIApplicationCommandInteractionDataStringOption).value)
+            .run();
 
         return new JsonResponse({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -39,5 +41,5 @@ ${JSON.stringify(result, null, 2)}
                 \`\`\``,
             },
         });
-    }
-}
+    },
+};
