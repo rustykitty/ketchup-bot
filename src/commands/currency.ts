@@ -52,7 +52,7 @@ export const get_ketchup: Command = {
         options: [
             {
                 name: 'amount',
-                description: 'how much ketchup to give',
+                description: 'How much ketchup to give yourself. Can be a negative number.',
                 type: DAPI.ApplicationCommandOptionType.Integer,
                 required: true,
             },
