@@ -18,10 +18,10 @@
   "author": "Rusty Cat",
   "license": "MIT",
   "dependencies": {
-    "@cloudflare/workers-types": "cloudflare/workers-types",
+    "@cloudflare/workers-types": "^4.20250303.0",
     "discord-interactions": "^4.1.1",
-    "itty-router": "^5.0.9",
-    "typescript": "^5.7.3"
+    "itty-router": "^5.0.18",
+    "typescript": "^5.8.2"
   },
   "devDependencies": {
     "@bristlefrost/eslint-config": "^1.1.2",
@@ -30,14 +30,14 @@
     "@typescript-eslint/eslint-plugin": "^8.26.0",
     "@typescript-eslint/parser": "^8.26.0",
     "discord-api-types": "^0.37.119",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.4.7",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.0.2",
     "globals": "^16.0.0",
     "ngrok": "^5.0.0-beta.2",
     "prettier": "3.5.3",
     "typescript-eslint": "^8.26.0",
-    "wrangler": "^3.0.1"
+    "wrangler": "^3.113.0"
   },
   "packageManager": "yarn@3.6.1"
 }
