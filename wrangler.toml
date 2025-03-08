@@ -12,3 +12,7 @@ compatibility_flags = ["nodejs_compat"]
 binding = "DB"
 database_name = "ketchup-bot"
 database_id = "bdc65bc6-2d8e-43a2-88c6-4b0ee8642506"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "88ed17f6ed6c44e9b5c6fd763bf7bffa"
