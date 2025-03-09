@@ -1,5 +1,4 @@
 import { Command } from './command.js';
-
 import { ping } from './ping.js';
 import { echo } from './echo.js';
 import { balance, get_ketchup } from './currency.js';

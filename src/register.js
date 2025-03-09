@@ -34,7 +34,7 @@ const commandList = Object.values(commands);
 const globalCommands = [];
 
 /**
- * @type {Object.<string, Array<import('./commands/command.js').Command>>}
+ * @type {Object.<string, Array<import('./commands/commands.js').Command>>}
  */
 const guildCommands = {};
 commandList.forEach((command) => {
