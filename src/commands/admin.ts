@@ -17,9 +17,9 @@ export const exec_sql: Command = {
             },
         ],
     },
-    onlyGuilds: ['1055606556386922526'],
+    botOwnerOnly: true,
     execute: async (interaction: DAPI.APIApplicationCommandGuildInteraction, env) => {
-        if (interaction.member.user.id !== '971226149659246632') {
+        if (interaction.member.user.id !== await env.KV.get('DISCORD_ADMIN_SERVER_ID')) {
             return new JsonResponse({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {

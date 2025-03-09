@@ -28,11 +28,17 @@ if (env === 'prod') {
 
 const commandList = Object.values(commands);
 const globalCommands = [];
+
 /**
  * @type {Object.<string, Array<import('./commands/command.js').Command>>}
  */
 const guildCommands = {};
 commandList.forEach((command) => {
+
+    if (command.botOwnerOnly) {
+        command.onlyGuilds = [process.env.DISCORD_ADMIN_SERVER_ID];
+    }
+
     if (command.onlyGuilds !== undefined && command.onlyGuilds.length > 0) {
         command.onlyGuilds.forEach((guild) => {
             if (!guildCommands[guild]) {
