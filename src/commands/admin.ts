@@ -19,7 +19,7 @@ export const exec_sql: Command = {
     },
     botOwnerOnly: true,
     execute: async (interaction: DAPI.APIApplicationCommandGuildInteraction, env) => {
-        if (interaction.member.user.id !== await env.KV.get('DISCORD_ADMIN_SERVER_ID')) {
+        if (interaction.member.user.id !== (await env.KV.get('DISCORD_ADMIN_SERVER_ID'))) {
             return new JsonResponse({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {
