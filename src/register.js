@@ -8,19 +8,23 @@ import process from 'node:process';
  */
 dotenv.config();
 
-const env = process.env.ENV;
+const isProd = process.env.IS_PROD;
 
-const token = env === 'prod' ? process.env.PROD_DISCORD_TOKEN : process.env.DEV_DISCORD_TOKEN;
-const applicationId = env === 'prod' ? process.env.PROD_DISCORD_APPLICATION_ID : process.env.DEV_DISCORD_APPLICATION_ID;
+const token = isProd ? process.env.PROD_DISCORD_TOKEN : process.env.DEV_DISCORD_TOKEN;
+const applicationId = isProd ? process.env.PROD_DISCORD_APPLICATION_ID : process.env.DEV_DISCORD_APPLICATION_ID;
 
-if (!token) {
-    throw new Error('The DISCORD_TOKEN environment variable is required.');
+if (!token || !applicationId) {
+    console.error(`Missing environment variables. Ensure the following are set:
+        When IS_PROD is set:
+            PROD_DISCORD_TOKEN
+            PROD_DISCORD_APPLICATION_ID
+        When IS_PROD is not set:
+            DEV_DISCORD_TOKEN
+            DEV_DISCORD_APPLICATION_ID`);
+    process.exit(1);
 }
-if (!applicationId) {
-    throw new Error('The DISCORD_APPLICATION_ID environment variable is required.');
-}
 
-if (env === 'prod') {
+if (isProd) {
     console.log('registering prod commands');
 } else {
     console.log('registering dev commands');
@@ -34,7 +38,6 @@ const globalCommands = [];
  */
 const guildCommands = {};
 commandList.forEach((command) => {
-
     if (command.botOwnerOnly) {
         command.onlyGuilds = [process.env.DISCORD_ADMIN_SERVER_ID];
     }
