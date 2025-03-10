@@ -76,7 +76,45 @@ export const get_ketchup: Command = {
         return new JsonResponse({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: `Added ${amt} ketchup packets to self, for a total of ${await get_balance(db, user_id)} packets!`,
+                content: `Added ${amt} ketchup packets to self! You now have a total of ${await get_balance(db, user_id)} packets!`,
+            },
+        });
+    },
+};
+
+export const daily: Command = {
+    data: {
+        name: 'daily',
+        description: 'Get your daily ketchup!',
+    },
+    execute: async (interaction, env) => {
+        const db: D1Database = env.DB;
+        const user_id: string = interaction.member.user.id;
+
+        const result: D1Result<{ last_daily: number }> = await db
+            .prepare(`SELECT last_daily FROM user_data WHERE id = ?`)
+            .bind(user_id)
+            .run();
+        const last_daily: number = result.results[0]?.last_daily ?? 0;
+
+        if (Math.floor(Date.now() / 86400000) === Math.floor(last_daily / 86400000)) {
+            return new JsonResponse({
+                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                data: {
+                    content: `You've already claimed your daily ketchup for today!`,
+                },
+            });
+        };
+
+        await db.prepare(
+            `INSERT INTO user_data (id, ketchup) VALUES (?, ?)
+        ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?, last_daily = ?`,
+        ).bind(user_id, 100, 100, Math.floor(Date.now())).run();
+
+        return new JsonResponse({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+                content: `Meow! You've claimed your daily ketchup and now have ${await get_balance(db, user_id)} packets!`,
             },
         });
     },
