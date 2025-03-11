@@ -104,17 +104,24 @@ export const daily: Command = {
                     content: `You've already claimed your daily ketchup for today!`,
                 },
             });
-        };
+        }
 
-        await db.prepare(
-            `INSERT INTO user_data (id, ketchup) VALUES (?, ?)
+        const results: D1Result[] = await db.batch([
+            db
+                .prepare(
+                    `INSERT INTO user_data (id, ketchup) VALUES (?, ?)
         ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?, last_daily = ?`,
-        ).bind(user_id, 100, 100, Math.floor(Date.now())).run();
+                )
+                .bind(user_id, 100, 100, Math.floor(Date.now())),
+            db.prepare(`SELECT ketchup FROM user_data WHERE id = ?`).bind(user_id),
+        ]);
+
+        const new_ketchup_amount = (results[1] as D1Result<{ ketchup: number }>).results[0].ketchup;
 
         return new JsonResponse({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: `Meow! You've claimed your daily ketchup and now have ${await get_balance(db, user_id)} packets!`,
+                content: `Meow! You've claimed your daily ketchup and now have ${new_ketchup_amount} packets!`,
             },
         });
     },
