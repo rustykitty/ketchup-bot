@@ -10,7 +10,7 @@ import { getOptions } from './options.js';
  * @returns null if the user is not in the DB, their ketchup balance otherwise
  */
 async function get_balance(db: D1Database, user_id: string): Promise<number | null> {
-    const res: D1Result<{ ketchup: number }> = await db
+    const res: D1Result<UserDataRow> = await db
         .prepare(`SELECT ketchup FROM user_data WHERE id = ?`)
         .bind(user_id)
         .run();
@@ -30,7 +30,7 @@ export const balance: Command = {
         const db: D1Database = env.DB;
         const user_id = interaction.member.user.id;
         await db.prepare(`INSERT OR IGNORE INTO user_data (id, ketchup) VALUES (?, 0)`).bind(user_id).run();
-        const result: D1Result<{ ketchup: number }> = await db
+        const result: D1Result<UserDataRow> = await db
             .prepare(`SELECT ketchup FROM user_data WHERE id = ?`)
             .bind(user_id)
             .run();
@@ -91,7 +91,7 @@ export const daily: Command = {
         const db: D1Database = env.DB;
         const user_id: string = interaction.member.user.id;
 
-        const result: D1Result<{ last_daily: number }> = await db
+        const result: D1Result<UserDataRow> = await db
             .prepare(`SELECT last_daily FROM user_data WHERE id = ?`)
             .bind(user_id)
             .run();
@@ -116,7 +116,7 @@ export const daily: Command = {
             db.prepare(`SELECT ketchup FROM user_data WHERE id = ?`).bind(user_id),
         ]);
 
-        const new_ketchup_amount = (results[1] as D1Result<{ ketchup: number }>).results[0].ketchup;
+        const new_ketchup_amount = (results[1] as D1Result<UserDataRow>).results[0].ketchup;
 
         return new JsonResponse({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
