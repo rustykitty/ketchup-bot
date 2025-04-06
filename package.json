@@ -20,8 +20,7 @@
   "dependencies": {
     "@cloudflare/workers-types": "^4.20250303.0",
     "discord-interactions": "^4.1.1",
-    "itty-router": "^5.0.18",
-    "typescript": "^5.8.2"
+    "itty-router": "^5.0.18"
   },
   "devDependencies": {
     "@bristlefrost/eslint-config": "^1.1.2",
@@ -36,6 +35,7 @@
     "globals": "^16.0.0",
     "ngrok": "^5.0.0-beta.2",
     "prettier": "3.5.3",
+    "typescript": "^5.8.3",
     "typescript-eslint": "^8.26.0",
     "wrangler": "^3.113.0"
   },
