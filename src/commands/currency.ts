@@ -91,7 +91,7 @@ export const daily: Command = {
             return new JsonResponse({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {
-                    content: `You've already claimed your daily ketchup for today! Your next daily will be available <t:${Math.floor(last_daily / 86400000) * 86400 + 86400}:r>.`,
+                    content: `You've already claimed your daily ketchup for today! Your next daily will be available <t:${Math.floor(last_daily / 86400000) * 86400 + 86400}:R>.`,
                 },
             });
         }
