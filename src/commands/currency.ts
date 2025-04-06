@@ -5,19 +5,6 @@ import * as DAPI from 'discord-api-types/v10';
 // import * as workers_types from "@cloudflare/workers-types";
 import { getOptions } from './options.js';
 
-/**
- * Get the balance of a user
- * @returns null if the user is not in the DB, their ketchup balance otherwise
- */
-async function get_balance(db: D1Database, user_id: string): Promise<number | null> {
-    const res: D1Result<UserDataRow> = await db
-        .prepare(`SELECT ketchup FROM user_data WHERE id = ?`)
-        .bind(user_id)
-        .run();
-    if (res.results === undefined) return null;
-    return res.results[0] ? res.results[0].ketchup : 0;
-}
-
 export const balance: Command = {
     data: {
         name: 'balance',
@@ -66,17 +53,20 @@ export const get_ketchup: Command = {
 
         const amt = (amount as unknown as DAPI.APIApplicationCommandInteractionDataIntegerOption).value;
 
-        await db
-            .prepare(
-                `INSERT INTO user_data (id, ketchup) VALUES (?, 0)
+        const results: D1Result<UserDataRow>[] = await db.batch([
+            db
+                .prepare(
+                    `INSERT INTO user_data (id, ketchup) VALUES (?, 0)
             ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?`,
-            )
-            .bind(user_id, amt)
-            .run();
+                )
+                .bind(user_id, amt),
+            db.prepare(`SELECT ketchup FROM user_data WHERE id = ?`),
+        ]);
+        const new_amt: number = results[1].results[0].ketchup;
         return new JsonResponse({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: `Added ${amt} ketchup packets to self! You now have a total of ${await get_balance(db, user_id)} packets!`,
+                content: `Added ${amt} ketchup packets to self! You now have a total of ${new_amt} packets!`,
             },
         });
     },
@@ -101,7 +91,7 @@ export const daily: Command = {
             return new JsonResponse({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {
-                    content: `You've already claimed your daily ketchup for today! Your next daily will be available <t:${((Math.floor(last_daily / 86400000) * 86400) + 86400)}:r>.`,
+                    content: `You've already claimed your daily ketchup for today! Your next daily will be available <t:${Math.floor(last_daily / 86400000) * 86400 + 86400}:r>.`,
                 },
             });
         }
