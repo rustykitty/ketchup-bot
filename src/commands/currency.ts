@@ -66,7 +66,7 @@ export const get_ketchup: Command = {
         return new JsonResponse({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: `Added ${amt} ketchup packets to self! You now have a total of ${new_amt} packets!`,
+                content: `You've earned ${amt} ketchup packets! You now have a total of ${new_amt} packets!`,
             },
         });
     },
@@ -91,7 +91,7 @@ export const daily: Command = {
             return new JsonResponse({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {
-                    content: `You've already claimed your daily ketchup for today! Your next daily will be available <t:${Math.floor(last_daily / 86400000) * 86400 + 86400}:R>.`,
+                    content: `You've already claimed your daily ketchup! Your next daily will be available <t:${Math.floor(last_daily / 86400000) * 86400 + 86400}:R>.`,
                 },
             });
         }
