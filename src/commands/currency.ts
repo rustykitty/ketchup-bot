@@ -93,7 +93,8 @@ export const give_ketchup: Command = {
     },
     execute: async (interaction, env) => {
         const { user, amount } = getOptions(interaction);
-        const amount_value: number = (amount as unknown as DAPI.APIApplicationCommandInteractionDataIntegerOption).value;
+        const amount_value: number = (amount as unknown as DAPI.APIApplicationCommandInteractionDataIntegerOption)
+            .value;
         const recipientId: string = (user as unknown as DAPI.APIApplicationCommandInteractionDataUserOption).value;
         if (recipientId === interaction.member.user.id) {
             return new JsonResponse({
@@ -118,10 +119,18 @@ export const give_ketchup: Command = {
             });
         } else {
             const results: D1Result<UserDataRow>[] = await db.batch([
-                db.prepare(`INSERT INTO user_data (id, ketchup) VALUES (?, 0) 
-                ON CONFLICT (id) DO UPDATE SET ketchup = ketchup - ?`).bind(senderId, amount_value),
-                db.prepare(`INSERT INTO user_data (id, ketchup) VALUES (?, ?)
-                ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?`).bind(recipientId, amount_value, amount_value),
+                db
+                    .prepare(
+                        `INSERT INTO user_data (id, ketchup) VALUES (?, 0) 
+                ON CONFLICT (id) DO UPDATE SET ketchup = ketchup - ?`,
+                    )
+                    .bind(senderId, amount_value),
+                db
+                    .prepare(
+                        `INSERT INTO user_data (id, ketchup) VALUES (?, ?)
+                ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?`,
+                    )
+                    .bind(recipientId, amount_value, amount_value),
             ]);
 
             return new JsonResponse({
