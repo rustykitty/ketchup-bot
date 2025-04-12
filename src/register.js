@@ -8,26 +8,26 @@ import process from 'node:process';
  */
 dotenv.config();
 
-const isProd = process.env.IS_PROD;
+const isProd = process.env.PROD;
 
 const token = isProd ? process.env.PROD_DISCORD_TOKEN : process.env.DEV_DISCORD_TOKEN;
 const applicationId = isProd ? process.env.PROD_DISCORD_APPLICATION_ID : process.env.DEV_DISCORD_APPLICATION_ID;
 
 if (!token || !applicationId) {
     console.error(`Missing environment variables. Ensure the following are set:
-        When IS_PROD is set:
+        When PROD is set:
             PROD_DISCORD_TOKEN
             PROD_DISCORD_APPLICATION_ID
-        When IS_PROD is not set:
+        When PROD is not set:
             DEV_DISCORD_TOKEN
             DEV_DISCORD_APPLICATION_ID`);
     process.exit(1);
 }
 
 if (isProd) {
-    console.log('registering prod commands');
+    console.log('registering prod commands, unset PROD to register dev commands');
 } else {
-    console.log('registering dev commands');
+    console.log('registering dev commands, set PROD to register prod commands');
 }
 
 const commandList = Object.values(commands);
