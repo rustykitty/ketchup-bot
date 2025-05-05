@@ -8,11 +8,11 @@ export const ping: Command = {
         description: 'Replies with pong!',
     },
     execute: async (interaction) => {
-        return new JsonResponse({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        return {
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
             data: {
                 content: 'Pong!',
             },
-        });
+        };
     },
 };

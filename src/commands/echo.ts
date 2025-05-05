@@ -2,7 +2,7 @@ import { Command } from './command.js';
 import { InteractionResponseType, InteractionType, InteractionResponseFlags } from 'discord-interactions';
 import { JsonResponse } from '../response.js';
 import * as DAPI from 'discord-api-types/v10';
-import { getOptions } from './options.js';
+import { getOptions } from '../utility.js';
 
 let test: DAPI.APIApplicationCommandInteractionDataOption;
 
@@ -26,19 +26,19 @@ export const echo: Command = {
                 DAPI.APIApplicationCommandInteractionDataStringOption
             >;
             const data = text.value;
-            return new JsonResponse({
-                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            return {
+                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
                 data: {
                     content: data,
                 },
-            });
+            };
         } else {
-            return new JsonResponse({
+            return {
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {
                     content: 'interaction.data.options is undefined',
                 },
-            });
+            };
         }
     },
 };

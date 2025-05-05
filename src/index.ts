@@ -51,7 +51,7 @@ router.post('/', async (request: Request, env: Env): Promise<JsonResponse> => {
         const command_obj = commands.find(c => c.data.name === command);
         if (command_obj) {
             try {
-                return await command_obj.execute(interaction, env);
+                return new JsonResponse(await command_obj.execute(interaction, env));
             } catch (e: any) {
                 console.error(e);
                 return new JsonResponse({

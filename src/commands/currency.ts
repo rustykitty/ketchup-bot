@@ -3,7 +3,7 @@ import { InteractionResponseType, InteractionType, InteractionResponseFlags } fr
 import { JsonResponse } from '../response.js';
 import * as DAPI from 'discord-api-types/v10';
 // import * as workers_types from "@cloudflare/workers-types";
-import { getOptions } from './options.js';
+import { getOptions } from '../utility.js';
 
 export const balance: Command = {
     data: {
@@ -23,12 +23,12 @@ export const balance: Command = {
             .run();
         // @ts-ignore
         const user_bal = result.results[0];
-        return new JsonResponse({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        return {
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
             data: {
                 content: `You have ${user_bal.ketchup} ketchup packets!`,
             },
-        });
+        };
     },
 };
 
@@ -63,12 +63,12 @@ export const get_ketchup: Command = {
             db.prepare(`SELECT ketchup FROM user_data WHERE id = ?`).bind(user_id),
         ]);
         const new_amt: number = results[1].results[0].ketchup;
-        return new JsonResponse({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        return {
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
             data: {
                 content: `You've materialized ${amt} ketchup packets! You now have a total of ${new_amt} packets!`,
             },
-        });
+        };
     },
 };
 
@@ -97,12 +97,12 @@ export const give_ketchup: Command = {
             .value;
         const recipientId: string = (user as unknown as DAPI.APIApplicationCommandInteractionDataUserOption).value;
         if (recipientId === interaction.member.user.id) {
-            return new JsonResponse({
-                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            return {
+                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
                 data: {
                     content: `You can't give ketchup to yourself! Use /get-ketchup to materialize ketchup packets.`,
                 },
-            });
+            };
         }
         const db: D1Database = env.DB;
         const senderId: string = interaction.member.user.id;
@@ -111,12 +111,12 @@ export const give_ketchup: Command = {
         ]);
         const current_sender_bal = (results[0] as D1Result<UserDataRow>).results[0]?.ketchup ?? 0;
         if (current_sender_bal < amount_value) {
-            return new JsonResponse({
-                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            return {
+                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
                 data: {
                     content: `You don't have enough ketchup to give! You currently have ${current_sender_bal} packets.`,
                 },
-            });
+            };
         } else {
             const results: D1Result<UserDataRow>[] = await db.batch([
                 db
@@ -133,12 +133,12 @@ export const give_ketchup: Command = {
                     .bind(recipientId, amount_value, amount_value),
             ]);
 
-            return new JsonResponse({
-                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            return {
+                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
                 data: {
                     content: `You gave ${amount_value} ketchup packets to <@${recipientId}>!`,
                 },
-            });
+            };
         }
     },
 };
@@ -159,12 +159,12 @@ export const daily: Command = {
         const last_daily: number = result.results[0]?.last_daily ?? 0;
 
         if (Math.floor(Date.now() / 86400000) === Math.floor(last_daily / 86400000)) {
-            return new JsonResponse({
-                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            return {
+                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
                 data: {
                     content: `You've already claimed your daily ketchup! Your next daily will be available <t:${Math.floor(last_daily / 86400000) * 86400 + 86400}:R>.`,
                 },
-            });
+            };
         }
 
         const results: D1Result[] = await db.batch([
@@ -179,11 +179,11 @@ export const daily: Command = {
 
         const new_ketchup_amount = (results[1] as D1Result<UserDataRow>).results[0].ketchup;
 
-        return new JsonResponse({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        return {
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
             data: {
                 content: `Meow! You've claimed your daily ketchup and now have ${new_ketchup_amount} packets!`,
             },
-        });
+        };
     },
 };

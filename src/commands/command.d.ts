@@ -8,6 +8,6 @@ interface Command {
      */
     botOwnerOnly?: boolean;
     options?: DAPI.APIApplicationCommandOption[];
-    execute: (interaction: DAPI.APIApplicationCommandGuildInteraction, env: Env) => Promise<Response>;
+    execute: (interaction: DAPI.APIApplicationCommandGuildInteraction, env: Env) => Promise<DAPI.APIInteractionResponse>;
     data: DAPI.RESTPostAPIApplicationCommandsJSONBody;
 }
