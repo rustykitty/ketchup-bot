@@ -1,43 +1,43 @@
 {
-  "name": "ketchup-bot",
-  "version": "0.0.0",
-  "description": "A Discord fun bot with ketchup as the currency",
-  "private": true,
-  "type": "module",
-  "main": "src/index.ts",
-  "scripts": {
-    "dev": "wrangler dev",
-    "tunnel": "ngrok http 8787",
-    "fix": "eslint --fix '**/*.js'",
-    "lint": "eslint '**/*.js'",
-    "register": "node dist/register.js",
-    "deploy": "wrangler deploy",
-    "build": "rm -rf dist && tsc"
-  },
-  "keywords": [],
-  "author": "Rusty Cat",
-  "license": "MIT",
-  "dependencies": {
-    "@cloudflare/workers-types": "^4.20250303.0",
-    "discord-interactions": "^4.1.1",
-    "itty-router": "^5.0.18",
-    "ngrok": "^5.0.0-beta.2"
-  },
-  "devDependencies": {
-    "@bristlefrost/eslint-config": "^1.1.2",
-    "@bristlefrost/prettier-config": "^1.1.0",
-    "@eslint/js": "^9.21.0",
-    "@typescript-eslint/eslint-plugin": "^8.26.0",
-    "@typescript-eslint/parser": "^8.26.0",
-    "discord-api-types": "^0.37.119",
-    "dotenv": "^16.4.7",
-    "eslint": "^9.21.0",
-    "eslint-config-prettier": "^10.0.2",
-    "globals": "^16.0.0",
-    "prettier": "3.5.3",
-    "typescript": "^5.8.3",
-    "typescript-eslint": "^8.26.0",
-    "wrangler": "^3.113.0"
-  },
-  "packageManager": "yarn@3.6.1"
+    "name": "ketchup-bot",
+    "version": "0.0.0",
+    "description": "A Discord fun bot with ketchup as the currency",
+    "private": true,
+    "type": "module",
+    "main": "src/index.ts",
+    "scripts": {
+        "dev": "wrangler dev",
+        "tunnel": "ngrok http 8787",
+        "fix": "eslint --fix '**/*.js'",
+        "lint": "eslint '**/*.js'",
+        "register": "node dist/register.js",
+        "deploy": "wrangler deploy",
+        "build": "rm -rf dist && tsc"
+    },
+    "keywords": [],
+    "author": "Rusty Cat",
+    "license": "MIT",
+    "dependencies": {
+        "@cloudflare/workers-types": "^4.20250303.0",
+        "discord-interactions": "^4.1.1",
+        "itty-router": "^5.0.18",
+        "ngrok": "^5.0.0-beta.2"
+    },
+    "devDependencies": {
+        "@bristlefrost/eslint-config": "^1.1.2",
+        "@bristlefrost/prettier-config": "^1.1.0",
+        "@eslint/js": "^9.21.0",
+        "@typescript-eslint/eslint-plugin": "^8.26.0",
+        "@typescript-eslint/parser": "^8.26.0",
+        "discord-api-types": "^0.37.119",
+        "dotenv": "^16.4.7",
+        "eslint": "^9.21.0",
+        "eslint-config-prettier": "^10.0.2",
+        "globals": "^16.0.0",
+        "prettier": "3.5.3",
+        "typescript": "^5.8.3",
+        "typescript-eslint": "^8.26.0",
+        "wrangler": "^3.113.0"
+    },
+    "packageManager": "yarn@3.6.1"
 }
