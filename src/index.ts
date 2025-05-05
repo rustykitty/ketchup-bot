@@ -7,7 +7,7 @@ const router = AutoRouter();
 
 async function verifyDiscordRequest(
     request: Request,
-    env: { DISCORD_PUBLIC_KEY: string },
+    env: Env,
 ): Promise<{ interaction?: any; isValid: boolean }> {
     const signature = request.headers.get('x-signature-ed25519');
     const timestamp = request.headers.get('x-signature-timestamp');
@@ -22,6 +22,7 @@ async function verifyDiscordRequest(
 }
 
 router.get('/', (request: Request, env: Env) => {
+    void(request); // avoid unused warning
     return new Response(`Bot is running on user ID ${env.DISCORD_APPLICATION_ID}`);
 });
 
@@ -33,8 +34,6 @@ router.post('/', async (request: Request, env: Env): Promise<JsonResponse> => {
     }
 
     if (interaction.type === InteractionType.PING) {
-        // The `PING` message is used during the initial webhook handshake, and is
-        // required to configure the webhook in the developer portal.
         return new JsonResponse({
             type: InteractionResponseType.PONG,
         });
@@ -48,11 +47,11 @@ router.post('/', async (request: Request, env: Env): Promise<JsonResponse> => {
             });
         }
 
-        // Most user commands will come as `APPLICATION_COMMAND`.
-        const command = interaction.data.name.toLowerCase();
-        if (commands[command]) {
+        const command: string = interaction.data.name.toLowerCase();
+        const command_obj = commands.find(c => c.data.name === command);
+        if (command_obj) {
             try {
-                return await commands[command].execute(interaction, env);
+                return await command_obj.execute(interaction, env);
             } catch (e: any) {
                 console.error(e);
                 return new JsonResponse({
