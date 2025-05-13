@@ -16,8 +16,14 @@ export const exec_sql: Command = {
         ],
     },
     botOwnerOnly: true,
-    execute: async (interaction: DAPI.APIApplicationCommandGuildInteraction, env) => {
-        if (interaction.member.user.id !== (await env.KV.get('DISCORD_ADMIN_SERVER_ID'))) {
+    execute: async (
+        interaction: DAPI.APIApplicationCommandGuildInteraction,
+        env,
+    ) => {
+        if (
+            interaction.member.user.id !==
+            (await env.KV.get('DISCORD_ADMIN_SERVER_ID'))
+        ) {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
@@ -28,7 +34,11 @@ export const exec_sql: Command = {
         const db: D1Database = env.DB;
         const { query } = getOptions(interaction);
         const result = await db
-            .prepare((query as unknown as DAPI.APIApplicationCommandInteractionDataStringOption).value)
+            .prepare(
+                (
+                    query as unknown as DAPI.APIApplicationCommandInteractionDataStringOption
+                ).value,
+            )
             .run();
 
         return {

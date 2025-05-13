@@ -1,4 +1,8 @@
-import { InteractionResponseType, InteractionType, InteractionResponseFlags } from 'discord-interactions';
+import {
+    InteractionResponseType,
+    InteractionType,
+    InteractionResponseFlags,
+} from 'discord-interactions';
 import * as DAPI from 'discord-api-types/v10';
 
 interface Command {
@@ -8,6 +12,9 @@ interface Command {
      */
     botOwnerOnly?: boolean;
     options?: DAPI.APIApplicationCommandOption[];
-    execute: (interaction: DAPI.APIApplicationCommandGuildInteraction, env: Env) => Promise<DAPI.APIInteractionResponse>;
+    execute: (
+        interaction: DAPI.APIApplicationCommandGuildInteraction,
+        env: Env,
+    ) => Promise<DAPI.APIInteractionResponse>;
     data: DAPI.RESTPostAPIApplicationCommandsJSONBody;
 }

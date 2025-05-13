@@ -6,7 +6,11 @@ import * as DAPI from 'discord-api-types/v10';
 export function getOptions(
     interaction: DAPI.APIApplicationCommandInteraction,
 ): Record<string, DAPI.APIApplicationCommandInteractionDataOption> {
-    if (!('options' in interaction.data) || interaction.data.options === undefined) return {};
+    if (
+        !('options' in interaction.data) ||
+        interaction.data.options === undefined
+    )
+        return {};
 
     return interaction.data.options.reduce(
         (acc, curr) => {

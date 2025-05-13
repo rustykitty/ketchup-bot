@@ -10,8 +10,12 @@ dotenv.config();
 
 const isProd = process.env.PROD;
 
-const token = isProd ? process.env.PROD_DISCORD_TOKEN : process.env.DEV_DISCORD_TOKEN;
-const applicationId = isProd ? process.env.PROD_DISCORD_APPLICATION_ID : process.env.DEV_DISCORD_APPLICATION_ID;
+const token =
+    isProd ? process.env.PROD_DISCORD_TOKEN : process.env.DEV_DISCORD_TOKEN;
+const applicationId =
+    isProd ?
+        process.env.PROD_DISCORD_APPLICATION_ID
+    :   process.env.DEV_DISCORD_APPLICATION_ID;
 
 if (!token || !applicationId) {
     console.error(`Missing environment variables. Ensure the following are set:
@@ -25,7 +29,9 @@ if (!token || !applicationId) {
 }
 
 if (isProd) {
-    console.log('registering prod commands, unset PROD to register dev commands');
+    console.log(
+        'registering prod commands, unset PROD to register dev commands',
+    );
 } else {
     console.log('registering dev commands, set PROD to register prod commands');
 }
@@ -100,8 +106,12 @@ for (const guildId in guildCommands) {
         body: JSON.stringify(commandsToRegister),
     });
     if (response.ok) {
-        console.log(`Successfully registered guild commands for guild ID ${guildId}.`);
+        console.log(
+            `Successfully registered guild commands for guild ID ${guildId}.`,
+        );
     } else {
-        console.error(`Error registering guild commands for guild ID ${guildId}: HTTP ${response.status}`);
+        console.error(
+            `Error registering guild commands for guild ID ${guildId}: HTTP ${response.status}`,
+        );
     }
 }

@@ -1,8 +1,5 @@
 export class JsonResponse extends Response {
-    constructor(
-        body: any,
-        init?: ResponseInit,
-    ) {
+    constructor(body: any, init?: ResponseInit) {
         const jsonBody = JSON.stringify(body);
         init = init ?? {
             headers: {

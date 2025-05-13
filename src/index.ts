@@ -1,5 +1,9 @@
 import { AutoRouter } from 'itty-router';
-import { InteractionResponseType, InteractionType, verifyKey } from 'discord-interactions';
+import {
+    InteractionResponseType,
+    InteractionType,
+    verifyKey,
+} from 'discord-interactions';
 import { JsonResponse } from './response.js';
 import commands from './commands/commands.js';
 
@@ -13,7 +17,9 @@ async function verifyDiscordRequest(
     const timestamp = request.headers.get('x-signature-timestamp');
     const body: string = await request.text();
     const isValidRequest =
-        signature && timestamp && (await verifyKey(body, signature, timestamp, env.DISCORD_PUBLIC_KEY));
+        signature &&
+        timestamp &&
+        (await verifyKey(body, signature, timestamp, env.DISCORD_PUBLIC_KEY));
     if (!isValidRequest) {
         return { isValid: false };
     }
@@ -22,8 +28,10 @@ async function verifyDiscordRequest(
 }
 
 router.get('/', (request: Request, env: Env) => {
-    void(request); // avoid unused warning
-    return new Response(`Bot is running on user ID ${env.DISCORD_APPLICATION_ID}`);
+    void request; // avoid unused warning
+    return new Response(
+        `Bot is running on user ID ${env.DISCORD_APPLICATION_ID}`,
+    );
 });
 
 router.post('/', async (request: Request, env: Env): Promise<JsonResponse> => {
@@ -42,22 +50,27 @@ router.post('/', async (request: Request, env: Env): Promise<JsonResponse> => {
             return new JsonResponse({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {
-                    content: 'For now, Ketchup Bot only works in servers! Sorry!',
+                    content:
+                        'For now, Ketchup Bot only works in servers! Sorry!',
                 },
             });
         }
 
         const command: string = interaction.data.name.toLowerCase();
-        const command_obj = commands.find(c => c.data.name === command);
+        const command_obj = commands.find((c) => c.data.name === command);
         if (command_obj) {
             try {
-                return new JsonResponse(await command_obj.execute(interaction, env));
+                return new JsonResponse(
+                    await command_obj.execute(interaction, env),
+                );
             } catch (e: any) {
                 console.error(e);
                 return new JsonResponse({
                     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                     data: {
-                        content: 'An error occurred: \n' + ('stack' in e ? e.stack : e),
+                        content:
+                            'An error occurred: \n' +
+                            ('stack' in e ? e.stack : e),
                     },
                 });
             }
