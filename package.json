@@ -6,13 +6,13 @@
     "type": "module",
     "main": "src/index.ts",
     "scripts": {
-        "dev": "wrangler dev",
-        "tunnel": "ngrok http 8787",
-        "fix": "eslint --fix '**/*.js'",
-        "lint": "eslint '**/*.js'",
+        "build": "rm -rf dist && tsc",
+        "start": "node dist/index.js",
         "register": "node dist/register.js",
         "deploy": "wrangler deploy",
-        "build": "rm -rf dist && tsc"
+        "dev": "wrangler dev",
+        "tunnel": "ngrok http 8787",
+        "prettier": "prettier --write ."
     },
     "keywords": [],
     "author": "Rusty Cat",
