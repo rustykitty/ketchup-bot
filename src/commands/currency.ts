@@ -24,7 +24,7 @@ export const balance: Command = {
         // @ts-ignore
         const user_bal = result.results[0];
         return {
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
+            type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
                 content: `You have ${user_bal.ketchup} ketchup packets!`,
             },
@@ -64,7 +64,7 @@ export const get_ketchup: Command = {
         ]);
         const new_amt: number = results[1].results[0].ketchup;
         return {
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
+            type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
                 content: `You've materialized ${amt} ketchup packets! You now have a total of ${new_amt} packets!`,
             },
@@ -94,11 +94,11 @@ export const give_ketchup: Command = {
     execute: async (interaction, env) => {
         const { user, amount } = getOptions(interaction);
         const amount_value: number = (amount as unknown as DAPI.APIApplicationCommandInteractionDataIntegerOption)
-            .value;
+            .value as number;
         const recipientId: string = (user as unknown as DAPI.APIApplicationCommandInteractionDataUserOption).value;
         if (recipientId === interaction.member.user.id) {
             return {
-                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
+                type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
                     content: `You can't give ketchup to yourself! Use /get-ketchup to materialize ketchup packets.`,
                 },
@@ -112,7 +112,7 @@ export const give_ketchup: Command = {
         const current_sender_bal = (results[0] as D1Result<UserDataRow>).results[0]?.ketchup ?? 0;
         if (current_sender_bal < amount_value) {
             return {
-                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
+                type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
                     content: `You don't have enough ketchup to give! You currently have ${current_sender_bal} packets.`,
                 },
@@ -134,7 +134,7 @@ export const give_ketchup: Command = {
             ]);
 
             return {
-                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
+                type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
                     content: `You gave ${amount_value} ketchup packets to <@${recipientId}>!`,
                 },
@@ -160,7 +160,7 @@ export const daily: Command = {
 
         if (Math.floor(Date.now() / 86400000) === Math.floor(last_daily / 86400000)) {
             return {
-                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
+                type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
                     content: `You've already claimed your daily ketchup! Your next daily will be available <t:${Math.floor(last_daily / 86400000) * 86400 + 86400}:R>.`,
                 },
@@ -180,7 +180,7 @@ export const daily: Command = {
         const new_ketchup_amount = (results[1] as D1Result<UserDataRow>).results[0].ketchup;
 
         return {
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
+            type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
                 content: `Meow! You've claimed your daily ketchup and now have ${new_ketchup_amount} packets!`,
             },

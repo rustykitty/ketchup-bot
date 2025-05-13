@@ -27,14 +27,14 @@ export const echo: Command = {
             >;
             const data = text.value;
             return {
-                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
+                type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
                     content: data,
                 },
             };
         } else {
             return {
-                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
                     content: 'interaction.data.options is undefined',
                 },

@@ -21,7 +21,7 @@ export const exec_sql: Command = {
     execute: async (interaction: DAPI.APIApplicationCommandGuildInteraction, env) => {
         if (interaction.member.user.id !== (await env.KV.get('DISCORD_ADMIN_SERVER_ID'))) {
             return {
-                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
+                type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
                     content: 'You are not the bot owner!',
                 },
@@ -34,7 +34,7 @@ export const exec_sql: Command = {
             .run();
 
         return {
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
                 content: `\`\`\`json
 ${JSON.stringify(result, null, 2)}

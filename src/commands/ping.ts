@@ -2,6 +2,8 @@ import { Command } from './command.js';
 import { InteractionResponseType, InteractionType, InteractionResponseFlags } from 'discord-interactions';
 import { JsonResponse } from '../response.js';
 
+import * as DAPI from 'discord-api-types/v10';
+
 export const ping: Command = {
     data: {
         name: 'ping',
@@ -9,7 +11,7 @@ export const ping: Command = {
     },
     execute: async (interaction) => {
         return {
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE as any,
+            type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
                 content: 'Pong!',
             },
