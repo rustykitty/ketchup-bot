@@ -1,7 +1,4 @@
 import { Command } from './command.js';
-import { InteractionResponseType, InteractionType, InteractionResponseFlags } from 'discord-interactions';
-import { JsonResponse } from '../response.js';
-
 import * as DAPI from 'discord-api-types/v10';
 
 export const ping: Command = {

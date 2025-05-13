@@ -1,6 +1,3 @@
-import { InteractionResponseFlags, InteractionResponseType } from 'discord-interactions';
-import * as DAPI from 'discord-api-types/v10';
-
 export class JsonResponse extends Response {
     constructor(
         body: any,

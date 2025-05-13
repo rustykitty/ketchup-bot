@@ -1,5 +1,5 @@
 import { AutoRouter } from 'itty-router';
-import { InteractionResponseFlags, InteractionResponseType, InteractionType, verifyKey } from 'discord-interactions';
+import { InteractionResponseType, InteractionType, verifyKey } from 'discord-interactions';
 import { JsonResponse } from './response.js';
 import commands from './commands/commands.js';
 

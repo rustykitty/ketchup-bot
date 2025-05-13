@@ -1,6 +1,4 @@
 import { Command } from './command.js';
-import { InteractionResponseType } from 'discord-interactions';
-import { JsonResponse } from '../response.js';
 import * as DAPI from 'discord-api-types/v10';
 import { getOptions } from '../utility.js';
 
