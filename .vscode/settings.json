@@ -1,3 +1,6 @@
 {
-    "prettier.prettierPath": "./node_modules/prettier/index.cjs"
+    "prettier.prettierPath": "./node_modules/prettier/index.cjs",
+    "search.exclude": {
+        "**/.yarn": true
+    }
 }
