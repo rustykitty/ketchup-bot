@@ -1,4 +1,4 @@
-export class JsonResponse extends Response {
+export class JsonResponse<T = unknown> extends Response {
     constructor(body: any, init?: ResponseInit) {
         const jsonBody = JSON.stringify(body);
         init = init ?? {

@@ -6,6 +6,7 @@ import {
 } from 'discord-interactions';
 import { JsonResponse } from './response.js';
 import commands from './commands/commands.js';
+import { APIInteractionResponse } from 'discord-api-types/v10';
 
 const router = AutoRouter();
 
@@ -34,7 +35,7 @@ router.get('/', (request: Request, env: Env) => {
     );
 });
 
-router.post('/', async (request: Request, env: Env): Promise<JsonResponse> => {
+router.post('/', async (request: Request, env: Env): Promise<JsonResponse<APIInteractionResponse>> => {
     const { isValid, interaction } = await verifyDiscordRequest(request, env);
 
     if (!isValid || !interaction) {
