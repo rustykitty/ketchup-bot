@@ -35,59 +35,68 @@ router.get('/', (request: Request, env: Env) => {
     );
 });
 
-router.post('/', async (request: Request, env: Env): Promise<JsonResponse<APIInteractionResponse>> => {
-    const { isValid, interaction } = await verifyDiscordRequest(request, env);
+router.post(
+    '/',
+    async (
+        request: Request,
+        env: Env,
+    ): Promise<JsonResponse<APIInteractionResponse>> => {
+        const { isValid, interaction } = await verifyDiscordRequest(
+            request,
+            env,
+        );
 
-    if (!isValid || !interaction) {
-        return new Response('Bad request signature.', { status: 401 });
-    }
-
-    if (interaction.type === InteractionType.PING) {
-        return new JsonResponse({
-            type: InteractionResponseType.PONG,
-        });
-    } else if (interaction.type === InteractionType.APPLICATION_COMMAND) {
-        if (!interaction.guild) {
-            return new JsonResponse({
-                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-                data: {
-                    content:
-                        'For now, Ketchup Bot only works in servers! Sorry!',
-                },
-            });
+        if (!isValid || !interaction) {
+            return new Response('Bad request signature.', { status: 401 });
         }
 
-        const command: string = interaction.data.name.toLowerCase();
-        const command_obj = commands.find((c) => c.data.name === command);
-        if (command_obj) {
-            try {
-                return new JsonResponse(
-                    await command_obj.execute(interaction, env),
-                );
-            } catch (e: any) {
-                console.error(e);
+        if (interaction.type === InteractionType.PING) {
+            return new JsonResponse({
+                type: InteractionResponseType.PONG,
+            });
+        } else if (interaction.type === InteractionType.APPLICATION_COMMAND) {
+            if (!interaction.guild) {
                 return new JsonResponse({
                     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                     data: {
                         content:
-                            'An error occurred: \n' +
-                            ('stack' in e ? e.stack : e),
+                            'For now, Ketchup Bot only works in servers! Sorry!',
                     },
                 });
             }
-        } else {
-            return new JsonResponse({
-                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-                data: {
-                    content: `Unknown command ${interaction.data.name.toLowerCase()}.`,
-                },
-            });
-        }
-    }
 
-    console.error('Unknown Type');
-    return new JsonResponse({ error: 'Unknown Type' }, { status: 400 });
-});
+            const command: string = interaction.data.name.toLowerCase();
+            const command_obj = commands.find((c) => c.data.name === command);
+            if (command_obj) {
+                try {
+                    return new JsonResponse(
+                        await command_obj.execute(interaction, env),
+                    );
+                } catch (e: any) {
+                    console.error(e);
+                    return new JsonResponse({
+                        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                        data: {
+                            content:
+                                'An error occurred: \n' +
+                                ('stack' in e ? e.stack : e),
+                        },
+                    });
+                }
+            } else {
+                return new JsonResponse({
+                    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                    data: {
+                        content: `Unknown command ${interaction.data.name.toLowerCase()}.`,
+                    },
+                });
+            }
+        }
+
+        console.error('Unknown Type');
+        return new JsonResponse({ error: 'Unknown Type' }, { status: 400 });
+    },
+);
 
 router.all('*', () => new Response('Not Found.', { status: 404 }));
 
