@@ -1,19 +1,15 @@
 import { AutoRouter } from 'itty-router';
-import {
-    InteractionResponseType,
-    InteractionType,
-    verifyKey,
-} from 'discord-interactions';
+import { verifyKey } from 'discord-interactions';
 import { JsonResponse } from './response.js';
 import commands from './commands/commands.js';
-import { APIInteractionResponse } from 'discord-api-types/v10';
+import * as DAPI from 'discord-api-types/v10';
 
 const router = AutoRouter();
 
 async function verifyDiscordRequest(
     request: Request,
     env: Env,
-): Promise<{ interaction?: any; isValid: boolean }> {
+): Promise<{ interaction?: DAPI.APIInteraction; isValid: boolean }> {
     const signature = request.headers.get('x-signature-ed25519');
     const timestamp = request.headers.get('x-signature-timestamp');
     const body: string = await request.text();
@@ -25,7 +21,9 @@ async function verifyDiscordRequest(
         return { isValid: false };
     }
 
-    return { interaction: JSON.parse(body), isValid: true };
+    const interaction: DAPI.APIInteraction = JSON.parse(body);
+
+    return { interaction, isValid: true };
 }
 
 router.get('/', (request: Request, env: Env) => {
@@ -40,7 +38,7 @@ router.post(
     async (
         request: Request,
         env: Env,
-    ): Promise<JsonResponse<APIInteractionResponse>> => {
+    ): Promise<JsonResponse<DAPI.APIInteractionResponse>> => {
         const { isValid, interaction } = await verifyDiscordRequest(
             request,
             env,
@@ -50,14 +48,16 @@ router.post(
             return new Response('Bad request signature.', { status: 401 });
         }
 
-        if (interaction.type === InteractionType.PING) {
+        if (interaction.type === DAPI.InteractionType.Ping) {
             return new JsonResponse({
-                type: InteractionResponseType.PONG,
+                type: DAPI.InteractionResponseType.Pong,
             });
-        } else if (interaction.type === InteractionType.APPLICATION_COMMAND) {
+        } else if (
+            interaction.type === DAPI.InteractionType.ApplicationCommand
+        ) {
             if (!interaction.guild) {
                 return new JsonResponse({
-                    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                    type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                     data: {
                         content:
                             'For now, Ketchup Bot only works in servers! Sorry!',
@@ -70,12 +70,16 @@ router.post(
             if (command_obj) {
                 try {
                     return new JsonResponse(
-                        await command_obj.execute(interaction, env),
+                        await command_obj.execute(
+                            interaction as DAPI.APIApplicationCommandGuildInteraction,
+                            env,
+                        ),
                     );
                 } catch (e: any) {
                     console.error(e);
                     return new JsonResponse({
-                        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                        type: DAPI.InteractionResponseType
+                            .ChannelMessageWithSource,
                         data: {
                             content:
                                 'An error occurred: \n' +
@@ -85,7 +89,7 @@ router.post(
                 }
             } else {
                 return new JsonResponse({
-                    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                    type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                     data: {
                         content: `Unknown command ${interaction.data.name.toLowerCase()}.`,
                     },
