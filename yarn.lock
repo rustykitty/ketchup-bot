@@ -708,6 +708,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rustykitty/eslint-config@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@rustykitty/eslint-config@npm:1.1.0"
+  dependencies:
+    "@bristlefrost/eslint-config": "npm:^1.1.2"
+  peerDependencies:
+    eslint: ^9.21.0
+  checksum: 10/06ff6f047b0bec6cea57a14992bef331cbf8fc5a965dc098925dddce318114bfdb80ca761cf2556a946bc150dae9d04a3a0b2e7bc21600d4b3f4aebb7c1c5eb2
+  languageName: node
+  linkType: hard
+
+"@rustykitty/prettier-config@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@rustykitty/prettier-config@npm:1.0.1"
+  dependencies:
+    "@bristlefrost/prettier-config": "npm:^1.1.0"
+  peerDependencies:
+    eslint: ^9.21.0
+  checksum: 10/08b351ad22e89049fe0ab4085ce9f720bc18e74d9e9181fc685c5a4cf68048adecdbd705458f51ce2fbf6447852909f59b72680b1c01a928b075cb2b577af0ce
+  languageName: node
+  linkType: hard
+
 "@sindresorhus/is@npm:^4.0.0":
   version: 4.6.0
   resolution: "@sindresorhus/is@npm:4.6.0"
@@ -2383,10 +2405,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ketchup-bot@workspace:."
   dependencies:
-    "@bristlefrost/eslint-config": "npm:^1.1.2"
-    "@bristlefrost/prettier-config": "npm:^1.1.0"
     "@cloudflare/workers-types": "npm:^4.20250303.0"
     "@eslint/js": "npm:^9.21.0"
+    "@rustykitty/eslint-config": "npm:^1.1.0"
+    "@rustykitty/prettier-config": "npm:^1.0.1"
     "@typescript-eslint/eslint-plugin": "npm:^8.26.0"
     "@typescript-eslint/parser": "npm:^8.26.0"
     discord-api-types: "npm:^0.37.119"

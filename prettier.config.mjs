@@ -1,7 +1,7 @@
-import bristlefrostPrettierConfig from '@bristlefrost/prettier-config';
+import rustykittyPrettierConfig from '@rustykitty/prettier-config';
 
 const config = {
-    ...bristlefrostPrettierConfig,
+    ...rustykittyPrettierConfig,
     useTabs: false,
     printWidth: 80,
 }

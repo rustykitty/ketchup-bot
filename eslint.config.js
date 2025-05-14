@@ -2,10 +2,10 @@ import tsParser from '@typescript-eslint/parser';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 
 import eslintConfigPrettier from 'eslint-config-prettier';
-import bristlefrostConfig from '@bristlefrost/eslint-config';
+import rustykittyConfig from '@rustykitty/eslint-config';
 
 export default [
-    ...bristlefrostConfig,
+    ...rustykittyConfig,
     {
         files: ['src/**/*.ts'],
         languageOptions: {
