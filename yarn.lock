@@ -1368,10 +1368,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord-api-types@npm:^0.37.119":
-  version: 0.37.120
-  resolution: "discord-api-types@npm:0.37.120"
-  checksum: 10/149f8365051dc6c2a4ccf4bc990e200faf190c1cbda612b8f87885e7f6d10be945f523a9651779a3d3d785ce4fd3897bf3b3931d1c9936be251ac4b5c5982674
+"discord-api-types@npm:^0.38.5":
+  version: 0.38.5
+  resolution: "discord-api-types@npm:0.38.5"
+  checksum: 10/db28a0ca2cf3d20941a8294fa35cb6f4a36dc79f27db931470991bc9e30f593f9d49ca0007816c98385fe168b780b9beee0b26ec0fda6417dbddb75369823bf5
   languageName: node
   linkType: hard
 
@@ -2411,7 +2411,7 @@ __metadata:
     "@rustykitty/prettier-config": "npm:^1.0.1"
     "@typescript-eslint/eslint-plugin": "npm:^8.26.0"
     "@typescript-eslint/parser": "npm:^8.26.0"
-    discord-api-types: "npm:^0.37.119"
+    discord-api-types: "npm:^0.38.5"
     discord-interactions: "npm:^4.1.1"
     dotenv: "npm:^16.4.7"
     eslint: "npm:^9.21.0"
