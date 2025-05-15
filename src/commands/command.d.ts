@@ -11,7 +11,6 @@ interface Command {
      * If true, overrides `onlyGuilds`!
      */
     botOwnerOnly?: boolean;
-    options?: DAPI.APIApplicationCommandOption[];
     execute: (
         interaction: DAPI.APIApplicationCommandGuildInteraction,
         env: Env,
