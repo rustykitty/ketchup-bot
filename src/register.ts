@@ -1,11 +1,9 @@
+import { Command } from './commands/command.js';
 import commands from './commands/commands.js';
 import dotenv from 'dotenv';
 import process from 'node:process';
-/**
- * This file is meant to be run from the command line, and is not used by the
- * application server.  It's allowed to use node.js primitives, and only needs
- * to be run once.
- */
+import * as DAPI from 'discord-api-types/v10';
+
 dotenv.config();
 
 const isProd = process.env.PROD;
@@ -17,14 +15,16 @@ const applicationId =
         process.env.PROD_DISCORD_APPLICATION_ID
     :   process.env.DEV_DISCORD_APPLICATION_ID;
 
-if (!token || !applicationId) {
+if (!token || !applicationId || !process.env.DISCORD_ADMIN_SERVER_ID) {
     console.error(`Missing environment variables. Ensure the following are set:
         When PROD is set:
             PROD_DISCORD_TOKEN
             PROD_DISCORD_APPLICATION_ID
         When PROD is not set:
             DEV_DISCORD_TOKEN
-            DEV_DISCORD_APPLICATION_ID`);
+            DEV_DISCORD_APPLICATION_ID
+        Regardless of PROD:
+            DISCORD_ADMIN_SERVER_ID`);
     process.exit(1);
 }
 
@@ -37,15 +37,14 @@ if (isProd) {
 }
 
 const commandList = Object.values(commands);
-const globalCommands = [];
+const globalCommands: DAPI.RESTPostAPIApplicationCommandsJSONBody[] = [];
 
-/**
- * @type {Object.<string, Array<import('./commands/commands.js').Command>>}
- */
-const guildCommands = {};
+// map guild ID to list of commands
+const guildCommands: Record<string, DAPI.RESTPostAPIApplicationCommandsJSONBody[]> = {};
+
 commandList.forEach((command) => {
     if (command.botOwnerOnly) {
-        command.onlyGuilds = [process.env.DISCORD_ADMIN_SERVER_ID];
+        command.onlyGuilds = [process.env.DISCORD_ADMIN_SERVER_ID as string];
     }
 
     if (command.onlyGuilds !== undefined && command.onlyGuilds.length > 0) {
@@ -90,7 +89,7 @@ if (response.ok) {
 /**
  * Register guild commands
  */
-if (guildCommands.size === 0) {
+if (Object.keys(guildCommands).length === 0) {
     console.log('No guild commands to register.');
 }
 
