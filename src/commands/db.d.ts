@@ -3,3 +3,10 @@ interface UserDataRow {
     ketchup: number;
     last_daily: number;
 }
+
+interface RemindersRow {
+    id: number;
+    user_id: string;
+    message: string;
+    timestamp: number;
+}
