@@ -4,6 +4,8 @@ import * as chrono from 'chrono-node';
 import { Command } from './command.js';
 import { getOptions, getUser } from '../utility.js';
 
+// TODO: make `remind` into a subcommand
+
 export const remind: Command = {
     data: {
         name: 'remind',
