@@ -19,6 +19,7 @@
     "license": "MIT",
     "dependencies": {
         "@cloudflare/workers-types": "^4.20250515.0",
+        "chrono-node": "^2.8.0",
         "discord-interactions": "^4.3.0",
         "itty-router": "^5.0.18",
         "ngrok": "^5.0.0-beta.2"

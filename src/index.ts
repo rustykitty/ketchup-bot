@@ -38,6 +38,7 @@ router.post(
     async (
         request: Request,
         env: Env,
+        ctx: ExecutionContext,
     ): Promise<JsonResponse<DAPI.APIInteractionResponse>> => {
         const { isValid, interaction } = await verifyDiscordRequest(
             request,
@@ -73,6 +74,7 @@ router.post(
                         await command_obj.execute(
                             interaction as DAPI.APIApplicationCommandGuildInteraction,
                             env,
+                            ctx,
                         ),
                     );
                 } catch (e: any) {

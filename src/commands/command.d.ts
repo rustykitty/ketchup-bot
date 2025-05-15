@@ -14,6 +14,7 @@ interface Command {
     execute: (
         interaction: DAPI.APIApplicationCommandGuildInteraction,
         env: Env,
+        ctx: ExecutionContext,
     ) => Promise<DAPI.APIInteractionResponse>;
     data: DAPI.RESTPostAPIApplicationCommandsJSONBody;
 }
