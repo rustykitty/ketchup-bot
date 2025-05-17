@@ -12,4 +12,13 @@ interface Command {
         ctx: ExecutionContext,
     ) => Promise<DAPI.APIInteractionResponse>;
     data: DAPI.RESTPostAPIApplicationCommandsJSONBody;
+    subcommands?: Subcommand[];
+}
+
+interface Subcommand {
+    execute: (
+        interaction: DAPI.APIApplicationCommandGuildInteraction,
+        env: Env,
+        ctx: ExecutionContext,
+    ) => Promise<DAPI.APIInteractionResponse>;
 }

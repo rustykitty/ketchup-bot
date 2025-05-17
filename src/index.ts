@@ -3,6 +3,7 @@ import { verifyKey } from 'discord-interactions';
 import { JsonResponse } from './response.js';
 import commands from './commands/commands.js';
 import * as DAPI from 'discord-api-types/v10';
+import { scheduled } from './scheduled.js';
 
 const router = AutoRouter();
 
@@ -109,6 +110,7 @@ router.all('*', () => new Response('Not Found.', { status: 404 }));
 const index = {
     verifyDiscordRequest,
     fetch: router.fetch,
+    scheduled
 };
 
 export default index;
