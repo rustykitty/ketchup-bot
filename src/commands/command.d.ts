@@ -1,5 +1,13 @@
 import * as DAPI from 'discord-api-types/v10';
 
+interface Subcommand {
+    execute: (
+        interaction: DAPI.APIApplicationCommandGuildInteraction,
+        env: Env,
+        ctx: ExecutionContext,
+    ) => Promise<DAPI.APIInteractionResponse>;
+}
+
 interface Command {
     onlyGuilds?: string[];
     /**
@@ -13,12 +21,4 @@ interface Command {
     ) => Promise<DAPI.APIInteractionResponse>;
     data: DAPI.RESTPostAPIApplicationCommandsJSONBody;
     subcommands?: Subcommand[];
-}
-
-interface Subcommand {
-    execute: (
-        interaction: DAPI.APIApplicationCommandGuildInteraction,
-        env: Env,
-        ctx: ExecutionContext,
-    ) => Promise<DAPI.APIInteractionResponse>;
 }

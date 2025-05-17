@@ -31,18 +31,23 @@ export function getOptions(
 export function getOptionsFromSubcommand(
     subcommand: DAPI.APIApplicationCommandSubcommandOption,
 ) {
-    return getOptionsFromOptionsObject(subcommand.options as unknown as DAPI.APIApplicationCommandInteractionDataOption[]);
+    return getOptionsFromOptionsObject(
+        subcommand.options as unknown as DAPI.APIApplicationCommandInteractionDataOption[],
+    );
 }
 
-export function getSubcommandOptions(interaction: DAPI.APIApplicationCommandInteraction, name: string) {
+export function getSubcommandOptions(
+    interaction: DAPI.APIApplicationCommandInteraction,
+    name: string,
+) {
     const baseOptions = getOptions(interaction);
     if (!(name in baseOptions)) {
         throw new Error(`${name} not in baseOptions`);
     }
-    return getOptionsFromOptionsObject((baseOptions[name] as DAPI.APIApplicationCommandSubcommandOption).options as unknown as DAPI.APIApplicationCommandInteractionDataOption[]) as Record<
-        string,
-        DAPI.APIApplicationCommandInteractionDataBasicOption
-    >;
+    return getOptionsFromOptionsObject(
+        (baseOptions[name] as DAPI.APIApplicationCommandSubcommandOption)
+            .options as unknown as DAPI.APIApplicationCommandInteractionDataOption[],
+    ) as Record<string, DAPI.APIApplicationCommandInteractionDataBasicOption>;
 }
 
 export function getUser(interaction: DAPI.APIInteraction): string {
@@ -53,10 +58,13 @@ export function getUser(interaction: DAPI.APIInteraction): string {
 /**
  * Get subcommands. Currently only supports a single subcommand (no groups).
  */
-export function getSubcommand(interaction: DAPI.APIApplicationCommandInteraction): string | null {
+export function getSubcommand(
+    interaction: DAPI.APIApplicationCommandInteraction,
+): string | null {
     const options = getOptions(interaction);
     const subcommandObj = Object.values(options).find(
-        (option) => option.type === DAPI.ApplicationCommandOptionType.Subcommand,
+        (option) =>
+            option.type === DAPI.ApplicationCommandOptionType.Subcommand,
     );
     if (!subcommandObj) {
         return null;

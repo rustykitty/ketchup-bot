@@ -63,7 +63,7 @@ export async function scheduled(
             .run()) as D1Result<RemindersRow>
     ).results;
 
-    let promises: Promise<unknown>[] = [];
+    const promises: Promise<unknown>[] = [];
 
     reminders.forEach((reminder) => {
         promises.push(sendDM(reminder, env));

@@ -8,7 +8,7 @@ export const remind_set: Subcommand = {
     execute: async (interaction, env, ctx) => {
         const db: D1Database = env.DB;
         const user_id = getUser(interaction);
-        const { time, message } = getSubcommandOptions(interaction, "set");
+        const { time, message } = getSubcommandOptions(interaction, 'set');
         const date: Date | null = chrono.parseDate(time.value as string, {
             timezone: 'PDT',
         });
@@ -77,7 +77,7 @@ export const remind_remove: Subcommand = {
     execute: async (interaction, env, ctx) => {
         const db: D1Database = env.DB;
         const user_id = getUser(interaction);
-        const { id } = getSubcommandOptions(interaction, "remove");
+        const { id } = getSubcommandOptions(interaction, 'remove');
         const results = await db.batch([
             db
                 .prepare(`SELECT * FROM reminders WHERE user_id = ? AND id = ?`)
@@ -157,14 +157,14 @@ export const remind: Command = {
         const subcommand = getSubcommand(interaction);
         if (!subcommand) {
             throw new Error('No subcommand found');
-        } else if (subcommand == "list") {
+        } else if (subcommand === 'list') {
             return remind_list.execute(interaction, env, ctx);
-        } else if (subcommand == "set") {
+        } else if (subcommand === 'set') {
             return remind_set.execute(interaction, env, ctx);
-        } else if (subcommand == "remove") {
+        } else if (subcommand === 'remove') {
             return remind_remove.execute(interaction, env, ctx);
         } else {
             throw new Error(`subcommand ${subcommand} not found`);
         }
     },
-}
+};

@@ -40,7 +40,10 @@ const commandList = Object.values(commands);
 const globalCommands: DAPI.RESTPostAPIApplicationCommandsJSONBody[] = [];
 
 // map guild ID to list of commands
-const guildCommands: Record<string, DAPI.RESTPostAPIApplicationCommandsJSONBody[]> = {};
+const guildCommands: Record<
+    string,
+    DAPI.RESTPostAPIApplicationCommandsJSONBody[]
+> = {};
 
 commandList.forEach((command) => {
     if (command.botOwnerOnly) {

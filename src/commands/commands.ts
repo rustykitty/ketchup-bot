@@ -13,7 +13,7 @@ const commands: Command[] = [
     get_ketchup,
     daily,
     give_ketchup,
-    remind
+    remind,
 ];
 
 export default commands;

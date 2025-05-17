@@ -110,7 +110,7 @@ router.all('*', () => new Response('Not Found.', { status: 404 }));
 const index = {
     verifyDiscordRequest,
     fetch: router.fetch,
-    scheduled
+    scheduled,
 };
 
 export default index;
