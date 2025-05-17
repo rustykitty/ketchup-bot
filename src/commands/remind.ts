@@ -20,8 +20,8 @@ export const remind_set: Subcommand = {
                 },
             };
         }
-        const ts = Math.floor(+date / 1000);
-        if (ts <= Math.floor(+new Date() / 1000)) {
+        const ts = +date;
+        if (ts <= Date.now()) {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
