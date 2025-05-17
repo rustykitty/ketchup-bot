@@ -1,37 +1,14 @@
 import * as DAPI from 'discord-api-types/v10';
 import * as chrono from 'chrono-node';
 
-import { Command } from './command.js';
-import { getOptions, getUser } from '../utility.js';
+import { Command, Subcommand } from './command.js';
+import { getSubcommandOptions, getSubcommand, getUser } from '../utility.js';
 
-// TODO: make `remind` into a subcommand
-
-export const remind: Command = {
-    data: {
-        name: 'remind',
-        description: 'Set a reminder.',
-        options: [
-            {
-                type: DAPI.ApplicationCommandOptionType.String,
-                name: 'time',
-                description: 'When do you want to be reminded?',
-                required: true,
-            },
-            {
-                type: DAPI.ApplicationCommandOptionType.String,
-                name: 'message',
-                description: 'What do you want to be reminded about?',
-                required: true,
-            },
-        ],
-    },
+export const remind_set: Subcommand = {
     execute: async (interaction, env, ctx) => {
         const db: D1Database = env.DB;
         const user_id = getUser(interaction);
-        const { time, message } = getOptions(interaction) as Record<
-            string,
-            DAPI.APIApplicationCommandInteractionDataBasicOption
-        >;
+        const { time, message } = getSubcommandOptions(interaction, "set");
         const date: Date | null = chrono.parseDate(time.value as string, {
             timezone: 'PDT',
         });
@@ -66,11 +43,7 @@ export const remind: Command = {
     },
 };
 
-export const list_reminders: Command = {
-    data: {
-        name: 'list-reminders',
-        description: 'List your reminders',
-    },
+export const remind_list: Subcommand = {
     execute: async (interaction, env, ctx) => {
         const db: D1Database = env.DB;
         const user_id = getUser(interaction);
@@ -100,27 +73,11 @@ export const list_reminders: Command = {
     },
 };
 
-export const remove_reminder: Command = {
-    data: {
-        name: 'remove-reminder',
-        description: 'Remove a reminder',
-        options: [
-            {
-                type: DAPI.ApplicationCommandOptionType.Integer,
-                name: 'id',
-                description:
-                    'The ID of the reminder to remove (gotten from /list-reminders)',
-                required: true,
-            },
-        ],
-    },
+export const remind_remove: Subcommand = {
     execute: async (interaction, env, ctx) => {
         const db: D1Database = env.DB;
         const user_id = getUser(interaction);
-        const { id } = getOptions(interaction) as Record<
-            string,
-            DAPI.APIApplicationCommandInteractionDataBasicOption
-        >;
+        const { id } = getSubcommandOptions(interaction, "remove");
         const results = await db.batch([
             db
                 .prepare(`SELECT * FROM reminders WHERE user_id = ? AND id = ?`)
@@ -150,3 +107,64 @@ export const remove_reminder: Command = {
         }
     },
 };
+
+export const remind: Command = {
+    data: {
+        name: 'remind',
+        description: 'Manage your reminders',
+        options: [
+            {
+                type: DAPI.ApplicationCommandOptionType.Subcommand,
+                name: 'set',
+                description: 'Set a reminder.',
+                options: [
+                    {
+                        type: DAPI.ApplicationCommandOptionType.String,
+                        name: 'time',
+                        description: 'When do you want to be reminded?',
+                        required: true,
+                    },
+                    {
+                        type: DAPI.ApplicationCommandOptionType.String,
+                        name: 'message',
+                        description: 'What do you want to be reminded about?',
+                        required: true,
+                    },
+                ],
+            },
+            {
+                type: DAPI.ApplicationCommandOptionType.Subcommand,
+                name: 'list',
+                description: 'List your reminders.',
+            },
+            {
+                type: DAPI.ApplicationCommandOptionType.Subcommand,
+                name: 'remove',
+                description: 'Remove a reminder.',
+                options: [
+                    {
+                        type: DAPI.ApplicationCommandOptionType.Integer,
+                        name: 'id',
+                        description:
+                            'The ID of the reminder to remove (gotten from /list-reminders)',
+                        required: true,
+                    },
+                ],
+            },
+        ],
+    },
+    execute(interaction, env, ctx) {
+        const subcommand = getSubcommand(interaction);
+        if (!subcommand) {
+            throw new Error('No subcommand found');
+        } else if (subcommand == "list") {
+            return remind_list.execute(interaction, env, ctx);
+        } else if (subcommand == "set") {
+            return remind_set.execute(interaction, env, ctx);
+        } else if (subcommand == "remove") {
+            return remind_remove.execute(interaction, env, ctx);
+        } else {
+            throw new Error(`subcommand ${subcommand} not found`);
+        }
+    },
+}

@@ -1,22 +1,17 @@
--- CREATE TABLE user_data (
---     id VARCHAR(20) PRIMARY KEY,
---     ketchup INT NOT NULL DEFAULT 0,
---     last_daily DATE NOT NULL DEFAULT '1970-01-01',
--- );
-
--- migration
 BEGIN TRANSACTION;
 
-CREATE TABLE user_data_old AS SELECT * FROM user_data;
-DROP TABLE user_data;
-CREATE TABLE user_data (
+CREATE TABLE IF NOT EXISTS user_data (
     id VARCHAR(20) PRIMARY KEY,
     ketchup INT NOT NULL DEFAULT 0,
     last_daily INT NOT NULL DEFAULT 0
 );
-INSERT INTO user_data (id, ketchup, last_daily)
-SELECT id, ketchup, 0 FROM user_data_old;
 
-DROP TABLE user_data_old;
+DROP TABLE IF EXISTS reminders;
+CREATE TABLE IF NOT EXISTS reminders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id VARCHAR(20) NOT NULL,
+    message VARCHAR(255) NOT NULL,
+    timestamp INTEGER NOT NULL
+);
 
 COMMIT;
