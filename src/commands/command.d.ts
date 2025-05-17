@@ -20,5 +20,4 @@ interface Command {
         ctx: ExecutionContext,
     ) => Promise<DAPI.APIInteractionResponse>;
     data: DAPI.RESTPostAPIApplicationCommandsJSONBody;
-    subcommands?: Subcommand[];
 }
