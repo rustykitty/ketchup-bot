@@ -126,8 +126,7 @@ export const give_ketchup: Command = {
                 .prepare(`SELECT ketchup FROM user_data WHERE id = ?`)
                 .bind(senderId),
         ]);
-        const senderBalance =
-            (results[0] as D1Result<UserDataRow>).results[0]?.ketchup ?? 0;
+        const senderBalance = results[0].results[0]?.ketchup ?? 0;
         if (senderBalance < amountValue) {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
@@ -177,7 +176,7 @@ export const daily: Command = {
         const last_daily: number = result.results[0]?.last_daily ?? 0;
 
         if (
-            Math.floor(Date.now() / 86400000) ===
+            Math.floor(Date.now() / 86400000) <=
             Math.floor(last_daily / 86400000)
         ) {
             return {
