@@ -1,9 +1,9 @@
 import { Command } from './command.js';
-import { ping } from './ping.js';
-import { echo } from './echo.js';
-import { balance, daily, get_ketchup, give_ketchup } from './currency.js';
-import { remind } from './remind.js';
+import ping from './ping.js';
+import echo from './echo.js';
+import currency from './currency.js';
+import remind from './remind.js';
 
-const commands: Command[] = [ping, echo, balance, get_ketchup, daily, give_ketchup, remind];
+const commands: Command[] = [...ping, ...echo, ...currency, ...remind];
 
 export default commands;

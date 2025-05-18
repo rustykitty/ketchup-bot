@@ -185,3 +185,5 @@ export const daily: Command = {
         };
     },
 };
+
+export default [balance, get_ketchup, give_ketchup, daily];

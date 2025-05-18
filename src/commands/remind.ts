@@ -155,3 +155,5 @@ export const remind: Command = {
         }
     },
 };
+
+export default [remind];

@@ -25,3 +25,5 @@ export const echo: Command = {
         };
     },
 };
+
+export default [echo];

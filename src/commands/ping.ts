@@ -19,3 +19,5 @@ One-way latency: ${now - ts}ms`,
         };
     },
 };
+
+export default [ping];
