@@ -51,8 +51,9 @@ export function getSubcommandOptions(
 }
 
 export function getUser(interaction: DAPI.APIInteraction): string {
-    // @ts-expect-error
-    return interaction.guild ? interaction.member.user.id : interaction.user.id;
+    return interaction.guild ?
+            (interaction as DAPI.APIGuildInteraction).member.user.id
+        :   (interaction as DAPI.APIDMInteraction).user.id;
 }
 
 /**

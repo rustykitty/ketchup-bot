@@ -24,7 +24,6 @@ export const balance: Command = {
             .prepare(`SELECT ketchup FROM user_data WHERE id = ?`)
             .bind(user_id)
             .run();
-        // @ts-ignore
         const user_bal = result.results[0];
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,
