@@ -4,7 +4,7 @@ import * as chrono from 'chrono-node';
 import { Command, SubcommandExecute } from './command.js';
 import { getSubcommandOptions, getSubcommand, getUser } from '../utility.js';
 
-export const remind_set: SubcommandExecute = async (interaction, env, ctx) => {
+const remind_set: SubcommandExecute = async (interaction, env, ctx) => {
     const db: D1Database = env.DB;
     const user_id = getUser(interaction);
     const { time, message } = getSubcommandOptions(interaction, 'set');
@@ -39,7 +39,7 @@ export const remind_set: SubcommandExecute = async (interaction, env, ctx) => {
     };
 };
 
-export const remind_list: SubcommandExecute = async (interaction, env, ctx) => {
+const remind_list: SubcommandExecute = async (interaction, env, ctx) => {
     const db: D1Database = env.DB;
     const user_id = getUser(interaction);
     const result: D1Result<RemindersRow> = await db
@@ -66,7 +66,7 @@ export const remind_list: SubcommandExecute = async (interaction, env, ctx) => {
         },
     };
 };
-export const remind_remove: SubcommandExecute = async (interaction, env, ctx) => {
+const remind_remove: SubcommandExecute = async (interaction, env, ctx) => {
     const db: D1Database = env.DB;
     const user_id = getUser(interaction);
     const { id } = getSubcommandOptions(interaction, 'remove');
