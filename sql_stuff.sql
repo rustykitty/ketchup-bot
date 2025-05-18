@@ -1,5 +1,3 @@
-BEGIN TRANSACTION;
-
 CREATE TABLE IF NOT EXISTS user_data (
     id VARCHAR(20) PRIMARY KEY,
     ketchup INT NOT NULL DEFAULT 0,
@@ -13,5 +11,3 @@ CREATE TABLE IF NOT EXISTS reminders (
     message VARCHAR(255) NOT NULL,
     timestamp INTEGER NOT NULL
 );
-
-COMMIT;
