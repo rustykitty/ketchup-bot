@@ -15,7 +15,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bristlefrost/prettier-config@npm:^1.1.0":
+"@bristlefrost/prettier-config@npm:1.1.0":
   version: 1.1.0
   resolution: "@bristlefrost/prettier-config@npm:1.1.0"
   peerDependencies:
@@ -701,14 +701,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rustykitty/prettier-config@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "@rustykitty/prettier-config@npm:1.1.1"
+"@rustykitty/prettier-config@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@rustykitty/prettier-config@npm:1.1.2"
   dependencies:
-    "@bristlefrost/prettier-config": "npm:^1.1.0"
+    "@bristlefrost/prettier-config": "npm:1.1.0"
   peerDependencies:
     prettier: ^3.5.3
-  checksum: 10/690552458554e2052db0fe77ca6bb874afbde234f62a03f44a7990f13725de30a6d97cf3af2862cce3edb2e9250bf23d4975b8468ba59d05a84120575cbd7daf
+  checksum: 10/de1c9ac7c24e1e1da106e7dde415a2c18db2d509f1b66cbdcaa9aab737bf792c57f62d2e7603bbf3da110c12648d60812761be7683396c0fa7933bd1c74b4d4c
   languageName: node
   linkType: hard
 
@@ -2077,7 +2077,7 @@ __metadata:
     "@cloudflare/workers-types": "npm:^4.20250517.0"
     "@eslint/js": "npm:^9.27.0"
     "@rustykitty/eslint-config": "npm:^1.1.0"
-    "@rustykitty/prettier-config": "npm:^1.1.1"
+    "@rustykitty/prettier-config": "npm:^1.1.2"
     "@typescript-eslint/eslint-plugin": "npm:^8.32.1"
     "@typescript-eslint/parser": "npm:^8.32.1"
     chrono-node: "npm:^2.8.0"

@@ -16,10 +16,7 @@ export const echo: Command = {
         ],
     },
     execute: async (interaction, env) => {
-        const { text } =
-            getOptions<DAPI.APIApplicationCommandInteractionDataStringOption>(
-                interaction,
-            );
+        const { text } = getOptions<DAPI.APIApplicationCommandInteractionDataStringOption>(interaction);
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {

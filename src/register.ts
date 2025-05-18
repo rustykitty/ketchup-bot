@@ -8,12 +8,8 @@ dotenv.config();
 
 const prod = process.env.PROD;
 
-const token =
-    prod ? process.env.PROD_DISCORD_TOKEN : process.env.DEV_DISCORD_TOKEN;
-const applicationId =
-    prod ?
-        process.env.PROD_DISCORD_APPLICATION_ID
-    :   process.env.DEV_DISCORD_APPLICATION_ID;
+const token = prod ? process.env.PROD_DISCORD_TOKEN : process.env.DEV_DISCORD_TOKEN;
+const applicationId = prod ? process.env.PROD_DISCORD_APPLICATION_ID : process.env.DEV_DISCORD_APPLICATION_ID;
 
 if (!token || !applicationId || !process.env.DISCORD_ADMIN_SERVER_ID) {
     console.error(`Missing environment variables. Ensure the following are set:
@@ -29,9 +25,7 @@ if (!token || !applicationId || !process.env.DISCORD_ADMIN_SERVER_ID) {
 }
 
 if (prod) {
-    console.log(
-        'registering prod commands, unset PROD to register dev commands',
-    );
+    console.log('registering prod commands, unset PROD to register dev commands');
 } else {
     console.log('registering dev commands, set PROD to register prod commands');
 }
@@ -40,10 +34,7 @@ const commandList = Object.values(commands);
 const globalCommands: DAPI.RESTPostAPIApplicationCommandsJSONBody[] = [];
 
 // map guild ID to list of commands
-const guildCommands: Record<
-    string,
-    DAPI.RESTPostAPIApplicationCommandsJSONBody[]
-> = {};
+const guildCommands: Record<string, DAPI.RESTPostAPIApplicationCommandsJSONBody[]> = {};
 
 commandList.forEach((command) => {
     if (command.botOwnerOnly) {
@@ -110,12 +101,8 @@ for (const guildId in guildCommands) {
         body: JSON.stringify(commandsToRegister),
     });
     if (response.ok) {
-        console.log(
-            `Successfully registered guild commands for guild ID ${guildId}.`,
-        );
+        console.log(`Successfully registered guild commands for guild ID ${guildId}.`);
     } else {
-        console.error(
-            `Error registering guild commands for guild ID ${guildId}: HTTP ${response.status}`,
-        );
+        console.error(`Error registering guild commands for guild ID ${guildId}: HTTP ${response.status}`);
     }
 }

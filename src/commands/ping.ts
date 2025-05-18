@@ -8,9 +8,7 @@ export const ping: Command = {
     },
     execute: async (interaction) => {
         // Parse timestamp from snowflake
-        const ts: number = Number(
-            (BigInt(interaction.id) >> 22n) + 1420070400000n,
-        );
+        const ts: number = Number((BigInt(interaction.id) >> 22n) + 1420070400000n);
         const now = Date.now();
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,

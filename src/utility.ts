@@ -1,16 +1,11 @@
 import * as DAPI from 'discord-api-types/v10';
 import { Command } from './commands/command.js';
 
-export function getOptionsFromOptionsObject<
-    T = DAPI.APIApplicationCommandInteractionDataOption,
->(
+export function getOptionsFromOptionsObject<T = DAPI.APIApplicationCommandInteractionDataOption>(
     options: DAPI.APIApplicationCommandInteractionDataOption[] | undefined,
 ): Record<string, T> {
     return (options ?? []).reduce(
-        (
-            acc: Record<string, T>,
-            curr: DAPI.APIApplicationCommandInteractionDataOption,
-        ) => {
+        (acc: Record<string, T>, curr: DAPI.APIApplicationCommandInteractionDataOption) => {
             acc[curr.name] = curr as T;
             return acc;
         },
@@ -24,27 +19,18 @@ export function getOptionsFromOptionsObject<
 export function getOptions<T = DAPI.APIApplicationCommandInteractionDataOption>(
     interaction: DAPI.APIApplicationCommandInteraction,
 ): Record<string, T> {
-    if (
-        !('options' in interaction.data) ||
-        interaction.data.options === undefined
-    )
-        return {};
+    if (!('options' in interaction.data) || interaction.data.options === undefined) return {};
 
     return getOptionsFromOptionsObject(interaction.data.options);
 }
 
-export function getOptionsFromSubcommand(
-    subcommand: DAPI.APIApplicationCommandSubcommandOption,
-) {
+export function getOptionsFromSubcommand(subcommand: DAPI.APIApplicationCommandSubcommandOption) {
     return getOptionsFromOptionsObject(
         subcommand.options as unknown as DAPI.APIApplicationCommandInteractionDataOption[],
     );
 }
 
-export function getSubcommandOptions(
-    interaction: DAPI.APIApplicationCommandInteraction,
-    name: string,
-) {
+export function getSubcommandOptions(interaction: DAPI.APIApplicationCommandInteraction, name: string) {
     const baseOptions = getOptions(interaction);
     if (!(name in baseOptions)) {
         throw new Error(`${name} not in baseOptions`);
@@ -64,13 +50,10 @@ export function getUser(interaction: DAPI.APIInteraction): string {
 /**
  * Get subcommands. Currently only supports a single subcommand (no groups).
  */
-export function getSubcommand(
-    interaction: DAPI.APIApplicationCommandInteraction,
-): string | null {
+export function getSubcommand(interaction: DAPI.APIApplicationCommandInteraction): string | null {
     const options = getOptions(interaction);
     const subcommandObj = Object.values(options).find(
-        (option) =>
-            option.type === DAPI.ApplicationCommandOptionType.Subcommand,
+        (option) => option.type === DAPI.ApplicationCommandOptionType.Subcommand,
     );
     if (!subcommandObj) {
         return null;

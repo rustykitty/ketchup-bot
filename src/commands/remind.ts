@@ -28,9 +28,7 @@ export const remind_set: SubcommandExecute = async (interaction, env, ctx) => {
             },
         };
     }
-    db.prepare(
-        `INSERT INTO reminders (user_id, message, timestamp) VALUES (?, ?, ?)`,
-    )
+    db.prepare(`INSERT INTO reminders (user_id, message, timestamp) VALUES (?, ?, ?)`)
         .bind(user_id, message.value, ts)
         .run();
     return {
@@ -68,24 +66,15 @@ export const remind_list: SubcommandExecute = async (interaction, env, ctx) => {
         },
     };
 };
-export const remind_remove: SubcommandExecute = async (
-    interaction,
-    env,
-    ctx,
-) => {
+export const remind_remove: SubcommandExecute = async (interaction, env, ctx) => {
     const db: D1Database = env.DB;
     const user_id = getUser(interaction);
     const { id } = getSubcommandOptions(interaction, 'remove');
     const results = await db.batch([
-        db
-            .prepare(`SELECT * FROM reminders WHERE user_id = ? AND id = ?`)
-            .bind(user_id, id.value),
-        db
-            .prepare(`DELETE FROM reminders WHERE user_id = ? AND id = ?`)
-            .bind(user_id, id.value),
+        db.prepare(`SELECT * FROM reminders WHERE user_id = ? AND id = ?`).bind(user_id, id.value),
+        db.prepare(`DELETE FROM reminders WHERE user_id = ? AND id = ?`).bind(user_id, id.value),
     ]);
-    const reminder: RemindersRow = (results[0] as D1Result<RemindersRow>)
-        .results[0];
+    const reminder: RemindersRow = (results[0] as D1Result<RemindersRow>).results[0];
     if (reminder) {
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource as any,
@@ -140,8 +129,7 @@ export const remind: Command = {
                     {
                         type: DAPI.ApplicationCommandOptionType.Integer,
                         name: 'id',
-                        description:
-                            'The ID of the reminder to remove (gotten from /reminder list)',
+                        description: 'The ID of the reminder to remove (gotten from /reminder list)',
                         required: true,
                     },
                 ],

@@ -15,9 +15,7 @@ async function verifyDiscordRequest(
     const timestamp = request.headers.get('x-signature-timestamp');
     const body: string = await request.text();
     const isValidRequest =
-        signature &&
-        timestamp &&
-        (await verifyKey(body, signature, timestamp, env.DISCORD_PUBLIC_KEY));
+        signature && timestamp && (await verifyKey(body, signature, timestamp, env.DISCORD_PUBLIC_KEY));
     if (!isValidRequest) {
         return { isValid: false };
     }
@@ -29,22 +27,13 @@ async function verifyDiscordRequest(
 
 router.get('/', (request: Request, env: Env) => {
     void request; // avoid unused warning
-    return new Response(
-        `Bot is running on user ID ${env.DISCORD_APPLICATION_ID}`,
-    );
+    return new Response(`Bot is running on user ID ${env.DISCORD_APPLICATION_ID}`);
 });
 
 router.post(
     '/',
-    async (
-        request: Request,
-        env: Env,
-        ctx: ExecutionContext,
-    ): Promise<JsonResponse<DAPI.APIInteractionResponse>> => {
-        const { isValid, interaction } = await verifyDiscordRequest(
-            request,
-            env,
-        );
+    async (request: Request, env: Env, ctx: ExecutionContext): Promise<JsonResponse<DAPI.APIInteractionResponse>> => {
+        const { isValid, interaction } = await verifyDiscordRequest(request, env);
 
         if (!isValid || !interaction) {
             return new Response('Bad request signature.', { status: 401 });
@@ -54,15 +43,12 @@ router.post(
             return new JsonResponse({
                 type: DAPI.InteractionResponseType.Pong,
             });
-        } else if (
-            interaction.type === DAPI.InteractionType.ApplicationCommand
-        ) {
+        } else if (interaction.type === DAPI.InteractionType.ApplicationCommand) {
             if (!interaction.guild) {
                 return new JsonResponse({
                     type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                     data: {
-                        content:
-                            'For now, Ketchup Bot only works in servers! Sorry!',
+                        content: 'For now, Ketchup Bot only works in servers! Sorry!',
                     },
                 });
             }
@@ -72,21 +58,14 @@ router.post(
             if (command_obj) {
                 try {
                     return new JsonResponse(
-                        await command_obj.execute(
-                            interaction as DAPI.APIApplicationCommandGuildInteraction,
-                            env,
-                            ctx,
-                        ),
+                        await command_obj.execute(interaction as DAPI.APIApplicationCommandGuildInteraction, env, ctx),
                     );
                 } catch (e: any) {
                     console.error(e);
                     return new JsonResponse({
-                        type: DAPI.InteractionResponseType
-                            .ChannelMessageWithSource,
+                        type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                         data: {
-                            content:
-                                'An error occurred: \n' +
-                                ('stack' in e ? e.stack : e),
+                            content: 'An error occurred: \n' + ('stack' in e ? e.stack : e),
                         },
                     });
                 }
