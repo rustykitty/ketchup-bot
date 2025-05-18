@@ -1,4 +1,14 @@
+### VisualStudioCode ###
+
+# Fix syntax highlighting on GitHub to allow comments
+.vscode/*.json linguist-language=JSON-with-Comments
+
+### End VisualStudioCode ###
+
 /.yarn/**            linguist-vendored
 /.yarn/releases/*    binary
 /.yarn/plugins/**/*  binary
 /.pnp.*              binary linguist-generated
+
+eslint.config.js     linguist-vendored
+prettier.config.mjs  linguist-vendored
