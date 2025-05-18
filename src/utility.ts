@@ -1,24 +1,29 @@
 import * as DAPI from 'discord-api-types/v10';
 import { Command } from './commands/command.js';
 
-export function getOptionsFromOptionsObject(
+export function getOptionsFromOptionsObject<
+    T = DAPI.APIApplicationCommandInteractionDataOption,
+>(
     options: DAPI.APIApplicationCommandInteractionDataOption[] | undefined,
-): Record<string, DAPI.APIApplicationCommandInteractionDataOption> {
+): Record<string, T> {
     return (options ?? []).reduce(
-        (acc, curr) => {
-            acc[curr.name] = curr;
+        (
+            acc: Record<string, T>,
+            curr: DAPI.APIApplicationCommandInteractionDataOption,
+        ) => {
+            acc[curr.name] = curr as T;
             return acc;
         },
-        {} as Record<string, DAPI.APIApplicationCommandInteractionDataOption>,
+        {} as Record<string, T>,
     );
 }
 
 /**
  * Get the options from an interaction. Does not currently support subcommands/subcommand groups.
  */
-export function getOptions(
+export function getOptions<T = DAPI.APIApplicationCommandInteractionDataOption>(
     interaction: DAPI.APIApplicationCommandInteraction,
-): Record<string, DAPI.APIApplicationCommandInteractionDataOption> {
+): Record<string, T> {
     if (
         !('options' in interaction.data) ||
         interaction.data.options === undefined

@@ -52,11 +52,12 @@ export const get_ketchup: Command = {
         const db: D1Database = env.DB;
         const user_id: string = interaction.member.user.id;
 
-        const { amount } = getOptions(interaction);
+        const { amount } =
+            getOptions<DAPI.APIApplicationCommandInteractionDataIntegerOption>(
+                interaction,
+            );
 
-        const amt = (
-            amount as unknown as DAPI.APIApplicationCommandInteractionDataIntegerOption
-        ).value;
+        const amt = amount.value;
 
         const results: D1Result<UserDataRow>[] = await db.batch([
             db
@@ -100,12 +101,15 @@ export const give_ketchup: Command = {
         ],
     },
     execute: async (interaction, env) => {
-        const { user, amount } = getOptions(interaction);
-        const amount_value: number = (
-            amount as unknown as DAPI.APIApplicationCommandInteractionDataIntegerOption
+        const { user, amount } = getOptions<
+            | DAPI.APIApplicationCommandInteractionDataIntegerOption
+            | DAPI.APIApplicationCommandInteractionDataUserOption
+        >(interaction);
+        const amountValue: number = (
+            amount as DAPI.APIApplicationCommandInteractionDataIntegerOption
         ).value as number;
         const recipientId: string = (
-            user as unknown as DAPI.APIApplicationCommandInteractionDataUserOption
+            user as DAPI.APIApplicationCommandInteractionDataUserOption
         ).value;
         if (recipientId === interaction.member.user.id) {
             return {
@@ -122,13 +126,13 @@ export const give_ketchup: Command = {
                 .prepare(`SELECT ketchup FROM user_data WHERE id = ?`)
                 .bind(senderId),
         ]);
-        const current_sender_bal =
+        const senderBalance =
             (results[0] as D1Result<UserDataRow>).results[0]?.ketchup ?? 0;
-        if (current_sender_bal < amount_value) {
+        if (senderBalance < amountValue) {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
-                    content: `You don't have enough ketchup to give! You currently have ${current_sender_bal} packets.`,
+                    content: `You don't have enough ketchup to give! You currently have ${senderBalance} packets.`,
                 },
             };
         } else {
@@ -138,19 +142,19 @@ export const give_ketchup: Command = {
                         `INSERT INTO user_data (id, ketchup) VALUES (?, 0) 
                 ON CONFLICT (id) DO UPDATE SET ketchup = ketchup - ?`,
                     )
-                    .bind(senderId, amount_value),
+                    .bind(senderId, amountValue),
                 db
                     .prepare(
                         `INSERT INTO user_data (id, ketchup) VALUES (?, ?)
                 ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?`,
                     )
-                    .bind(recipientId, amount_value, amount_value),
+                    .bind(recipientId, amountValue, amountValue),
             ]);
 
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
-                    content: `You gave ${amount_value} ketchup packets to <@${recipientId}>!`,
+                    content: `You gave ${amountValue} ketchup packets to <@${recipientId}>!`,
                 },
             };
         }
