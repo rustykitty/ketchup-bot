@@ -16,4 +16,7 @@ export default [
         },
     },
     eslintConfigPrettier,
+    {
+        ignores: ['node_modules', 'dist', '.wrangler', '.yarn'],
+    }
 ];
