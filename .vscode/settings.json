@@ -2,5 +2,9 @@
     "prettier.prettierPath": "./node_modules/prettier/",
     "search.exclude": {
         "**/.yarn": true
-    }
+    },
+    "files.associations": {
+        "LICENSE*": "plaintext"
+    },
+    "prettier.configPath": "./prettier.config.mjs"
 }

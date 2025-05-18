@@ -69,6 +69,4 @@ export async function scheduled(
     );
 }
 
-export default {
-    scheduled,
-};
+export default { scheduled };
