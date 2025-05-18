@@ -6,5 +6,8 @@
     "files.associations": {
         "LICENSE*": "plaintext"
     },
-    "prettier.configPath": "./prettier.config.mjs"
+    "prettier.configPath": "./prettier.config.mjs",
+    "editor.formatOnSave": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
 }
