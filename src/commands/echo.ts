@@ -2,8 +2,6 @@ import { Command } from './command.js';
 import * as DAPI from 'discord-api-types/v10';
 import { getOptions } from '../utility.js';
 
-let test: DAPI.APIApplicationCommandInteractionDataOption;
-
 export const echo: Command = {
     data: {
         name: 'echo',
@@ -18,25 +16,15 @@ export const echo: Command = {
         ],
     },
     execute: async (interaction, env) => {
-        if ('options' in interaction.data && interaction.data.options) {
-            const { text } = getOptions(interaction) as Record<
-                string,
-                DAPI.APIApplicationCommandInteractionDataStringOption
-            >;
-            const data = text.value;
-            return {
-                type: DAPI.InteractionResponseType.ChannelMessageWithSource,
-                data: {
-                    content: data,
-                },
-            };
-        } else {
-            return {
-                type: DAPI.InteractionResponseType.ChannelMessageWithSource,
-                data: {
-                    content: 'interaction.data.options is undefined',
-                },
-            };
-        }
+        const { text } = getOptions(interaction) as Record<
+            string,
+            DAPI.APIApplicationCommandInteractionDataStringOption
+        >;
+        return {
+            type: DAPI.InteractionResponseType.ChannelMessageWithSource,
+            data: {
+                content: text.value,
+            },
+        };
     },
 };

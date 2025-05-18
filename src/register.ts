@@ -6,12 +6,12 @@ import * as DAPI from 'discord-api-types/v10';
 
 dotenv.config();
 
-const isProd = process.env.PROD;
+const prod = process.env.PROD;
 
 const token =
-    isProd ? process.env.PROD_DISCORD_TOKEN : process.env.DEV_DISCORD_TOKEN;
+    prod ? process.env.PROD_DISCORD_TOKEN : process.env.DEV_DISCORD_TOKEN;
 const applicationId =
-    isProd ?
+    prod ?
         process.env.PROD_DISCORD_APPLICATION_ID
     :   process.env.DEV_DISCORD_APPLICATION_ID;
 
@@ -28,7 +28,7 @@ if (!token || !applicationId || !process.env.DISCORD_ADMIN_SERVER_ID) {
     process.exit(1);
 }
 
-if (isProd) {
+if (prod) {
     console.log(
         'registering prod commands, unset PROD to register dev commands',
     );
@@ -61,6 +61,7 @@ commandList.forEach((command) => {
         globalCommands.push(command.data);
     }
 });
+
 /**
  * Register all commands globally.  This can take o(minutes), so wait until
  * you're sure these are the commands you want.
@@ -89,6 +90,7 @@ if (response.ok) {
     }
     console.error(errorText);
 }
+
 /**
  * Register guild commands
  */
