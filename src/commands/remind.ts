@@ -141,7 +141,7 @@ export const remind: Command = {
                         type: DAPI.ApplicationCommandOptionType.Integer,
                         name: 'id',
                         description:
-                            'The ID of the reminder to remove (gotten from /list-reminders)',
+                            'The ID of the reminder to remove (gotten from /reminder list)',
                         required: true,
                     },
                 ],
