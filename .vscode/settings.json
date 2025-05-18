@@ -9,5 +9,6 @@
     "prettier.configPath": "./prettier.config.mjs",
     "editor.formatOnSave": true,
     "files.insertFinalNewline": true,
-    "files.trimFinalNewlines": true
+    "files.trimFinalNewlines": true,
+    "npm.packageManager": "yarn"
 }
