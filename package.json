@@ -20,21 +20,23 @@
     "dependencies": {
         "chrono-node": "^2.8.0",
         "discord-interactions": "^4.3.0",
-        "itty-router": "^5.0.18",
-        "ngrok": "^5.0.0-beta.2"
+        "itty-router": "^5.0.18"
     },
     "devDependencies": {
         "@cloudflare/workers-types": "^4.20250517.0",
         "@eslint/js": "^9.27.0",
         "@rustykitty/eslint-config": "^1.1.0",
         "@rustykitty/prettier-config": "^1.1.2",
+        "@types/eslint": "^9.6.1",
+        "@types/prettier": "^3.0.0",
+        "@types/typescript": "^2.0.0",
         "@typescript-eslint/eslint-plugin": "^8.32.1",
         "@typescript-eslint/parser": "^8.32.1",
         "discord-api-types": "^0.38.8",
         "dotenv": "^16.5.0",
         "eslint": "^9.27.0",
         "eslint-config-prettier": "^10.1.5",
-        "globals": "^16.1.0",
+        "ngrok": "^5.0.0-beta.2",
         "prettier": "3.5.3",
         "typescript": "^5.8.3",
         "typescript-eslint": "^8.32.1",
