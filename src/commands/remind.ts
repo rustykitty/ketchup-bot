@@ -35,7 +35,7 @@ const subcommands: Record<string, SubcommandExecute> = {
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
-                content: `I will remind you about "${message.value}" <t:${ts}:R>.`,
+                content: `I will remind you about "${message.value}" <t:${ts / 1000}:R>.`,
             },
         };
     },

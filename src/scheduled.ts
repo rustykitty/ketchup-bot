@@ -20,7 +20,7 @@ async function sendDM(reminder: RemindersRow, env: Env): Promise<void> {
     const sendDMResponse = await fetch(`https://discord.com/api/v10/channels/${channel_id}/messages`, {
         method: 'POST',
         body: JSON.stringify({
-            content: `You asked me to remind you about "${message}" at <t:${timestamp}:F>.`,
+            content: `You asked me to remind you about "${message}" at <t:${timestamp / 1000}:F>.`,
         }),
         headers: {
             Authorization: `Bot ${env.DISCORD_TOKEN}`,
