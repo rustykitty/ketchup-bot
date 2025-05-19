@@ -20,3 +20,6 @@ id = "88ed17f6ed6c44e9b5c6fd763bf7bffa"
 
 [triggers]
 crons = ["* * * * *"]
+
+[observability.logs]
+enabled = true
