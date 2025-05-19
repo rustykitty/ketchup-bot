@@ -29,46 +29,6 @@ export const balance: Command = {
     },
 };
 
-export const get_ketchup: Command = {
-    data: {
-        name: 'get-ketchup',
-        description: 'Materialize ketchup packets for yourself out of thin air',
-        options: [
-            {
-                name: 'amount',
-                description: 'How much ketchup to give yourself. Can be a negative number.',
-                type: DAPI.ApplicationCommandOptionType.Integer,
-                required: true,
-            },
-        ],
-    },
-    execute: async (interaction, env) => {
-        const db: D1Database = env.DB;
-        const user_id: string = interaction.member.user.id;
-
-        const { amount } = getOptions<DAPI.APIApplicationCommandInteractionDataIntegerOption>(interaction);
-
-        const amt = amount.value;
-
-        const results: D1Result<UserDataRow>[] = await db.batch([
-            db
-                .prepare(
-                    `INSERT INTO user_data (id, ketchup) VALUES (?, 0)
-            ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?`,
-                )
-                .bind(user_id, amt),
-            db.prepare(`SELECT ketchup FROM user_data WHERE id = ?`).bind(user_id),
-        ]);
-        const new_amt: number = results[1].results[0].ketchup;
-        return {
-            type: DAPI.InteractionResponseType.ChannelMessageWithSource,
-            data: {
-                content: `You've materialized ${amt} ketchup packets! You now have a total of ${new_amt} packets!`,
-            },
-        };
-    },
-};
-
 export const give_ketchup: Command = {
     data: {
         name: 'give-ketchup',
@@ -147,8 +107,11 @@ export const daily: Command = {
         description: 'Get your daily ketchup!',
     },
     execute: async (interaction, env) => {
+        const kv: KVNamespace = env.KV;
         const db: D1Database = env.DB;
         const user_id: string = interaction.member.user.id;
+
+        const workAmount = (await kv.get('WORK_AMOUNT')) ?? 10;
 
         const result: D1Result<UserDataRow> = await db
             .prepare(`SELECT last_daily FROM user_data WHERE id = ?`)
@@ -186,4 +149,52 @@ export const daily: Command = {
     },
 };
 
-export default [balance, get_ketchup, give_ketchup, daily];
+export const work: Command = {
+    data: {
+        name: 'work',
+        description: 'Work for ketchup!',
+    },
+    execute: async (interaction, env) => {
+        const kv: KVNamespace = env.KV;
+        const db: D1Database = env.DB;
+        const user_id: string = interaction.member.user.id;
+
+        const workAmount = (await kv.get('DAILY_AMOUNT')) ?? 10;
+
+        const result: D1Result<UserDataRow> = await db
+            .prepare(`SELECT last_work FROM user_data WHERE id = ?`)
+            .bind(user_id)
+            .run();
+        const last_work: number = result.results[0]?.last_daily ?? 0;
+
+        if (Math.floor(Date.now() / 86400000) <= Math.floor(last_work / 86400000)) {
+            return {
+                type: DAPI.InteractionResponseType.ChannelMessageWithSource,
+                data: {
+                    content: `You've already worked this hour! You can work again <t:${Math.floor(last_work / 86400000) * 86400 + 86400}:R>.`,
+                },
+            };
+        }
+
+        const results: D1Result[] = await db.batch([
+            db
+                .prepare(
+                    `INSERT INTO user_data (id, ketchup) VALUES (?, ?)
+        ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?, last_work = ?`,
+                )
+                .bind(user_id, 10, 10, Math.floor(Date.now())),
+            db.prepare(`SELECT ketchup FROM user_data WHERE id = ?`).bind(user_id),
+        ]);
+
+        const new_ketchup_amount = (results[1] as D1Result<UserDataRow>).results[0].ketchup;
+
+        return {
+            type: DAPI.InteractionResponseType.ChannelMessageWithSource,
+            data: {
+                content: `Meow! You've claimed your daily ketchup and now have ${new_ketchup_amount} packets!`,
+            },
+        };
+    },
+};
+
+export default [balance, give_ketchup, daily, work];
