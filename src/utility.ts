@@ -1,5 +1,4 @@
 import * as DAPI from 'discord-api-types/v10';
-import { Command } from './commands/command.js';
 
 export function getOptionsFromOptionsObject<T = DAPI.APIApplicationCommandInteractionDataOption>(
     options: DAPI.APIApplicationCommandInteractionDataOption[] | undefined,

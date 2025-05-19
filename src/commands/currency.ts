@@ -1,6 +1,5 @@
 import { Command } from './command.js';
 import * as DAPI from 'discord-api-types/v10';
-// import * as workers_types from "@cloudflare/workers-types";
 import { getOptions, getUser } from '../utility.js';
 
 export const balance: Command = {

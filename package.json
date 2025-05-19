@@ -12,7 +12,8 @@
         "deploy": "wrangler deploy",
         "dev": "wrangler dev",
         "tunnel": "ngrok http 8787",
-        "prettier": "prettier --write ."
+        "prettier": "prettier --write .",
+        "lint": "eslint ."
     },
     "keywords": [],
     "author": "Rusty Cat",
