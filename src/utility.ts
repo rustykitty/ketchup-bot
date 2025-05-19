@@ -41,10 +41,10 @@ export function getSubcommandOptions(interaction: DAPI.APIApplicationCommandInte
     ) as Record<string, DAPI.APIApplicationCommandInteractionDataBasicOption>;
 }
 
-export function getUser(interaction: DAPI.APIInteraction): string {
+export function getUser(interaction: DAPI.APIInteraction): DAPI.APIUser {
     return interaction.guild ?
-            (interaction as DAPI.APIGuildInteraction).member.user.id
-        :   (interaction as DAPI.APIDMInteraction).user.id;
+            (interaction as DAPI.APIGuildInteraction).member.user
+        :   (interaction as DAPI.APIDMInteraction).user;
 }
 
 /**

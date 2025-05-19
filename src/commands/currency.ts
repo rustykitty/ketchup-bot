@@ -1,7 +1,7 @@
 import { Command } from './command.js';
 import * as DAPI from 'discord-api-types/v10';
 // import * as workers_types from "@cloudflare/workers-types";
-import { getOptions } from '../utility.js';
+import { getOptions, getUser } from '../utility.js';
 
 export const balance: Command = {
     data: {
@@ -13,7 +13,7 @@ export const balance: Command = {
      */
     execute: async (interaction, env) => {
         const db: D1Database = env.DB;
-        const user_id = interaction.member.user.id;
+        const user_id = getUser(interaction).id;
         await db.prepare(`INSERT OR IGNORE INTO user_data (id, ketchup) VALUES (?, 0)`).bind(user_id).run();
         const result: D1Result<UserDataRow> = await db
             .prepare(`SELECT ketchup FROM user_data WHERE id = ?`)
@@ -54,7 +54,7 @@ export const give_ketchup: Command = {
         >(interaction);
         const amountValue: number = (amount as DAPI.APIApplicationCommandInteractionDataIntegerOption).value as number;
         const recipientId: string = (user as DAPI.APIApplicationCommandInteractionDataUserOption).value;
-        if (recipientId === interaction.member.user.id) {
+        if (recipientId === getUser(interaction).id) {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
@@ -63,7 +63,7 @@ export const give_ketchup: Command = {
             };
         }
         const db: D1Database = env.DB;
-        const senderId: string = interaction.member.user.id;
+        const senderId: string = getUser(interaction).id;
         const results: D1Result<UserDataRow>[] = await db.batch([
             db.prepare(`SELECT ketchup FROM user_data WHERE id = ?`).bind(senderId),
         ]);
@@ -109,7 +109,7 @@ export const daily: Command = {
     execute: async (interaction, env) => {
         const kv: KVNamespace = env.KV;
         const db: D1Database = env.DB;
-        const user_id: string = interaction.member.user.id;
+        const user_id: string = getUser(interaction).id;
 
         const workAmount = (await kv.get('DAILY_AMOUNT')) ?? 100;
 
@@ -166,7 +166,7 @@ export const work: Command = {
     execute: async (interaction, env) => {
         const kv: KVNamespace = env.KV;
         const db: D1Database = env.DB;
-        const user_id: string = interaction.member.user.id;
+        const user_id: string = getUser(interaction).id;
 
         const workAmount = (await kv.get('WORK_AMOUNT')) ?? 10;
 

@@ -11,7 +11,7 @@ interface Command {
      */
     botOwnerOnly?: boolean;
     execute: (
-        interaction: DAPI.APIApplicationCommandGuildInteraction,
+        interaction: DAPI.APIApplicationCommandInteraction,
         env: Env,
         ctx: ExecutionContext,
     ) => Promise<DAPI.APIInteractionResponse>;
@@ -19,7 +19,7 @@ interface Command {
 }
 
 type SubcommandExecute = (
-    interaction: DAPI.APIApplicationCommandGuildInteraction,
+    interaction: DAPI.APIApplicationCommandInteraction,
     env: Env,
     ctx: ExecutionContext,
 ) => Promise<DAPI.APIInteractionResponse>;

@@ -44,21 +44,12 @@ router.post(
                 type: DAPI.InteractionResponseType.Pong,
             });
         } else if (interaction.type === DAPI.InteractionType.ApplicationCommand) {
-            if (!interaction.guild) {
-                return new JsonResponse({
-                    type: DAPI.InteractionResponseType.ChannelMessageWithSource,
-                    data: {
-                        content: 'For now, Ketchup Bot only works in servers! Sorry!',
-                    },
-                });
-            }
-
             const command: string = interaction.data.name.toLowerCase();
             const command_obj = commands.find((c) => c.data.name === command);
             if (command_obj) {
                 try {
                     return new JsonResponse(
-                        await command_obj.execute(interaction as DAPI.APIApplicationCommandGuildInteraction, env, ctx),
+                        await command_obj.execute(interaction as DAPI.APIApplicationCommandInteraction, env, ctx),
                     );
                 } catch (e: any) {
                     console.error(e);
