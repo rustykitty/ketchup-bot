@@ -20,8 +20,8 @@ const subcommands: Record<string, SubcommandExecute> = {
                 },
             };
         }
-        const ts = +date;
-        if (ts <= Date.now()) {
+        const ts = Math.trunc(+date / 1000);
+        if (ts <= Math.trunc(Date.now() / 1000)) {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
@@ -35,7 +35,7 @@ const subcommands: Record<string, SubcommandExecute> = {
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
-                content: `I will remind you about "${message.value}" <t:${ts / 1000}:R>.`,
+                content: `I will remind you about "${message.value}" <t:${ts}:R>.`,
             },
         };
     },
