@@ -131,10 +131,10 @@ export const daily: Command = {
         const results: D1Result[] = await db.batch([
             db
                 .prepare(
-                    `INSERT INTO user_data (id, ketchup) VALUES (?, ?)
-        ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?, last_daily = ?`,
+                    `INSERT INTO user_data (id, ketchup) VALUES (?1, ?2)
+        ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?2, last_daily = ?3`,
                 )
-                .bind(user_id, 100, 100, Math.floor(Date.now())),
+                .bind(user_id, workAmount, Math.floor(Date.now())),
             db.prepare(`SELECT ketchup FROM user_data WHERE id = ?`).bind(user_id),
         ]);
 
@@ -179,10 +179,10 @@ export const work: Command = {
         const results: D1Result[] = await db.batch([
             db
                 .prepare(
-                    `INSERT INTO user_data (id, ketchup) VALUES (?, ?)
-        ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?, last_work = ?`,
+                    `INSERT INTO user_data (id, ketchup) VALUES (?1, ?2)
+        ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?2, last_work = ?3`,
                 )
-                .bind(user_id, 10, 10, Math.floor(Date.now())),
+                .bind(user_id, workAmount, Math.floor(Date.now())),
             db.prepare(`SELECT ketchup FROM user_data WHERE id = ?`).bind(user_id),
         ]);
 
