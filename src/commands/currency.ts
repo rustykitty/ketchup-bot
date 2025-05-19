@@ -111,13 +111,20 @@ export const daily: Command = {
         const db: D1Database = env.DB;
         const user_id: string = interaction.member.user.id;
 
-        const workAmount = (await kv.get('WORK_AMOUNT')) ?? 10;
+        const workAmount = (await kv.get('DAILY_AMOUNT')) ?? 100;
 
-        const result: D1Result<UserDataRow> = await db
-            .prepare(`SELECT last_daily FROM user_data WHERE id = ?`)
-            .bind(user_id)
-            .run();
-        const last_daily: number = result.results[0]?.last_daily ?? 0;
+        const lastDailyResult = (
+            await db.batch([
+                db.prepare(`SELECT last_daily FROM user_data WHERE id = ?`).bind(user_id),
+                db
+                    .prepare(
+                        `INSERT INTO user_data (id, last_daily) VALUES (?1, ?2)
+                        ON CONFLICT (id) DO UPDATE SET last_daily = ?2`,
+                    )
+                    .bind(user_id, Date.now()),
+            ])
+        )[0] as D1Result<UserDataRow>;
+        const last_daily: number = lastDailyResult.results[0]?.last_daily ?? 0;
 
         if (Math.floor(Date.now() / 86400000) <= Math.floor(last_daily / 86400000)) {
             return {
@@ -128,22 +135,24 @@ export const daily: Command = {
             };
         }
 
-        const results: D1Result[] = await db.batch([
-            db
-                .prepare(
-                    `INSERT INTO user_data (id, ketchup) VALUES (?1, ?2)
-        ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?2, last_daily = ?3`,
-                )
-                .bind(user_id, workAmount, Math.floor(Date.now())),
-            db.prepare(`SELECT ketchup FROM user_data WHERE id = ?`).bind(user_id),
-        ]);
+        const newKetchupAmountResult = (
+            await db.batch([
+                db
+                    .prepare(
+                        `INSERT INTO user_data (id, ketchup) VALUES (?1, ?2)
+                        ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?2`,
+                    )
+                    .bind(user_id, workAmount),
+                db.prepare(`SELECT ketchup FROM user_data WHERE id = ?`).bind(user_id),
+            ])
+        )[1] as D1Result<UserDataRow>;
 
-        const new_ketchup_amount = (results[1] as D1Result<UserDataRow>).results[0].ketchup;
+        const newKetchupAmount = newKetchupAmountResult.results[0].ketchup;
 
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
-                content: `Meow! You've claimed your daily ketchup and now have ${new_ketchup_amount} packets!`,
+                content: `Meow! You've claimed your daily ketchup and now have ${newKetchupAmount} packets!`,
             },
         };
     },
@@ -159,39 +168,48 @@ export const work: Command = {
         const db: D1Database = env.DB;
         const user_id: string = interaction.member.user.id;
 
-        const workAmount = (await kv.get('DAILY_AMOUNT')) ?? 10;
+        const workAmount = (await kv.get('WORK_AMOUNT')) ?? 10;
 
-        const result: D1Result<UserDataRow> = await db
-            .prepare(`SELECT last_work FROM user_data WHERE id = ?`)
-            .bind(user_id)
-            .run();
-        const last_work: number = result.results[0]?.last_daily ?? 0;
+        const lastDailyResult = (
+            await db.batch([
+                db.prepare(`SELECT last_work FROM user_data WHERE id = ?`).bind(user_id),
+                db
+                    .prepare(
+                        `INSERT INTO user_data (id, last_work) VALUES (?1, ?2)
+                        ON CONFLICT (id) DO UPDATE SET last_work = ?2`,
+                    )
+                    .bind(user_id, Date.now()),
+            ])
+        )[0] as D1Result<UserDataRow>;
+        const last_work: number = lastDailyResult.results[0]?.last_work ?? 0;
 
-        if (Math.floor(Date.now() / 86400000) <= Math.floor(last_work / 86400000)) {
+        if (Math.floor(Date.now() / 3600000) <= Math.floor(last_work / 3600000)) {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
-                    content: `You've already worked this hour! You can work again <t:${Math.floor(last_work / 86400000) * 86400 + 86400}:R>.`,
+                    content: `You've already worked this hour! You can work again at <t:${Math.floor(last_work / 3600000) * 3600 + 3600}:R>.`,
                 },
             };
         }
 
-        const results: D1Result[] = await db.batch([
-            db
-                .prepare(
-                    `INSERT INTO user_data (id, ketchup) VALUES (?1, ?2)
-        ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?2, last_work = ?3`,
-                )
-                .bind(user_id, workAmount, Math.floor(Date.now())),
-            db.prepare(`SELECT ketchup FROM user_data WHERE id = ?`).bind(user_id),
-        ]);
+        const newKetchupAmountResult = (
+            await db.batch([
+                db
+                    .prepare(
+                        `INSERT INTO user_data (id, ketchup) VALUES (?1, ?2)
+        ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?2`,
+                    )
+                    .bind(user_id, workAmount),
+                db.prepare(`SELECT ketchup FROM user_data WHERE id = ?`).bind(user_id),
+            ])
+        )[1] as D1Result<UserDataRow>;
 
-        const new_ketchup_amount = (results[1] as D1Result<UserDataRow>).results[0].ketchup;
+        const newKetchupAmount = newKetchupAmountResult.results[0].ketchup;
 
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
-                content: `Meow! You've claimed your daily ketchup and now have ${new_ketchup_amount} packets!`,
+                content: `After working, you now have ${newKetchupAmount} ketchup packets!`,
             },
         };
     },
