@@ -126,11 +126,11 @@ export const daily: Command = {
         )[0] as D1Result<UserDataRow>;
         const last_daily: number = lastDailyResult.results[0]?.last_daily ?? 0;
 
-        if (Math.floor(Date.now() / 86400000) <= Math.floor(last_daily / 86400000)) {
+        if (Math.trunc(Date.now() / 86400000) <= Math.trunc(last_daily / 86400000)) {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
-                    content: `You've already claimed your daily ketchup! Your next daily will be available <t:${Math.floor(last_daily / 86400000) * 86400 + 86400}:R>.`,
+                    content: `You've already claimed your daily ketchup! Your next daily will be available <t:${Math.trunc(last_daily / 86400000) * 86400 + 86400}:R>.`,
                 },
             };
         }
@@ -183,11 +183,11 @@ export const work: Command = {
         )[0] as D1Result<UserDataRow>;
         const last_work: number = lastDailyResult.results[0]?.last_work ?? 0;
 
-        if (Math.floor(Date.now() / 3600000) <= Math.floor(last_work / 3600000)) {
+        if (Math.trunc(Date.now() / 3600000) <= Math.trunc(last_work / 3600000)) {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
-                    content: `You've already worked this hour! You can work again at <t:${Math.floor(last_work / 3600000) * 3600 + 3600}:R>.`,
+                    content: `You've already worked this hour! You can work again at <t:${Math.trunc(last_work / 3600000) * 3600 + 3600}:R>.`,
                 },
             };
         }
