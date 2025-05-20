@@ -9,6 +9,3 @@
 /.yarn/releases/*    binary
 /.yarn/plugins/**/*  binary
 /.pnp.*              binary linguist-generated
-
-eslint.config.js     linguist-vendored
-prettier.config.mjs  linguist-vendored
