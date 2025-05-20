@@ -137,7 +137,7 @@ export const remind: Command = {
             },
         ],
     },
-    execute(interaction, env, ctx) {
+    execute: async (interaction, env, ctx) => {
         const subcommand = getSubcommand(interaction);
         if (!subcommand) {
             throw new Error('No subcommand found');
