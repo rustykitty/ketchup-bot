@@ -13,7 +13,7 @@ async function sendDM(reminder: RemindersRow, env: Env): Promise<void> {
     });
     if (getChannelResponse.status !== 200) {
         console.error(`Failed to open DM with user ${user_id}: ${getChannelResponse} ${getChannelResponse.statusText}`);
-        console.error(getChannelResponse.body);
+        console.error(await getChannelResponse.text());
         return;
     }
     const channel_id = ((await getChannelResponse.json()) as DAPI.APIChannel).id;
@@ -30,7 +30,7 @@ async function sendDM(reminder: RemindersRow, env: Env): Promise<void> {
 
     if (sendDMResponse.status !== 200) {
         console.error(`Failed to send DM to user ${user_id}: ${sendDMResponse} ${sendDMResponse.statusText}`);
-        console.error(sendDMResponse.body);
+        console.error(await sendDMResponse.text());
         return;
     }
     await db.prepare('DELETE FROM reminders WHERE id = ?').bind(id).run();
@@ -47,7 +47,8 @@ export async function scheduled(controller: ScheduledController, env: Env, ctx: 
 
     await Promise.all(
         reminders.map((val, ind, arr) => {
-            sendDM(val, env);
+            console.log('Test');
+            return sendDM(val, env);
         }),
     );
 }
