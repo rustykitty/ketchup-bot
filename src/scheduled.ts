@@ -1,23 +1,36 @@
 import * as DAPI from 'discord-api-types/v10';
 
-async function sendDM(reminder: RemindersRow, env: Env): Promise<void> {
-    const db: D1Database = env.DB;
-    const { id, user_id, message, timestamp } = reminder;
-    const getChannelResponse = await fetch(`https://discord.com/api/v10/users/@me/channels`, {
+// user ID to DM channel ID
+const cache: Record<string, string> = {};
+
+async function openDM(userId: string, env: Env): Promise<string> {
+    if (cache[userId]) return cache[userId];
+    const response = await fetch(`https://discord.com/api/v10/users/@me/channels`, {
         method: 'POST',
-        body: JSON.stringify({ recipient_id: user_id }),
+        body: JSON.stringify({ recipient_id: userId }),
         headers: {
             Authorization: `Bot ${env.DISCORD_TOKEN}`,
             'Content-Type': 'application/json',
         },
     });
-    if (getChannelResponse.status !== 200) {
-        console.error(`Failed to open DM with user ${user_id}: ${getChannelResponse} ${getChannelResponse.statusText}`);
-        console.error(await getChannelResponse.text());
-        return;
+    if (!response.ok) {
+        console.error(`Failed to open DM with user ${userId}: ${response} ${response.statusText}`);
+        console.error(await response.text());
+        throw new Error(`Failed to open DM with user ${userId}`);
     }
-    const channel_id = ((await getChannelResponse.json()) as DAPI.APIChannel).id;
-    const sendDMResponse = await fetch(`https://discord.com/api/v10/channels/${channel_id}/messages`, {
+    const channel = (await response.json<DAPI.APIChannel>()).id;
+    // eslint-disable-next-line require-atomic-updates
+    cache[userId] = channel;
+    return channel;
+}
+
+async function sendDM(reminder: RemindersRow, env: Env): Promise<void> {
+    console.log('Sending DM:');
+    console.log(reminder);
+    const db: D1Database = env.DB;
+    const { id, user_id, message, timestamp } = reminder;
+    const channelId = await openDM(user_id, env);
+    const sendDMResponse = await fetch(`https://discord.com/api/v10/channels/${channelId}/messages`, {
         method: 'POST',
         body: JSON.stringify({
             content: `You asked me to remind you about "${message}" at <t:${timestamp}:F>.`,
@@ -28,7 +41,7 @@ async function sendDM(reminder: RemindersRow, env: Env): Promise<void> {
         },
     });
 
-    if (sendDMResponse.status !== 200) {
+    if (!sendDMResponse.ok) {
         console.error(`Failed to send DM to user ${user_id}: ${sendDMResponse} ${sendDMResponse.statusText}`);
         console.error(await sendDMResponse.text());
         return;
@@ -45,12 +58,9 @@ export async function scheduled(controller: ScheduledController, env: Env, ctx: 
             .run()) as D1Result<RemindersRow>
     ).results;
 
-    await Promise.all(
-        reminders.map((val, ind, arr) => {
-            console.log('Test');
-            return sendDM(val, env);
-        }),
-    );
+    reminders.forEach(async (val) => {
+        ctx.waitUntil(sendDM(val, env));
+    });
 }
 
 export default { scheduled };
