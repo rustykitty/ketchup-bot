@@ -75,7 +75,7 @@ export const give_ketchup: Command = {
                 },
             };
         } else {
-            const results: D1Result<UserDataRow>[] = await db.batch([
+            const results: D1Result<undefined>[] = await db.batch([
                 db
                     .prepare(
                         `INSERT INTO user_data (id, ketchup) VALUES (?, 0) 
@@ -93,7 +93,7 @@ export const give_ketchup: Command = {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
-                    content: `You gave ${amountValue} ketchup packets to <@${recipientId}>!`,
+                    content: `You gave ${amountValue} ketchup packets to <@${recipientId}>! `,
                 },
             };
         }
