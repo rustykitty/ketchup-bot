@@ -4,6 +4,8 @@ import { sleep } from './utility.js';
 // user ID to DM channel ID
 const cache: Record<string, string> = {};
 
+/* TODO: can move retry logic into workflow? */
+
 export async function openDM(userId: string, env: Env): Promise<string> {
     if (cache[userId]) return cache[userId];
     while (true) {
