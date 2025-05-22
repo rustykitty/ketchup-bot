@@ -8,7 +8,7 @@ export const test: Command = {
         description: 'A test command! Use it to make sure all the functionality is working.',
         options: [
             {
-                name: 'test_parameter',
+                name: 'test',
                 description: 'An optional parameter.',
                 type: DAPI.ApplicationCommandOptionType.String,
                 required: false,
