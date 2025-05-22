@@ -29,13 +29,14 @@ export function getOptionsFromSubcommand(subcommand: DAPI.APIApplicationCommandS
     );
 }
 
-export function getSubcommandOptions(interaction: DAPI.APIApplicationCommandInteraction, name: string) {
+export function getSubcommandOptions(interaction: DAPI.APIApplicationCommandInteraction) {
     const baseOptions = getOptions(interaction);
-    if (!(name in baseOptions)) {
-        throw new Error(`${name} not in baseOptions`);
+    const subcommandOption = Object.values(baseOptions).find((val) => val.type === DAPI.ApplicationCommandOptionType.Subcommand);
+    if (!subcommandOption) {
+        throw new Error('subcommand not found');
     }
     return getOptionsFromOptionsObject(
-        (baseOptions[name] as DAPI.APIApplicationCommandSubcommandOption)
+        (subcommandOption as DAPI.APIApplicationCommandSubcommandOption)
             .options as unknown as DAPI.APIApplicationCommandInteractionDataOption[],
     ) as Record<string, DAPI.APIApplicationCommandInteractionDataBasicOption>;
 }

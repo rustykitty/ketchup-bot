@@ -8,7 +8,7 @@ const subcommands: Record<string, SubcommandExecute> = {
     set: async (interaction, env, ctx) => {
         const db: D1Database = env.DB;
         const user_id = getUser(interaction).id;
-        const { time, message } = getSubcommandOptions(interaction, 'set');
+        const { time, message } = getSubcommandOptions(interaction);
         const date: Date | null = chrono.parseDate(time.value as string, {
             timezone: 'PDT',
         });
@@ -69,7 +69,7 @@ const subcommands: Record<string, SubcommandExecute> = {
     remove: async (interaction, env, ctx) => {
         const db: D1Database = env.DB;
         const user_id = getUser(interaction).id;
-        const { id } = getSubcommandOptions(interaction, 'remove');
+        const { id } = getSubcommandOptions(interaction);
         const results = await db.batch([
             db.prepare(`SELECT * FROM reminders WHERE user_id = ? AND id = ?`).bind(user_id, id.value),
             db.prepare(`DELETE FROM reminders WHERE user_id = ? AND id = ?`).bind(user_id, id.value),
