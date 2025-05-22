@@ -1,11 +1,10 @@
 import * as DAPI from 'discord-api-types/v10';
-import { send } from 'node:process';
 import { sleep } from './utility.js';
 
 // user ID to DM channel ID
 const cache: Record<string, string> = {};
 
-async function openDM(userId: string, env: Env): Promise<string> {
+export async function openDM(userId: string, env: Env): Promise<string> {
     if (cache[userId]) return cache[userId];
     while (true) {
         const response = await fetch(`https://discord.com/api/v10/users/@me/channels`, {
@@ -33,7 +32,7 @@ async function openDM(userId: string, env: Env): Promise<string> {
     }
 }
 
-async function sendDM(reminder: RemindersRow, env: Env): Promise<void> {
+export async function sendDM(reminder: RemindersRow, env: Env): Promise<void> {
     const db: D1Database = env.DB;
     const { id, user_id, message, timestamp } = reminder;
     const channelId = await openDM(user_id, env);
