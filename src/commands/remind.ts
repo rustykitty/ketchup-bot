@@ -29,6 +29,7 @@ const subcommands: Record<string, SubcommandExecute> = {
                 },
             };
         }
+        // TODO: trigger workflow here
         db.prepare(`INSERT INTO reminders (user_id, message, timestamp) VALUES (?, ?, ?)`)
             .bind(user_id, message.value, ts)
             .run();
@@ -74,6 +75,7 @@ const subcommands: Record<string, SubcommandExecute> = {
             db.prepare(`SELECT * FROM reminders WHERE user_id = ? AND id = ?`).bind(user_id, id.value),
             db.prepare(`DELETE FROM reminders WHERE user_id = ? AND id = ?`).bind(user_id, id.value),
         ]);
+        // TODO: stop workflow
         const reminder: RemindersRow = (results[0] as D1Result<RemindersRow>).results[0];
         if (reminder) {
             return {

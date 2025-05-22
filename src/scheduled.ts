@@ -61,19 +61,3 @@ export async function sendDM(reminder: RemindersRow, env: Env): Promise<void> {
     }
     await db.prepare('DELETE FROM reminders WHERE id = ?').bind(id).run();
 }
-
-export async function scheduled(controller: ScheduledController, env: Env, ctx: ExecutionContext) {
-    const db: D1Database = env.DB;
-    const reminders: RemindersRow[] = (
-        (await db
-            .prepare('SELECT * FROM reminders WHERE timestamp <= ? ORDER BY timestamp ASC')
-            .bind(controller.scheduledTime / 1000)
-            .run()) as D1Result<RemindersRow>
-    ).results;
-
-    for (const reminder of reminders) {
-        await sendDM(reminder, env);
-    }
-}
-
-export default { scheduled };
