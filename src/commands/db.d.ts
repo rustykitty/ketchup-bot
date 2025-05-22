@@ -2,7 +2,7 @@
  * Typings for D1 tables
  */
 
-// user_Data
+// user_data
 interface UserDataRow {
     id: string;
     ketchup: number;
