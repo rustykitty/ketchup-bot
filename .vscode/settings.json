@@ -10,5 +10,6 @@
     "editor.formatOnSave": true,
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
-    "npm.packageManager": "yarn"
+    "npm.packageManager": "yarn",
+    "npm.scriptRunner": "auto"
 }
