@@ -18,9 +18,9 @@ async function openDM(userId: string, env: Env): Promise<string> {
         });
 
         if (response.status === 429) {
-            const { retry_after } = (await response.json<{ retry_after: number }>());
+            const { retry_after } = await response.json<{ retry_after: number }>();
             await sleep(Math.trunc(retry_after * 1000));
-            continue
+            continue;
         } else if (!response.ok) {
             console.error(`Failed to open DM with user ${userId}: ${response} ${response.statusText}`);
             console.error(await response.text());
@@ -50,7 +50,7 @@ async function sendDM(reminder: RemindersRow, env: Env): Promise<void> {
         });
 
         if (response.status === 429) {
-            const { retry_after } = (await response.json<{ retry_after: number }>());
+            const { retry_after } = await response.json<{ retry_after: number }>();
             await sleep(Math.trunc(retry_after * 1000));
             continue;
         } else if (!response.ok) {

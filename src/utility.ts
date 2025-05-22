@@ -23,15 +23,11 @@ export function getOptions<T = DAPI.APIApplicationCommandInteractionDataOption>(
     return getOptionsFromOptionsObject(interaction.data.options);
 }
 
-export function getOptionsFromSubcommand(subcommand: DAPI.APIApplicationCommandSubcommandOption) {
-    return getOptionsFromOptionsObject(
-        subcommand.options as unknown as DAPI.APIApplicationCommandInteractionDataOption[],
-    );
-}
-
 export function getSubcommandOptions(interaction: DAPI.APIApplicationCommandInteraction) {
     const baseOptions = getOptions(interaction);
-    const subcommandOption = Object.values(baseOptions).find((val) => val.type === DAPI.ApplicationCommandOptionType.Subcommand);
+    const subcommandOption = Object.values(baseOptions).find(
+        (val) => val.type === DAPI.ApplicationCommandOptionType.Subcommand,
+    );
     if (!subcommandOption) {
         throw new Error('subcommand not found');
     }
