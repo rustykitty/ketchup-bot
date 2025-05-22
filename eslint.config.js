@@ -14,9 +14,6 @@ export default [
         plugins: {
             tsPlugin,
         },
-        rules: {
-            "object-shorthand": ["error", "never"],
-        },
     },
     eslintConfigPrettier,
     {
