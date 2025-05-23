@@ -17,7 +17,7 @@ jobs:
             - name: Install Yarn
               uses: borales/actions-yarn@v4
               with:
-                cmd: install --immutable --immutable-cache 
+                cmd: install --immutable
 
             - name: Run ESLint
               run: yarn eslint
