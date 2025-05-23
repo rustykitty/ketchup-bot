@@ -49,8 +49,31 @@ const subcommands: Record<string, SubcommandExecute> = {
         };
     },
     list: async (interaction, env, ctx) => {
-        // TODO: implement for workflow
-        throw new Error('Not implemented');
+        const db: D1Database = env.DB;
+        const user_id = getUser(interaction).id;
+        const result: D1Result<RemindersRow> = await db
+            .prepare(`SELECT * FROM reminders WHERE user_id = ?`)
+            .bind(user_id)
+            .run();
+        if (result.results.length === 0) {
+            return {
+                type: DAPI.InteractionResponseType.ChannelMessageWithSource,
+                data: {
+                    content: `You do not have any reminders set.`,
+                },
+            };
+        }
+        const remindersText = result.results.map((element, index, array) => {
+            const { id, message, timestamp } = element;
+            const date = new Date(timestamp * 1000);
+            return `- ${message} <t:${timestamp}:F> (ID: \`${id}\`)`;
+        });
+        return {
+            type: DAPI.InteractionResponseType.ChannelMessageWithSource as any,
+            data: {
+                content: `You have the following reminders:\n${remindersText.join('\n')}`,
+            },
+        };
     },
     remove: async (interaction, env, ctx) => {
         // TODO: implement for workflow
