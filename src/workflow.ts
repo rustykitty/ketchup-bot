@@ -3,10 +3,9 @@ import { WorkflowEntrypoint, WorkflowStep, WorkflowEvent } from 'cloudflare:work
 import { openDM } from './scheduled.js';
 import { sleep } from './utility.js';
 
-async function sendReminderDM(reminder: RemindersRow, env: Env): Promise<void> {
+async function sendReminderDM(reminder: Reminder, env: Env): Promise<void> {
     const db: D1Database = env.DB;
-    const { id } = reminder;
-    const { user_id, message, timestamp } = reminder.reminder;
+    const { user_id, message, timestamp } = reminder;
     const channelId = await openDM(user_id, env);
     while (true) {
         const response = await fetch(`https://discord.com/api/v10/channels/${channelId}/messages`, {
@@ -33,15 +32,14 @@ async function sendReminderDM(reminder: RemindersRow, env: Env): Promise<void> {
     }
 }
 
-
-export class RemindersWorkflow extends WorkflowEntrypoint<Env, RemindersRow> {
+export class RemindersWorkflow extends WorkflowEntrypoint<Env, Reminder> {
     constructor(ctx: ExecutionContext, env: Env) {
         super(ctx, env);
     }
 
-    async run(event: WorkflowEvent<RemindersRow>, step: WorkflowStep): Promise<void> {
-        const params: RemindersRow = event.payload;
-        const { timestamp } = params.reminder;
+    async run(event: WorkflowEvent<Reminder>, step: WorkflowStep): Promise<void> {
+        const params: Reminder = event.payload;
+        const { timestamp } = params;
         step.sleep('sleep until time for reminder', timestamp - +event.timestamp);
         // currently, sendDM handled retry logic but we'd like to move it here
         step.do(

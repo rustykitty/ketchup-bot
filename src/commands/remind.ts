@@ -30,8 +30,12 @@ const subcommands: Record<string, SubcommandExecute> = {
             };
         }
         // TODO: trigger workflow here
-        env.REMINDERS_WORKFLOW.create({
-            // TODO: add workflow params
+        await env.REMINDERS_WORKFLOW.create({
+            params: {
+                user_id,
+                message: message.value as string,
+                timestamp: ts,
+            },
         });
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,
