@@ -15,7 +15,5 @@ interface UserDataRow {
  */
 interface RemindersRow {
     id: number;
-    user_id: string;
-    message: string;
-    timestamp: number;
+    reminder: Reminder;
 }

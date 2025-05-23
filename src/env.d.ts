@@ -1,5 +1,7 @@
 // credit to Bristlefrost1/puddleshine
 
+import { RemindersWorkflow } from "./workflow.ts";
+
 /**
  * env.d.ts
  *
@@ -25,6 +27,8 @@ interface Env {
     DB: D1Database;
 
     KV: KVNamespace;
+
+    REMINDERS_WORKFLOW: RemindersWorkflow;
 
     DISCORD_PUBLIC_KEY: string;
     DISCORD_APPLICATION_ID: string;

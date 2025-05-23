@@ -78,5 +78,5 @@ router.all('*', () => new Response('Not Found.', { status: 404 }));
 
 export default {
     verifyDiscordRequest,
-    fetch: router.fetch
+    fetch: router.fetch,
 };

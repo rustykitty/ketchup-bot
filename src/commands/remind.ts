@@ -30,9 +30,9 @@ const subcommands: Record<string, SubcommandExecute> = {
             };
         }
         // TODO: trigger workflow here
-        db.prepare(`INSERT INTO reminders (user_id, message, timestamp) VALUES (?, ?, ?)`)
-            .bind(user_id, message.value, ts)
-            .run();
+        env.REMINDERS_WORKFLOW.create({
+            // TODO: add workflow params
+        });
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
@@ -41,57 +41,12 @@ const subcommands: Record<string, SubcommandExecute> = {
         };
     },
     list: async (interaction, env, ctx) => {
-        const db: D1Database = env.DB;
-        const user_id = getUser(interaction).id;
-        const result: D1Result<RemindersRow> = await db
-            .prepare(`SELECT * FROM reminders WHERE user_id = ?`)
-            .bind(user_id)
-            .run();
-        if (result.results.length === 0) {
-            return {
-                type: DAPI.InteractionResponseType.ChannelMessageWithSource,
-                data: {
-                    content: `You do not have any reminders set.`,
-                },
-            };
-        }
-        const remindersText = result.results.map((element, index, array) => {
-            const { id, message, timestamp } = element;
-            const date = new Date(timestamp * 1000);
-            return `- ${message} <t:${timestamp}:F> (ID: \`${id}\`)`;
-        });
-        return {
-            type: DAPI.InteractionResponseType.ChannelMessageWithSource as any,
-            data: {
-                content: `You have the following reminders:\n${remindersText.join('\n')}`,
-            },
-        };
+        // TODO: implement for workflow
+        throw new Error('Not implemented');
     },
     remove: async (interaction, env, ctx) => {
-        const db: D1Database = env.DB;
-        const user_id = getUser(interaction).id;
-        const { id } = getSubcommandOptions(interaction);
-        const results = await db.batch([
-            db.prepare(`SELECT * FROM reminders WHERE user_id = ? AND id = ?`).bind(user_id, id.value),
-            db.prepare(`DELETE FROM reminders WHERE user_id = ? AND id = ?`).bind(user_id, id.value),
-        ]);
-        // TODO: stop workflow
-        const reminder: RemindersRow = (results[0] as D1Result<RemindersRow>).results[0];
-        if (reminder) {
-            return {
-                type: DAPI.InteractionResponseType.ChannelMessageWithSource as any,
-                data: {
-                    content: `Removed reminder with ID \`${id.value}\` (was "${reminder.message}", set for <t:${reminder.timestamp}:F>)`,
-                },
-            };
-        } else {
-            return {
-                type: DAPI.InteractionResponseType.ChannelMessageWithSource as any,
-                data: {
-                    content: `No reminder found with ID \`${id.value}\`. It may have already triggered or been removed.`,
-                },
-            };
-        }
+        // TODO: implement for workflow
+        throw new Error('Not implemented');
     },
 };
 
