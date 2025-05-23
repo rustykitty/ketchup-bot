@@ -3,13 +3,10 @@ import * as DAPI from 'discord-api-types/v10';
 export function getOptionsFromOptionsObject<T = DAPI.APIApplicationCommandInteractionDataOption>(
     options: DAPI.APIApplicationCommandInteractionDataOption[] | undefined,
 ): Record<string, T> {
-    return (options ?? []).reduce(
-        (acc: Record<string, T>, curr: DAPI.APIApplicationCommandInteractionDataOption) => {
-            acc[curr.name] = curr as T;
-            return acc;
-        },
-        {} as Record<string, T>,
-    );
+    return (options ?? []).reduce((acc: Record<string, T>, curr: DAPI.APIApplicationCommandInteractionDataOption) => {
+        acc[curr.name] = curr as T;
+        return acc;
+    }, {});
 }
 
 /**
@@ -32,9 +29,8 @@ export function getSubcommandOptions(interaction: DAPI.APIApplicationCommandInte
         throw new Error('subcommand not found');
     }
     return getOptionsFromOptionsObject(
-        (subcommandOption as DAPI.APIApplicationCommandSubcommandOption)
-            .options as unknown as DAPI.APIApplicationCommandInteractionDataOption[],
-    ) as Record<string, DAPI.APIApplicationCommandInteractionDataBasicOption>;
+        subcommandOption.options as DAPI.APIApplicationCommandInteractionDataOption[],
+    ) satisfies Record<string, DAPI.APIApplicationCommandInteractionDataBasicOption>;
 }
 
 export function getUser(interaction: DAPI.APIInteraction): DAPI.APIUser {
@@ -58,7 +54,7 @@ export function getSubcommand(interaction: DAPI.APIApplicationCommandInteraction
 }
 
 export async function sleep(ms: number): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         setTimeout(resolve, ms);
     });
 }
