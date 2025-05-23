@@ -1,13 +1,15 @@
 import * as DAPI from 'discord-api-types/v10';
-
+import { LRUCache } from 'lru-cache';
 import { WorkflowEntrypoint, WorkflowStep, WorkflowEvent } from 'cloudflare:workers';
 
 import { sleep } from './utility.js';
 
-const cache: Record<string, string> = {};
+const channelIdCache = new LRUCache<string, string>({
+    max: 32,
+});
 
 async function openDM(userId: string, env: Env): Promise<string> {
-    if (cache[userId]) return cache[userId];
+    if (channelIdCache.has(userId)) return channelIdCache.get(userId)!;
     while (true) {
         const response = await fetch(`https://discord.com/api/v10/users/@me/channels`, {
             method: 'POST',
@@ -28,8 +30,7 @@ async function openDM(userId: string, env: Env): Promise<string> {
             throw new Error(`Failed to open DM with user ${userId}`);
         }
         const channel = (await response.json<DAPI.APIChannel>()).id;
-        // eslint-disable-next-line require-atomic-updates
-        cache[userId] = channel;
+        channelIdCache.set(userId, channel);
         return channel;
     }
 }
@@ -74,7 +75,8 @@ export class RemindersWorkflow extends WorkflowEntrypoint<Env, RemindersRow> {
         step.sleep('sleep until time for reminder', timestamp - +event.timestamp);
         step.do('add reminder to db', async () => {
             const db: D1Database = this.env.DB;
-            await db.prepare(`INSERT INTO reminders (id, user_id, message, timestamp) VALUES (?, ?, ?, ?)`)
+            await db
+                .prepare(`INSERT INTO reminders (id, user_id, message, timestamp) VALUES (?, ?, ?, ?)`)
                 .bind(id, user_id, message, timestamp)
                 .run();
         });
