@@ -32,15 +32,21 @@ async function sendReminderDM(reminder: Reminder, env: Env): Promise<void> {
     }
 }
 
-export class RemindersWorkflow extends WorkflowEntrypoint<Env, Reminder> {
+export class RemindersWorkflow extends WorkflowEntrypoint<Env, RemindersRow> {
     constructor(ctx: ExecutionContext, env: Env) {
         super(ctx, env);
     }
 
-    async run(event: WorkflowEvent<Reminder>, step: WorkflowStep): Promise<void> {
-        const params: Reminder = event.payload;
-        const { timestamp } = params;
+    async run(event: WorkflowEvent<RemindersRow>, step: WorkflowStep): Promise<void> {
+        const params: RemindersRow = event.payload;
+        const { id, user_id, message, timestamp } = params;
         step.sleep('sleep until time for reminder', timestamp - +event.timestamp);
+        step.do('add reminder to db', async () => {
+            const db: D1Database = this.env.DB;
+            await db.prepare(`INSERT INTO reminders (id, user_id, message, timestamp) VALUES (?, ?, ?, ?)`)
+                .bind(id, user_id, message, timestamp)
+                .run();
+        });
         // currently, sendDM handled retry logic but we'd like to move it here
         step.do(
             'send reminder',
@@ -54,5 +60,9 @@ export class RemindersWorkflow extends WorkflowEntrypoint<Env, Reminder> {
                 await sendReminderDM(params, this.env);
             },
         );
+        step.do('remove reminder from db', async () => {
+            const db: D1Database = this.env.DB;
+            await db.prepare(`DELETE FROM reminders WHERE id = ?`).bind(id).run();
+        });
     }
 }

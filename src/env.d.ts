@@ -26,7 +26,7 @@ interface Env {
 
     KV: KVNamespace;
 
-    REMINDERS_WORKFLOW: Workflow<Reminder>;
+    REMINDERS_WORKFLOW: Workflow<RemindersRow>;
 
     DISCORD_PUBLIC_KEY: string;
     DISCORD_APPLICATION_ID: string;

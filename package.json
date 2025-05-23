@@ -21,7 +21,8 @@
     "dependencies": {
         "chrono-node": "^2.8.0",
         "discord-interactions": "^4.3.0",
-        "itty-router": "^5.0.18"
+        "itty-router": "^5.0.18",
+        "uuid": "^11.1.0"
     },
     "devDependencies": {
         "@cloudflare/workers-types": "^4.20250519.0",

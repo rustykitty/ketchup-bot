@@ -14,7 +14,10 @@ interface UserDataRow {
  * `reminders` table
  */
 interface RemindersRow {
-    id: number;
+    /**
+     * UUID v4
+     */
+    id: string;
     user_id: string;
     message: string;
     timestamp: number;

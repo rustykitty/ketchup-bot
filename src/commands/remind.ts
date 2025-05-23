@@ -1,5 +1,6 @@
 import * as DAPI from 'discord-api-types/v10';
 import * as chrono from 'chrono-node';
+import * as uuid from 'uuid';
 
 import { Command, SubcommandExecute } from './command.js';
 import { getSubcommandOptions, getSubcommand, getUser } from '../utility.js';
@@ -20,8 +21,8 @@ const subcommands: Record<string, SubcommandExecute> = {
                 },
             };
         }
-        const ts = Math.trunc(+date / 1000);
-        if (ts <= Math.trunc(Date.now() / 1000)) {
+        const timestamp = Math.trunc(+date / 1000);
+        if (timestamp <= Math.trunc(Date.now() / 1000)) {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
@@ -29,18 +30,21 @@ const subcommands: Record<string, SubcommandExecute> = {
                 },
             };
         }
+        const id = uuid.v4();
         // TODO: trigger workflow here
-        await env.REMINDERS_WORKFLOW.create({
+        const instance = await env.REMINDERS_WORKFLOW.create({
+            id: id,
             params: {
+                id,
                 user_id,
                 message: message.value as string,
-                timestamp: ts,
+                timestamp,
             },
         });
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
-                content: `I will remind you about "${message.value}" <t:${ts}:R>.`,
+                content: `I will remind you about "${message.value}" <t:${timestamp}:R>.`,
             },
         };
     },
