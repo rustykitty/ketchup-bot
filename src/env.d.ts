@@ -1,7 +1,5 @@
 // credit to Bristlefrost1/puddleshine
 
-import { RemindersWorkflow } from "./workflow.ts";
-
 /**
  * env.d.ts
  *
@@ -28,7 +26,7 @@ interface Env {
 
     KV: KVNamespace;
 
-    REMINDERS_WORKFLOW: RemindersWorkflow;
+    REMINDERS_WORKFLOW: WorkflowEntrypoint<Env, RemindersRow>;
 
     DISCORD_PUBLIC_KEY: string;
     DISCORD_APPLICATION_ID: string;
