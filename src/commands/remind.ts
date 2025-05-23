@@ -1,22 +1,31 @@
 import * as DAPI from 'discord-api-types/v10';
-import * as chrono from 'chrono-node';
+import Sugar from 'sugar';
 
 import { Command, SubcommandExecute } from './command.js';
 import { getSubcommandOptions, getSubcommand, getUser } from '../utility.js';
+
+function parseDate(str: string): Date | null {
+    const sugarDate = new Sugar.Date();
+    const oldTimestamp = sugarDate.raw.getTime();
+    sugarDate.advance(str);
+    const date = sugarDate.raw;
+    if (isNaN(date.getTime()) || date.getTime() <= oldTimestamp) {
+        return null;
+    }
+    return date;
+}
 
 const subcommands: Record<string, SubcommandExecute> = {
     set: async (interaction, env, ctx) => {
         const db: D1Database = env.DB;
         const user_id = getUser(interaction).id;
         const { time, message } = getSubcommandOptions(interaction);
-        const date: Date | null = chrono.parseDate(time.value as string, {
-            timezone: 'PDT',
-        });
+        const date: Date | null = parseDate(time.value as string);
         if (date === null) {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
-                    content: `Invalid date format.`,
+                    content: `Invalid date format. Currently, only relative dates are supported. You may need to type for example "2 hours" instead of "two hours"`,
                 },
             };
         }

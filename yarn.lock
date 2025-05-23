@@ -1148,15 +1148,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chrono-node@npm:^2.8.0":
-  version: 2.8.0
-  resolution: "chrono-node@npm:2.8.0"
-  dependencies:
-    dayjs: "npm:^1.10.0"
-  checksum: 10/09ab39cfca16f021f65b4b19fd641a1b854f247e3cdbbc0bc9eba051095be187bf926d91c9e6562adfe6dab9e7cfc228eb5c8276906e44da9533cc603ad1ad79
-  languageName: node
-  linkType: hard
-
 "clone-response@npm:^1.0.2":
   version: 1.0.3
   resolution: "clone-response@npm:1.0.3"
@@ -1231,13 +1222,6 @@ __metadata:
   version: 2.0.2
   resolution: "data-uri-to-buffer@npm:2.0.2"
   checksum: 10/152bec5e77513ee253a7c686700a1723246f582dad8b614e8eaaaba7fa45a15c8671ae4b8f4843f4f3a002dae1d3e7a20f852f7d7bdc8b4c15cfe7adfdfb07f8
-  languageName: node
-  linkType: hard
-
-"dayjs@npm:^1.10.0":
-  version: 1.11.13
-  resolution: "dayjs@npm:1.11.13"
-  checksum: 10/7374d63ab179b8d909a95e74790def25c8986e329ae989840bacb8b1888be116d20e1c4eee75a69ea0dfbae13172efc50ef85619d304ee7ca3c01d5878b704f5
   languageName: node
   linkType: hard
 
@@ -2093,7 +2077,6 @@ __metadata:
     "@types/typescript": "npm:^2.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^8.32.1"
     "@typescript-eslint/parser": "npm:^8.32.1"
-    chrono-node: "npm:^2.8.0"
     discord-api-types: "npm:^0.38.8"
     discord-interactions: "npm:^4.3.0"
     dotenv: "npm:^16.5.0"
@@ -2102,6 +2085,7 @@ __metadata:
     itty-router: "npm:^5.0.18"
     ngrok: "npm:^5.0.0-beta.2"
     prettier: "npm:3.5.3"
+    sugar: "npm:^2.0.6"
     typescript: "npm:^5.8.3"
     typescript-eslint: "npm:^8.32.1"
     wrangler: "npm:^4.16.1"
@@ -2918,6 +2902,22 @@ __metadata:
   version: 3.1.1
   resolution: "strip-json-comments@npm:3.1.1"
   checksum: 10/492f73e27268f9b1c122733f28ecb0e7e8d8a531a6662efbd08e22cccb3f9475e90a1b82cab06a392f6afae6d2de636f977e231296400d0ec5304ba70f166443
+  languageName: node
+  linkType: hard
+
+"sugar-core@npm:^2.0.0":
+  version: 2.0.6
+  resolution: "sugar-core@npm:2.0.6"
+  checksum: 10/21053524bd294a0e1a51feba078b31524b6975af2759e3a498507d1276c919b35c2a53f7dceb99a1e263ce1e697c643021150159cc631b3eab15fd7cc5b881a0
+  languageName: node
+  linkType: hard
+
+"sugar@npm:^2.0.6":
+  version: 2.0.6
+  resolution: "sugar@npm:2.0.6"
+  dependencies:
+    sugar-core: "npm:^2.0.0"
+  checksum: 10/ac81d2e99f5a2a8f9e70773629b44372e9ea96edafb9c7dea43e97e293586bbb9dc2c3e051e3165c69adf1350911503d56d329537717d9600f18ab6d475684c2
   languageName: node
   linkType: hard
 
