@@ -21,8 +21,8 @@ const subcommands: Record<string, SubcommandExecute> = {
                 },
             };
         }
-        const timestamp = Math.trunc(+date / 1000);
-        if (timestamp <= Math.trunc(Date.now() / 1000)) {
+        const timestamp = +date;
+        if (timestamp <= Date.now()) {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
@@ -31,7 +31,6 @@ const subcommands: Record<string, SubcommandExecute> = {
             };
         }
         const id = uuid.v4();
-        // TODO: trigger workflow here
         const instance = await env.REMINDERS_WORKFLOW.create({
             id: id,
             params: {
@@ -44,7 +43,7 @@ const subcommands: Record<string, SubcommandExecute> = {
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
-                content: `I will remind you about "${message.value}" <t:${timestamp}:R>.`,
+                content: `I will remind you about "${message.value}" <t:${Math.trunc(timestamp / 1000)}:R>.`,
             },
         };
     },
@@ -66,7 +65,7 @@ const subcommands: Record<string, SubcommandExecute> = {
         const remindersText = result.results.map((element, index, array) => {
             const { id, message, timestamp } = element;
             const date = new Date(timestamp * 1000);
-            return `- ${message} <t:${timestamp}:F> (ID: \`${id}\`)`;
+            return `- ${message} <t:${Math.trunc(timestamp / 1000)}:F> (ID: \`${id}\`)`;
         });
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,
@@ -89,7 +88,7 @@ const subcommands: Record<string, SubcommandExecute> = {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
-                    content: `Removed reminder with ID \`${id.value}\` (was "${reminder.message}", set for <t:${reminder.timestamp}:F>)`,
+                    content: `Removed reminder with ID \`${id.value}\` (was "${reminder.message}", set for <t:${Math.trunc(reminder.timestamp / 1000)}:F>)`,
                 },
             };
         } else {
@@ -138,7 +137,7 @@ export const remind: Command = {
                 description: 'Remove a reminder.',
                 options: [
                     {
-                        type: DAPI.ApplicationCommandOptionType.Integer,
+                        type: DAPI.ApplicationCommandOptionType.String,
                         name: 'id',
                         description: 'The ID of the reminder to remove (gotten from /reminder list)',
                         required: true,

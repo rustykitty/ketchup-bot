@@ -23,7 +23,9 @@ export function getOptions<T = DAPI.APIApplicationCommandInteractionDataOption>(
     return getOptionsFromOptionsObject(interaction.data.options);
 }
 
-export function getSubcommandOptions<T = DAPI.APIApplicationCommandInteractionDataBasicOption>(interaction: DAPI.APIApplicationCommandInteraction) {
+export function getSubcommandOptions<T = DAPI.APIApplicationCommandInteractionDataBasicOption>(
+    interaction: DAPI.APIApplicationCommandInteraction,
+) {
     const baseOptions = getOptions(interaction);
     const subcommandOption = Object.values(baseOptions).find(
         (val) => val.type === DAPI.ApplicationCommandOptionType.Subcommand,
