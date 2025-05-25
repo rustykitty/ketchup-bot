@@ -31,15 +31,17 @@ const subcommands: Record<string, SubcommandExecute> = {
             };
         }
         const id = uuid.v4();
-        env.REMINDERS_WORKFLOW.create({
-            id: id,
-            params: {
-                id,
-                user_id,
-                message: message.value as string,
-                timestamp,
-            },
-        });
+        ctx.waitUntil(
+            env.REMINDERS_WORKFLOW.create({
+                id: id,
+                params: {
+                    id,
+                    user_id,
+                    message: message.value as string,
+                    timestamp,
+                },
+            }),
+        );
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
