@@ -31,7 +31,7 @@ const subcommands: Record<string, SubcommandExecute> = {
             };
         }
         const id = uuid.v4();
-        const instance = await env.REMINDERS_WORKFLOW.create({
+        env.REMINDERS_WORKFLOW.create({
             id: id,
             params: {
                 id,
