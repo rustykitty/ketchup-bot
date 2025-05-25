@@ -6,6 +6,15 @@ CREATE TABLE IF NOT EXISTS user_data (
 );
 
 CREATE TABLE IF NOT EXISTS reminders (
+    id INT PRIMARY KEY,
+    user_id VARCHAR(20) NOT NULL,
+    message VARCHAR(255) NOT NULL,
+    timestamp INTEGER NOT NULL
+);
+
+DROP TABLE reminders;
+
+CREATE TABLE reminders (
     id VARCHAR(36) PRIMARY KEY,
     user_id VARCHAR(20) NOT NULL,
     message VARCHAR(255) NOT NULL,
