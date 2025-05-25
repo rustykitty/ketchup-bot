@@ -43,7 +43,7 @@ async function sendReminderDM(reminder: Reminder, env: Env): Promise<void> {
         const response = await fetch(`https://discord.com/api/v10/channels/${channelId}/messages`, {
             method: 'POST',
             body: JSON.stringify({
-                content: `You asked me to remind you about "${message}" at <t:${timestamp}:F>.`,
+                content: `You asked me to remind you about "${message}" at <t:${Math.trunc(timestamp / 1000)}:F>.`,
             }),
             headers: {
                 Authorization: `Bot ${env.DISCORD_TOKEN}`,
@@ -72,7 +72,6 @@ export class RemindersWorkflow extends WorkflowEntrypoint<Env, RemindersRow> {
     async run(event: WorkflowEvent<RemindersRow>, step: WorkflowStep): Promise<void> {
         const params: RemindersRow = event.payload;
         const { id, user_id, message, timestamp } = params;
-        step.sleep('sleep until time for reminder', timestamp - +event.timestamp);
         step.do('add reminder to db', async () => {
             const db: D1Database = this.env.DB;
             await db
@@ -80,7 +79,8 @@ export class RemindersWorkflow extends WorkflowEntrypoint<Env, RemindersRow> {
                 .bind(id, user_id, message, timestamp)
                 .run();
         });
-        // currently, sendDM handled retry logic but we'd like to move it here
+        await step.sleep('sleep until time for reminder', timestamp - Date.now());
+        // currently, sendDM handled retry logic but I'd like to move it here
         step.do(
             'send reminder',
             {

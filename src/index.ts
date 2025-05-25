@@ -1,6 +1,7 @@
 import { AutoRouter } from 'itty-router';
 import { verifyKey } from 'discord-interactions';
 import { JsonResponse } from './response.js';
+import { RemindersWorkflow } from './workflow.js';
 import commands from './commands/commands.js';
 import * as DAPI from 'discord-api-types/v10';
 
@@ -76,7 +77,10 @@ router.post(
 
 router.all('*', () => new Response('Not Found.', { status: 404 }));
 
+export { RemindersWorkflow } from './workflow.js';
+
 export default {
     verifyDiscordRequest,
     fetch: router.fetch,
+    RemindersWorkflow,
 };
