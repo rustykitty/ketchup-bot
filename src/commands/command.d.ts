@@ -1,4 +1,4 @@
-import * as DAPI from 'discord-api-types/v10';
+import * as DAPI from '@/types/dapi.js';
 
 interface Command {
     /**

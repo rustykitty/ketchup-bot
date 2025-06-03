@@ -3,7 +3,7 @@ import { verifyKey } from 'discord-interactions';
 import { JsonResponse } from './response.js';
 import { RemindersWorkflow } from './workflow.js';
 import commands from './commands/commands.js';
-import * as DAPI from 'discord-api-types/v10';
+import * as DAPI from '@/types/dapi.js';
 
 const router = AutoRouter();
 

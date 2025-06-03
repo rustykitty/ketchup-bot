@@ -1,5 +1,5 @@
 import { Command } from './command.js';
-import * as DAPI from 'discord-api-types/v10';
+import * as DAPI from '@/types/dapi.js';
 import { getOptions } from '../utility.js';
 
 export const echo: Command = {
