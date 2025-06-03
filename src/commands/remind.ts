@@ -2,10 +2,10 @@ import * as DAPI from 'discord-api-types/v10';
 import * as chrono from 'chrono-node';
 import * as uuid from 'uuid';
 
-import { Command, SubcommandExecute } from './command.js';
+import { Command, CommandExecute } from './command.js';
 import { getSubcommandOptions, getSubcommand, getUser } from '../utility.js';
 
-const subcommands: Record<string, SubcommandExecute> = {
+const subcommands: Record<string, CommandExecute> = {
     set: async (interaction, env, ctx) => {
         const db: D1Database = env.DB;
         const user_id = getUser(interaction).id;
