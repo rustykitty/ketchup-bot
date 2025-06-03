@@ -1,4 +1,4 @@
-import * as DAPI from '@/types/dapi.js';
+import * as DAPI from 'discord-api-types/v10';
 import { LRUCache } from 'lru-cache';
 import { WorkflowEntrypoint, WorkflowStep, WorkflowEvent } from 'cloudflare:workers';
 

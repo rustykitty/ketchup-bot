@@ -1,7 +1,7 @@
 import commands from './commands/commands.js';
 import dotenv from 'dotenv';
 import process from 'node:process';
-import * as DAPI from '@/types/dapi.js';
+import * as DAPI from 'discord-api-types/v10';
 
 dotenv.config();
 
