@@ -16,11 +16,11 @@ export const echo: Command = {
         ],
     },
     execute: async (interaction, env) => {
-        const { text } = getOptions<DAPI.APIApplicationCommandInteractionDataStringOption>(interaction);
+        const { text } = getOptions<string>(interaction);
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
-                content: text.value,
+                content: text,
             },
         };
     },

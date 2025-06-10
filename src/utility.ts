@@ -1,11 +1,12 @@
 import * as DAPI from 'discord-api-types/v10';
 
-export function getOptionsFromOptionsObject<T = DAPI.APIApplicationCommandInteractionDataOption>(
-    options: DAPI.APIApplicationCommandInteractionDataOption[] | undefined,
-): Record<string, T> {
+export function getOptionsFromOptionsObject<
+    T extends
+        DAPI.APIApplicationCommandInteractionDataBasicOption['value'] = DAPI.APIApplicationCommandInteractionDataBasicOption['value'],
+>(options: DAPI.APIApplicationCommandInteractionDataOption[] | undefined) {
     return (options ?? []).reduce(
-        (acc: Record<string, T>, curr: DAPI.APIApplicationCommandInteractionDataOption) => {
-            acc[curr.name] = curr as T;
+        (acc, curr: DAPI.APIApplicationCommandInteractionDataOption) => {
+            acc[curr.name] = (curr as DAPI.APIApplicationCommandInteractionDataBasicOption).value as T;
             return acc;
         },
         {} as Record<string, T>,
@@ -13,22 +14,37 @@ export function getOptionsFromOptionsObject<T = DAPI.APIApplicationCommandIntera
 }
 
 /**
- * Get the options from an interaction. Does not currently support subcommands/subcommand groups.
+ * Get the basic options from an interaction. You will have to use getSubcommand()/getSubcommandOptions() for subcommands.
  */
-export function getOptions<T = DAPI.APIApplicationCommandInteractionDataOption>(
-    interaction: DAPI.APIApplicationCommandInteraction,
-): Record<string, T> {
+export function getOptions<
+    T extends
+        DAPI.APIApplicationCommandInteractionDataBasicOption['value'] = DAPI.APIApplicationCommandInteractionDataBasicOption['value'],
+>(interaction: DAPI.APIApplicationCommandInteraction): Record<string, T> {
     if (!('options' in interaction.data) || interaction.data.options === undefined) return {};
 
     return getOptionsFromOptionsObject(interaction.data.options);
 }
 
-export function getSubcommandOptions<T = DAPI.APIApplicationCommandInteractionDataBasicOption>(
+/**
+ * Get subcommands. Currently only supports a single subcommand (no groups).
+ */
+export function getSubcommand(interaction: DAPI.APIApplicationCommandInteraction): string | null {
+    const options = 'options' in interaction.data ? (interaction.data.options ?? []) : [];
+    const subcommandObj = Object.values(options).find(
+        (option) => option.type === DAPI.ApplicationCommandOptionType.Subcommand,
+    );
+    if (!subcommandObj) {
+        return null;
+    }
+    return subcommandObj.name;
+}
+
+export function getSubcommandOptions<T = DAPI.APIApplicationCommandInteractionDataBasicOption['value']>(
     interaction: DAPI.APIApplicationCommandInteraction,
 ) {
-    const baseOptions = getOptions(interaction);
-    const subcommandOption = Object.values(baseOptions).find(
-        (val) => val.type === DAPI.ApplicationCommandOptionType.Subcommand,
+    const baseOptions = 'options' in interaction.data ? (interaction.data.options ?? []) : [];
+    const subcommandOption = (baseOptions ?? {}).find(
+        (option) => option.type === DAPI.ApplicationCommandOptionType.Subcommand,
     );
     if (!subcommandOption) {
         throw new Error('subcommand not found');
@@ -43,20 +59,6 @@ export function getUser(interaction: DAPI.APIInteraction): DAPI.APIUser {
     return interaction.guild ?
             (interaction as DAPI.APIGuildInteraction).member.user
         :   (interaction as DAPI.APIDMInteraction).user;
-}
-
-/**
- * Get subcommands. Currently only supports a single subcommand (no groups).
- */
-export function getSubcommand(interaction: DAPI.APIApplicationCommandInteraction): string | null {
-    const options = getOptions(interaction);
-    const subcommandObj = Object.values(options).find(
-        (option) => option.type === DAPI.ApplicationCommandOptionType.Subcommand,
-    );
-    if (!subcommandObj) {
-        return null;
-    }
-    return subcommandObj.name;
 }
 
 export async function sleep(ms: number): Promise<void> {

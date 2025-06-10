@@ -9,8 +9,8 @@ const subcommands: Record<string, CommandExecute> = {
     set: async (interaction, env, ctx) => {
         const db: D1Database = env.DB;
         const user_id = getUser(interaction).id;
-        const { time, message } = getSubcommandOptions(interaction);
-        const date: Date | null = chrono.parseDate(time.value as string, {
+        const { time, message } = getSubcommandOptions<string>(interaction);
+        const date: Date | null = chrono.parseDate(time, {
             timezone: 'PDT',
         });
         if (date === null) {
@@ -37,7 +37,7 @@ const subcommands: Record<string, CommandExecute> = {
                 params: {
                     id,
                     user_id,
-                    message: message.value as string,
+                    message: message as string,
                     timestamp,
                 },
             }),
@@ -45,7 +45,7 @@ const subcommands: Record<string, CommandExecute> = {
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
-                content: `I will remind you about "${message.value}" <t:${Math.trunc(timestamp / 1000)}:R>.`,
+                content: `I will remind you about "${message}" <t:${Math.trunc(timestamp / 1000)}:R>.`,
             },
         };
     },
@@ -79,10 +79,10 @@ const subcommands: Record<string, CommandExecute> = {
     remove: async (interaction, env, ctx) => {
         const db: D1Database = env.DB;
         const user_id = getUser(interaction).id;
-        const { id } = getSubcommandOptions<DAPI.APIApplicationCommandInteractionDataStringOption>(interaction);
+        const { id } = getSubcommandOptions<string>(interaction);
         const results = await db.batch([
-            db.prepare(`SELECT * FROM reminders WHERE user_id = ? AND id = ?`).bind(user_id, id.value),
-            db.prepare(`DELETE FROM reminders WHERE user_id = ? AND id = ?`).bind(user_id, id.value),
+            db.prepare(`SELECT * FROM reminders WHERE user_id = ? AND id = ?`).bind(user_id, id),
+            db.prepare(`DELETE FROM reminders WHERE user_id = ? AND id = ?`).bind(user_id, id),
         ]);
         const reminder: RemindersRow | undefined = (results[0] as D1Result<RemindersRow>).results[0];
         if (reminder) {
@@ -90,14 +90,14 @@ const subcommands: Record<string, CommandExecute> = {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
-                    content: `Removed reminder with ID \`${id.value}\` (was "${reminder.message}", set for <t:${Math.trunc(reminder.timestamp / 1000)}:F>)`,
+                    content: `Removed reminder with ID \`${id}\` (was "${reminder.message}", set for <t:${Math.trunc(reminder.timestamp / 1000)}:F>)`,
                 },
             };
         } else {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
-                    content: `No reminder found with ID \`${id.value}\`. It may have already triggered or been removed.`,
+                    content: `No reminder found with ID \`${id}\`. It may have already triggered or been removed.`,
                 },
             };
         }
