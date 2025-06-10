@@ -1,6 +1,6 @@
 import * as DAPI from 'discord-api-types/v10';
 
-export function getOptionsFromOptionsObject<
+export function getOptionsFromArray<
     T extends
         DAPI.APIApplicationCommandInteractionDataBasicOption['value'] = DAPI.APIApplicationCommandInteractionDataBasicOption['value'],
 >(options: DAPI.APIApplicationCommandInteractionDataOption[] | undefined) {
@@ -22,7 +22,7 @@ export function getOptions<
 >(interaction: DAPI.APIApplicationCommandInteraction): Record<string, T> {
     if (!('options' in interaction.data) || interaction.data.options === undefined) return {};
 
-    return getOptionsFromOptionsObject(interaction.data.options);
+    return getOptionsFromArray(interaction.data.options);
 }
 
 /**
@@ -49,7 +49,7 @@ export function getSubcommandOptions<T = DAPI.APIApplicationCommandInteractionDa
     if (!subcommandOption) {
         throw new Error('subcommand not found');
     }
-    return getOptionsFromOptionsObject(
+    return getOptionsFromArray(
         (subcommandOption as DAPI.APIApplicationCommandSubcommandOption)
             .options as unknown[] as DAPI.APIApplicationCommandInteractionDataOption[],
     ) as Record<string, T>;

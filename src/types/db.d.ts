@@ -10,13 +10,9 @@ interface UserDataRow {
     last_work: number;
 }
 
-/**
- * `reminders` table
- */
+// reminders
 interface RemindersRow {
-    /**
-     * UUID v4
-     */
+    // UUID v4
     id: string;
     user_id: string;
     message: string;
