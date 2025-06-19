@@ -9,6 +9,7 @@ const prod = process.env.PROD;
 
 const token = prod ? process.env.PROD_DISCORD_TOKEN : process.env.DEV_DISCORD_TOKEN;
 const applicationId = prod ? process.env.PROD_DISCORD_APPLICATION_ID : process.env.DEV_DISCORD_APPLICATION_ID;
+const discordAdminServerId = process.env.DISCORD_ADMIN_SERVER_ID ?? '';
 
 if (!token || !applicationId || !process.env.DISCORD_ADMIN_SERVER_ID) {
     console.error(`Missing environment variables. Ensure the following are set:
@@ -29,15 +30,14 @@ if (prod) {
     console.log('registering dev commands, set PROD to register prod commands');
 }
 
-const commandList = Object.values(commands);
 const globalCommands: DAPI.RESTPostAPIApplicationCommandsJSONBody[] = [];
 
 // map guild ID to list of commands
 const guildCommands: Record<string, DAPI.RESTPostAPIApplicationCommandsJSONBody[]> = {};
 
-commandList.forEach((command) => {
+commands.forEach((command) => {
     if (command.botOwnerOnly) {
-        command.onlyGuilds = [process.env.DISCORD_ADMIN_SERVER_ID as string];
+        command.onlyGuilds = [discordAdminServerId];
     }
 
     if (command.onlyGuilds !== undefined && command.onlyGuilds.length > 0) {

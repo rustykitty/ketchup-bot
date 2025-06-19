@@ -48,12 +48,10 @@ export const give_ketchup: Command = {
         ],
     },
     execute: async (interaction, env) => {
-        const { user, amount } = getOptions<
-            DAPI.APIApplicationCommandInteractionDataIntegerOption | DAPI.APIApplicationCommandInteractionDataUserOption
-        >(interaction);
-        const amountValue: number = (amount as DAPI.APIApplicationCommandInteractionDataIntegerOption).value as number;
-        const recipientId: string = (user as DAPI.APIApplicationCommandInteractionDataUserOption).value;
-        if (recipientId === getUser(interaction).id) {
+        const { user } = getOptions<string>(interaction);
+        const { amount } = getOptions<number>(interaction);
+        const recipient: string = user;
+        if (recipient === getUser(interaction).id) {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
@@ -67,7 +65,7 @@ export const give_ketchup: Command = {
             db.prepare(`SELECT ketchup FROM user_data WHERE id = ?`).bind(senderId),
         ]);
         const senderBalance = results[0].results[0]?.ketchup ?? 0;
-        if (senderBalance < amountValue) {
+        if (senderBalance < amount) {
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
@@ -81,19 +79,19 @@ export const give_ketchup: Command = {
                         `INSERT INTO user_data (id, ketchup) VALUES (?, 0) 
                 ON CONFLICT (id) DO UPDATE SET ketchup = ketchup - ?`,
                     )
-                    .bind(senderId, amountValue),
+                    .bind(senderId, amount),
                 db
                     .prepare(
                         `INSERT INTO user_data (id, ketchup) VALUES (?, ?)
                 ON CONFLICT (id) DO UPDATE SET ketchup = ketchup + ?`,
                     )
-                    .bind(recipientId, amountValue, amountValue),
+                    .bind(recipient, amount, amount),
             ]);
 
             return {
                 type: DAPI.InteractionResponseType.ChannelMessageWithSource,
                 data: {
-                    content: `You gave ${amountValue} ketchup packets to <@${recipientId}>! `,
+                    content: `You gave ${amount} ketchup packets to <@${recipient}>! `,
                 },
             };
         }

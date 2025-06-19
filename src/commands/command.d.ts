@@ -10,15 +10,11 @@ interface Command {
      * Makes the command only available to the bot owner, and only in testing guilds.
      */
     botOwnerOnly?: boolean;
-    execute: (
-        interaction: DAPI.APIApplicationCommandInteraction,
-        env: Env,
-        ctx: ExecutionContext,
-    ) => Promise<DAPI.APIInteractionResponse>;
+    execute: CommandExecute;
     data: DAPI.RESTPostAPIApplicationCommandsJSONBody;
 }
 
-type SubcommandExecute = (
+type CommandExecute = (
     interaction: DAPI.APIApplicationCommandInteraction,
     env: Env,
     ctx: ExecutionContext,
