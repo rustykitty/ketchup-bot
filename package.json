@@ -19,7 +19,6 @@
     "author": "Rusty Cat",
     "license": "MIT",
     "dependencies": {
-        "chrono-node": "^2.8.3",
         "discord-interactions": "^4.3.0",
         "itty-router": "^5.0.18",
         "lru-cache": "^11.1.0",

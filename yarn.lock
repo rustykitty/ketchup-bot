@@ -1181,15 +1181,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chrono-node@npm:^2.8.3":
-  version: 2.8.3
-  resolution: "chrono-node@npm:2.8.3"
-  dependencies:
-    dayjs: "npm:^1.10.0"
-  checksum: 10/0a0fdb3c6fbffb0394457ff0316eccc47c775a80f6571c7f7f4458ee284f966a5b4affd7ce52362240b85939d96083412ca3af8371ebfd57086d3bedce7b2955
-  languageName: node
-  linkType: hard
-
 "clone-response@npm:^1.0.2":
   version: 1.0.3
   resolution: "clone-response@npm:1.0.3"
@@ -1264,13 +1255,6 @@ __metadata:
   version: 2.0.2
   resolution: "data-uri-to-buffer@npm:2.0.2"
   checksum: 10/152bec5e77513ee253a7c686700a1723246f582dad8b614e8eaaaba7fa45a15c8671ae4b8f4843f4f3a002dae1d3e7a20f852f7d7bdc8b4c15cfe7adfdfb07f8
-  languageName: node
-  linkType: hard
-
-"dayjs@npm:^1.10.0":
-  version: 1.11.13
-  resolution: "dayjs@npm:1.11.13"
-  checksum: 10/7374d63ab179b8d909a95e74790def25c8986e329ae989840bacb8b1888be116d20e1c4eee75a69ea0dfbae13172efc50ef85619d304ee7ca3c01d5878b704f5
   languageName: node
   linkType: hard
 
@@ -2144,7 +2128,6 @@ __metadata:
     "@types/typescript": "npm:^2.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^8.36.0"
     "@typescript-eslint/parser": "npm:^8.36.0"
-    chrono-node: "npm:^2.8.3"
     discord-api-types: "npm:^0.38.15"
     discord-interactions: "npm:^4.3.0"
     dotenv: "npm:^17.1.0"
