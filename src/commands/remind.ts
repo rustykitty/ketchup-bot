@@ -31,21 +31,21 @@ const subcommands: Record<string, CommandExecute> = {
             };
         }
         const id = uuid.v4();
-        ctx.waitUntil(
-            env.REMINDERS_WORKFLOW.create({
-                id: id,
-                params: {
-                    id,
-                    user_id,
-                    message: message as string,
-                    timestamp,
-                },
-            }),
-        );
+        await env.REMINDERS_WORKFLOW.create({
+            id,
+            params: {
+                id,
+                user_id,
+                message,
+                timestamp,
+            },
+        });
         return {
             type: DAPI.InteractionResponseType.ChannelMessageWithSource,
             data: {
-                content: `I will remind you about "${message}" <t:${Math.trunc(timestamp / 1000)}:R>.`,
+                content: `Reminder created! I will remind you about "${message}" <t:${Math.trunc(timestamp / 1000)}:R>.
+If you'd like to cancel the reminder, the ID is ${id}.
+Make sure that you have me installed to your Discord account (not just a server), or I may be unable to send you DMs.`,
             },
         };
     },
