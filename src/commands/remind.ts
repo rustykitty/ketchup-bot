@@ -1,5 +1,6 @@
 import * as DAPI from 'discord-api-types/v10';
 import * as uuid from 'uuid';
+import * as chrono from 'chrono-node';
 
 import { Command, CommandExecute } from './command.js';
 import { getSubcommandOptions, getSubcommand, getUser } from '../utility.js';
