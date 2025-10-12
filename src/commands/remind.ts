@@ -45,7 +45,8 @@ const subcommands: Record<string, CommandExecute> = {
             data: {
                 content: `Reminder created! I will remind you about "${message}" <t:${Math.trunc(timestamp / 1000)}:R>.
 If you'd like to cancel the reminder, the ID is ${id}.
-Make sure that you have me installed to your Discord account (not just a server), or I may be unable to send you DMs.`,
+Make sure that you have me installed to your Discord account (not just a server), or I may be unable to send you DMs.
+You can use \`/test-dm-permissions\` to verify this.`,
             },
         };
     },
