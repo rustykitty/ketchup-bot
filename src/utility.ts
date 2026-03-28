@@ -1,8 +1,8 @@
 import * as DAPI from 'discord-api-types/v10';
 
 export function getOptionsFromArray<
-    T extends
-        DAPI.APIApplicationCommandInteractionDataBasicOption['value'] = DAPI.APIApplicationCommandInteractionDataBasicOption['value'],
+    T extends DAPI.APIApplicationCommandInteractionDataBasicOption['value'] =
+        DAPI.APIApplicationCommandInteractionDataBasicOption['value'],
 >(options: DAPI.APIApplicationCommandInteractionDataOption[] | undefined) {
     return (options ?? []).reduce(
         (acc, curr: DAPI.APIApplicationCommandInteractionDataOption) => {
@@ -17,8 +17,8 @@ export function getOptionsFromArray<
  * Get the basic options from an interaction. You will have to use getSubcommand()/getSubcommandOptions() for subcommands.
  */
 export function getOptions<
-    T extends
-        DAPI.APIApplicationCommandInteractionDataBasicOption['value'] = DAPI.APIApplicationCommandInteractionDataBasicOption['value'],
+    T extends DAPI.APIApplicationCommandInteractionDataBasicOption['value'] =
+        DAPI.APIApplicationCommandInteractionDataBasicOption['value'],
 >(interaction: DAPI.APIApplicationCommandInteraction): Record<string, T> {
     if (!('options' in interaction.data) || interaction.data.options === undefined) return {};
 
